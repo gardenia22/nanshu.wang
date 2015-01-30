@@ -1,0 +1,11 @@
+<article class="post">
+    <header>
+      <h2><a href='{{ index .Params "link" }}'> {{ .Title }}</a> </h2>
+      <div class="post-meta">{{ .Date.Format "Mon, Jan 2, 2006" }} </div>
+    </header>
+
+    <article itemprop="articleBody" id="content">
+    	{{ .Summary }}
+	</article>
+
+</article>

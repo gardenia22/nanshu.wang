@@ -1,0 +1,14 @@
+baseurl = "http://nanshu.wang/"
+title = "Nanshu's blog"
+languageCode = "en-us"
+disqusShortname = "nanshuwang"
+copyright = "Copyright (c) 2015, Nanshu Wang; all rights reserved."
+MetaDataFormat = "yaml"
+
+[author]
+    name = "Nanshu Wang"
+
+[indexes]
+    tag = "tags"
+    topic = "topics"
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    {{ partial "meta.html" . }}
+
+    <base href="{{ .Site.BaseUrl }}">
+    <title>{{ .Site.Title }}</title>
+    <link rel="canonical" href="{{ .Permalink }}">
+    <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+
+    {{ partial "head_includes.html" . }}
+</head>
+<body lang="en">
+
+{{ partial "subheader.html" . }}
+
+<section id="main">
+  <div class="content">
+    <p>这里记录一些学习笔记和自己的想法，督促自己写点东西。</p>
+
+    <p>Contact: nanshu.wang@gmail.com</p>
+  </div>
+</section>
+
+<aside id="meta"> </aside>
+
+{{ partial "footer.html" . }}
