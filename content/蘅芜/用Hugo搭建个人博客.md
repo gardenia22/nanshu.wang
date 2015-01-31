@@ -70,7 +70,7 @@ your code here.
 原文件放入media文件夹内
 
 ## Mathjax支持
-
+不在主页显示
 ## 采用github pages
 ## 域名绑定
 ## 更改字体服务商
