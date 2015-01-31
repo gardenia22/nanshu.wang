@@ -5,7 +5,7 @@ Tags:
   - 思维
   - Matrix67
   - OI
-Title: 多出来的 50% Imagination
+Title: 多出来的 50% Imagination ——读《思考的乐趣》
 date: 2012-09-09
 ---
 
