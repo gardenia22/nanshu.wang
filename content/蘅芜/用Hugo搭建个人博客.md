@@ -6,8 +6,23 @@ title: "\u7528Hugo\u642D\u5EFA\u4E2A\u4EBA\u535A\u5BA2"
 topics: []
 draft: True
 ---
+# 为什么用Hugo
 
+## Why 静态网站(Static site)
 
+1. 维护简单
+2. 关注内容
+3. 速度快
+4. 不依赖于数据库，无安全性问题
+
+## Why Hugo
+静态网站生成器
+1. 速度超级快
+5000页面，只需6秒生成，其他的工具则需要几分钟
+2. 跨平台支持
+
+3. open source
+rio提过
 # 安装Hugo
 1.安装brew
 ```
@@ -40,6 +55,11 @@ $Hugo new about.me
 ```
 $Hugo new post/first.me
 ```
+# 了解Hugo
+folders
+/layout 包括了网站的模版，决定content的内容如何呈现
+/static 包括了css,js,fonts,media等，决定网站的外观
+/public hugo生成的静态网站
 # 选择主题
 4. download thems
 ```
