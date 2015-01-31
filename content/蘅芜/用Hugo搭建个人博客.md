@@ -72,4 +72,7 @@ your code here.
 ## Mathjax支持
 
 ## 采用github pages
+## 域名绑定
+## 更改字体服务商
+## 
 内核恐慌关于静态网站生成器 http://ipn.li/kernelpanic/3/
