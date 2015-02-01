@@ -1,98 +1,264 @@
 ---
 date: 2015-01-31T00:30:03+08:00
 description: ""
-tags: []
-title: "\u7528Hugo\u642D\u5EFA\u4E2A\u4EBA\u535A\u5BA2"
+tags: ["Hugo","静态网站生成器","博客","教程","网站"]
+title: "Hugo静态网站生成器中文教程"
 topics: []
-draft: True
+draft: false
 ---
-# 为什么用Hugo
 
-## Why 静态网站(Static site)
+# 前言
 
-1. 维护简单
-2. 关注内容
-3. 速度快
-4. 不依赖于数据库，无安全性问题
+[Hugo](http://gohugo.io)是什么？官方文档是这样介绍它的：
 
-## Why Hugo
-静态网站生成器
-1. 速度超级快
-5000页面，只需6秒生成，其他的工具则需要几分钟
-2. 跨平台支持
+> Hugo is a general-purpose website framework. Technically speaking, Hugo is a static site generator.
 
-3. open source
-rio提过
-# 安装Hugo
-1.安装brew
+Hugo是一种通用的网站框架。严格来说，Hugo应该被称作静态网站生成器。
+
+静态网站生成器从字面上来理解，就是将你的内容生成静态网站。所谓“静态”的含义其实反映在网站页面的生成的时间。一般的web服务器（WordPress, Ghost, Drupal等等）在收到页面请求时，需要调用数据库生成页面（也就是HTML代码），再返回给用户请求。而静态网站则不需要在收到请求后生成页面，而是在整个网站建立起之前就将所有的页面全部生成完成，页面一经生成便称为静态文件，访问时直接返回现成的静态页面，不需要数据库的参与。
+<!--more-->
+采用静态网站的维护也相当简单，实际上你根本不需要什么维护，完全不用考虑复杂的运行时间，依赖和数据库的问题。再有也不用担心安全性的问题，没有数据库，网站注入什么的也无从下手。
+
+静态网站最大好处就是访问快速，不用每次重新生成页面。当然，一旦网站有任何更改，静态网站生成器需要重新生成所有的与更改相关的页面。然而对于小型的个人网站，项目主页等等，网站规模很小，重新生成整个网站也是非常快的。Hugo在速度方面做得非常好，Dan Hersam在他这个[Hugo教程](https://www.udemy.com/build-static-sites-in-seconds-with-hugo/)里提到，5000篇文章的博客，Hugo生成整个网站只花了6秒，而很多其他的静态网站生成器则需要几分钟的时间。我的博客目前文章只有几十篇，用Hugo生成整个网站只需要0.1秒。官方文档提供的数据是每篇页面的生成时间不到1ms。
+
+我认为对于个人博客来说，应该将时间花在内容上而不是各种折腾网站。Hugo会将Markdown格式的内容和设置好模版一起，生成漂亮干净的页面。挑选折腾好一个喜爱的模版，在Sublime Text里用Markdown写博客，再敲一行命令生成同步到服务器就OK了。整个体验是不是非常优雅简单还有点geek的味道呢？
+
+Hugo是用[Go语言](http://golang.org/)写的，为什么使用Go，作者[Steve Francia](http://spf13.com)的原话是：
+
+> I looked at existing static site generators like Jekyll, Middleman and nanoc. All had complicated dependencies to install and took far longer to render my blog with hundreds of posts than I felt was acceptable. I wanted a framework to be able to get rapid feedback while making changes to the templates, and the 5+-minute render times was just too slow. In general, they were also very blog minded and didn’t have the ability to have different content types and flexible URLs.
+
+> I wanted to develop a fast and full-featured website framework without dependencies. The Go language seemed to have all of the features I needed in a language. I began developing Hugo in Go and fell in love with the language. I hope you will enjoy using (and contributing to) Hugo as much as I have writing it.
+
+总结他的一下大意：
+
+* 吐槽脸：Jekyll以及那一堆静态网站生成器安装麻烦（依赖多），速度又慢，内容类型单一，url死板
+* 挽袖子状：Go挺萌的符合我对语言的一切幻想，就用它重写一个吧
+
+我为啥用Hugo？除了以上提到的原因，很重要的一点是[Hugo主页](http://gohugo.io)很漂亮，看了一圈静态网站生成器的主页，一眼就被Hugo的美到了，首页的照片里的那个格子小本子应该是[Paperthinks](http://www.paperthinks.com)，我正好也在用，有种刚好看到自己桌面的感觉。
+
+# 安装
+如果说速度快是Hugo的第一大优点，那么安装简单应该就是Hugo的第二大优点。对于Mac用户，没有brew的话先安装brew，在命令行里敲：
+
 ```
 $ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-2.安装pip
-下载 https://bootstrap.pypa.io/get-pip.py
-```
-$python get-pip.py
-```
 
-3.安装Pygments
-```
-$pip install Pygments
-```
-4.安装Hugo
+然后再敲一行安装Hugo:
+
 ```
 $brew new Hugo
 ```
-# Started
-1. Create a site
-```
-$Hugo new site sitepath
-```
-2.Create page
-```
-$Hugo new about.me
-```
-3. Create a post
-```
-$Hugo new post/first.me
-```
+
+当然你也可以在[这里](https://github.com/spf13/hugo/releases)直接下载对应系统的binary文件，解压就行了。
+
 # 了解Hugo
-folders
-/layout 包括了网站的模版，决定content的内容如何呈现
-/static 包括了css,js,fonts,media等，决定网站的外观
-/public hugo生成的静态网站
-# 选择主题
-4. download thems
+
+首先建立自己的网站，mysite是网站的路径
+
+```
+$hugo new site mysite
+```
+
+然后进入该路径
+
+```
+$cd mysite
+```
+
+在该目录下你可以看到以下几个目录和config.toml文件
+
+```
+ ▸ archetypes/ 
+ ▸ content/
+ ▸ layouts/
+ ▸ static/
+   config.toml
+```
+config.toml是网站的配置文件，包括baseurl,title,copyright等等网站参数
+这几个文件夹的作用分别是：
+
+* archetypes：包括内容类型，在创建新内容时自动生成内容的配置
+* content：包括网站内容，全部使用markdown格式
+* layouts：包括了网站的模版，决定content的内容如何呈现
+* static：包括了css,js,fonts,media等，决定网站的外观
+
+Hugo提供了一些完整的主题可以使用，下载这些主题：
+
 ```
 $ git clone --recursive https://github.com/spf13/hugoThemes themes
 ```
-5. run Hugo
+
+此时现成的主题存放在themes文件夹中。
+
+现在我们先熟悉一下Hugo，创建新页面：
+
 ```
-$ hugo server --theme=hyde --buildDraft
+$ Hugo new about.md
 ```
-5. 选择主题
-直接选择了Hugo 作者博客的主题，先将他的博客全部fork下来
+
+进入content文件夹可以看到，此时多了一个markdown格式的文件about.me，打开文件可以看到时间和文件名等信息已经自动加到文件开头，包括创建时间，页面名，是否为草稿等。
+
 ```
-$ git clone https://github.com/spf13/hugo.git
+---
++++
+date = "2015-02-01T18:19:54+08:00"
+draft = true
+title = "about"
+
++++
+
+# 关于我
+- 2010  HR@RUC
+- 2014  CS@ICT, CAS
 ```
-# 其他功能
-## rss订阅
-## 代码高亮
-安装pygments，在代码两头加上
+
+我在页面中加入了一些内容，然后运行Hugo:
+
+
 ```
+$Hugo server -t hyde --buildDrafts
+```
+
+-t 参数的意思是使用hyde主题渲染我们的页面，注意到about.md目前是作为草稿draf设置为true，运行Hugo时要加上--buildDrafts参数才会生成被标记为草稿的页面。
+在浏览器输入localhost:1313，就可以看到我们刚刚创建的页面。
+
+{{ % img src="/media/hugo-server-1.png" alt="hugo-server-1" %}}
+
+注意观察当前目录下多了一个文件夹public，这里面是Hugo生成的整个静态网站，如果使用Github pages来作为博客的Host，你只需要将public里的文件上传就可以，public相当于是Hugo的输出。
+
+
+# 主题选择
+
+进入themes/hyde文件夹，可以看到熟悉的文件夹名，和主题相关的文件主要是在layouts和static这两个文件内，选择好一个主题后，可以将themes中的文件夹直接复制到mysite/目录下，覆盖原来的layouts,static文件，此时直接使用\$Hugo server就可以看到主题效果，修改主题也可以直接修改其中的css,js,html等文件。
+
+我的博客模版是在Hugo作者spf13的[博客](http://spf13.com)基础上修改的。第一步，先去他的博客网站源码[主页](https://github.com/spf13/spf13.com)把整个项目clone下来
+
+```
+$ git clone git@github.com:spf13/spf13.com.git
+```
+
+把项目中的static和layouts文件复制到自己网站的目录下替换原来的文件夹。再次运行Hugo:
+
+```
+$Hugo server --buildDrafts -w
+```
+
+这次没有选择主题，如果选择了主题会将原本的主题覆盖掉。参数-w意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，方便我们进行修改。这是采用了spf13主题的页面：
+
+{{ % img src="/media/hugo-server-2.png" alt="hugo-server-2" %}}
+
+我们尝试在他的主题基础上修改，找到/layouts/partials/subheader.html文件:
+
 {{ < highlight python>}}
+
+<header id="header">
+    <figure>
+      <a href="/" border=0 id="logolink"><div class="icon-spf13-3" id="logo"> </div></a>
+    </figure>
+    <div id="byline">by Steve Francia</div>
+    <nav id="nav">
+    {{ partial "nav.html" . }}
+    {{ partial "social.html" . }}
+    </nav>
+</header>
+
+{{ ／highlight }}
+
+将by Steve Francia换成by myname，再次回到浏览器，可以看到页面已经发生变化了。
+
+{{ % img src="/media/hugo-server-2.png" alt="hugo-server-2" %}}
+
+# 评论功能
+
+个人博客当然不能没有评论，Hugo默认支持[Disqus](https://disqus.com/)的评论，需要在模版中添加以下代码：
+
+```
+{{ template "_internal/disqus.html" . }}
+```
+
+spf13在/layouts/partials/disqus.html中已经添加好了。
+
+只需要去Disqus注册一个账号，然后在config.toml里加上：
+
+```
+disqusShortname = "yourdisqusShortname"
+```
+
+注意-w参数是不能监测config.toml里参数变化的，因此需要重新运行Hugo，进入localhost:1313/about，可以看到评论功能。
+
+{{ % img src="/media/comments.png" alt="hugo-server-2" %}}
+
+# 代码高亮
+
+作为码农，代码高亮当然必不可少。有两种方法：第一种是在生成页面时就生成好代码高亮过的页面；第二种是使用js，用户加载页面时浏览器再进行渲染。
+
+第一种方法需要使用[Pygments](http://pygments.org/)，一个python写的工具。
+
+安装Pygments：
+
+```
+$pip install Pygments
+```
+
+没有pip的先下载 https://bootstrap.pypa.io/get-pip.py，安装pip：
+
+```
+$python get-pip.py
+```
+Pygments的调用采用shortcodes实现，spf13里也写好了，在/layouts/shortcode/highlight.html里
+
+```
+{{ $lang := index .Params 0 }}
+{{ highlight .Inner $lang }}
+```
+
+要使代码高亮，在你的代码外面加上：
+
+```
+{{ < highlight python > }}
 your code here.
 {{ /highlight }}
 ```
-## 图片管理
-```
-{{ % img src="/media/spf13-responsive.jpg" alt="spf13 responsive website" %}}
-```
-原文件放入media文件夹内
 
-## Mathjax支持
-不在主页显示
-## 采用github pages
-## 域名绑定
-## 更改字体服务商
-## 
+第二种方法比较简单，在layouts/partials/header_includes.html中加上：
+
+{{ < highlight python > }}
+<link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+<script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+{{ /highlight }}
+
+这里使用了[Yandex](http://yandex.ru/)的[Highlight.js](http://highlightjs.org/)。
+
+其他的可以实现高亮的js库还有：
+
+* [Highlight.js](http://highlightjs.org/)
+* [Rainbow](http://craig.is/making/rainbows)
+* [Syntax Highlighter](http://alexgorbatchev.com/SyntaxHighlighter/)
+* [Google Prettify](https://code.google.com/p/google-code-prettify/)
+
+# 插入图片
+
+图片文件放在static/media文件中，插入图片：
+
+```
+{{ % img src="/media/example.jpg" alt="example" %}}
+```
+
+# 使用Mathjax
+
+在需要渲染公式的页面加入以下代码，比如layouts/_default/single.html文件，这个文件是对于所有post进行页面生成的模版，如果你希望所有页面都对公式渲染的话，可以加入layouts/partials/footer.html文件里，保证所有生成的页面都有这几行代码。
+
+{{ < highlight python > }}
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+{{ /highlight}}
+
+Mathjax和Markdown会有冲突问题，[这里](http://doswa.com/2011/07/20/mathjax-in-markdown.html)提供了解决方案。
+
+# 采用github pages
+# 域名绑定
+# 更改字体服务商
+
 内核恐慌关于静态网站生成器 http://ipn.li/kernelpanic/3/
