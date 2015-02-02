@@ -74,7 +74,8 @@ $cd mysite
  ▸ static/
    config.toml
 ```
-``config.toml``是网站的配置文件，包括``baseurl``, ``title``, ``copyright``等等网站参数
+``config.toml``是网站的配置文件，包括``baseurl``, ``title``, ``copyright``等等网站参数。
+
 这几个文件夹的作用分别是：
 
 * archetypes：包括内容类型，在创建新内容时自动生成内容的配置
@@ -162,7 +163,7 @@ $Hugo server --buildDrafts -w
 </header>
 {{% /highlight %}}
 
-将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了。
+将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了，你可以根据自己的需要修改对应的文件。
 
 {{% img src="/media/hugo-server-change.png" alt="hugo-server-change" %}}
 
@@ -188,7 +189,7 @@ disqusShortname = "yourdisqusShortname"
 
 # 代码高亮
 
-作为码农，代码高亮当然必不可少。有两种方法：第一种是在生成页面时就生成好代码高亮过的页面；第二种是使用js，用户加载页面时浏览器再进行渲染。
+作为码农，代码高亮对于写博客来说当然必不可少。有两种方法：第一种是在生成页面时就生成好代码高亮过的页面；第二种是使用js，用户加载页面时浏览器再进行渲染。
 
 第一种方法需要使用[Pygments](http://pygments.org/)，一个python写的工具。
 
@@ -267,7 +268,12 @@ your code here.
 
 Mathjax和Markdown会有冲突问题，[这里](http://doswa.com/2011/07/20/mathjax-in-markdown.html)提供了解决方案。
 
-# 采用github pages
+# 用github pages作为网站的Host
+
+Github pages分为两种，一种是项目主页，每个项目都可以有一个，另一种是用户主页，一个用户只能有一个。
+
+建议
+
 # 域名绑定
 # 更改字体服务商
 
