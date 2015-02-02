@@ -65,7 +65,7 @@ $hugo new site mysite
 $cd mysite
 ```
 
-在该目录下你可以看到以下几个目录和config.toml文件
+在该目录下你可以看到以下几个目录和``config.toml``文件
 
 ```
  ▸ archetypes/ 
@@ -74,12 +74,12 @@ $cd mysite
  ▸ static/
    config.toml
 ```
-config.toml是网站的配置文件，包括baseurl,title,copyright等等网站参数
+``config.toml``是网站的配置文件，包括``baseurl``, ``title``, ``copyright``等等网站参数
 这几个文件夹的作用分别是：
 
 * archetypes：包括内容类型，在创建新内容时自动生成内容的配置
 * content：包括网站内容，全部使用markdown格式
-* layouts：包括了网站的模版，决定content的内容如何呈现
+* layouts：包括了网站的模版，决定内容如何呈现
 * static：包括了css,js,fonts,media等，决定网站的外观
 
 Hugo提供了一些完整的主题可以使用，下载这些主题：
@@ -88,7 +88,7 @@ Hugo提供了一些完整的主题可以使用，下载这些主题：
 $ git clone --recursive https://github.com/spf13/hugoThemes themes
 ```
 
-此时现成的主题存放在themes文件夹中。
+此时现成的主题存放在``themes/``文件夹中。
 
 现在我们先熟悉一下Hugo，创建新页面：
 
@@ -96,7 +96,7 @@ $ git clone --recursive https://github.com/spf13/hugoThemes themes
 $ Hugo new about.md
 ```
 
-进入content文件夹可以看到，此时多了一个markdown格式的文件about.me，打开文件可以看到时间和文件名等信息已经自动加到文件开头，包括创建时间，页面名，是否为草稿等。
+进入``content/``文件夹可以看到，此时多了一个markdown格式的文件``about.md``，打开文件可以看到时间和文件名等信息已经自动加到文件开头，包括创建时间，页面名，是否为草稿等。
 
 ```
 ---
@@ -119,17 +119,17 @@ title = "about"
 $Hugo server -t hyde --buildDrafts
 ```
 
--t 参数的意思是使用hyde主题渲染我们的页面，注意到about.md目前是作为草稿draf设置为true，运行Hugo时要加上--buildDrafts参数才会生成被标记为草稿的页面。
+-t 参数的意思是使用hyde主题渲染我们的页面，注意到``about.md``目前是作为草稿，即draft参数设置为true，运行Hugo时要加上--buildDrafts参数才会生成被标记为草稿的页面。
 在浏览器输入localhost:1313，就可以看到我们刚刚创建的页面。
 
-{{ % img src="/media/hugo-server-1.png" alt="hugo-server-1" %}}
+{{% img src="/media/hugo-server-1.png" alt="hugo-server-1" %}}
 
-注意观察当前目录下多了一个文件夹public，这里面是Hugo生成的整个静态网站，如果使用Github pages来作为博客的Host，你只需要将public里的文件上传就可以，public相当于是Hugo的输出。
+注意观察当前目录下多了一个文件夹``public/``，这里面是Hugo生成的整个静态网站，如果使用Github pages来作为博客的Host，你只需要将``public/``里的文件上传就可以，这相当于是Hugo的输出。
 
 
 # 主题选择
 
-进入themes/hyde文件夹，可以看到熟悉的文件夹名，和主题相关的文件主要是在layouts和static这两个文件内，选择好一个主题后，可以将themes中的文件夹直接复制到mysite/目录下，覆盖原来的layouts,static文件，此时直接使用\$Hugo server就可以看到主题效果，修改主题也可以直接修改其中的css,js,html等文件。
+进入``themes/hyde``文件夹，可以看到熟悉的文件夹名，和主题相关的文件主要是在``layouts/``和``static/``这两个文件内，选择好一个主题后，可以将themes中的文件夹直接复制到``mysite/``目录下，覆盖原来的``layouts/``, ``static/``文件夹，此时直接使用\$Hugo server就可以看到主题效果，修改主题也可以直接修改其中的css,js,html等文件。
 
 我的博客模版是在Hugo作者spf13的[博客](http://spf13.com)基础上修改的。第一步，先去他的博客网站源码[主页](https://github.com/spf13/spf13.com)把整个项目clone下来
 
@@ -143,14 +143,13 @@ $ git clone git@github.com:spf13/spf13.com.git
 $Hugo server --buildDrafts -w
 ```
 
-这次没有选择主题，如果选择了主题会将原本的主题覆盖掉。参数-w意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，方便我们进行修改。这是采用了spf13主题的页面：
+这次没有选择主题，如果选择了主题会将当前的主题覆盖掉。参数-w意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，方便我们进行修改。这是采用了spf13主题的页面：
 
-{{ % img src="/media/hugo-server-2.png" alt="hugo-server-2" %}}
+{{% img src="/media/hugo-server-2.png" alt="hugo-server-2" %}}
 
-我们尝试在他的主题基础上修改，找到/layouts/partials/subheader.html文件:
+我们尝试在他的主题基础上修改，找到``/layouts/partials/subheader.html``文件:
 
-{{ < highlight python>}}
-
+{{% highlight html %}}
 <header id="header">
     <figure>
       <a href="/" border=0 id="logolink"><div class="icon-spf13-3" id="logo"> </div></a>
@@ -161,12 +160,11 @@ $Hugo server --buildDrafts -w
     {{ partial "social.html" . }}
     </nav>
 </header>
+{{% /highlight %}}
 
-{{ ／highlight }}
+将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了。
 
-将by Steve Francia换成by myname，再次回到浏览器，可以看到页面已经发生变化了。
-
-{{ % img src="/media/hugo-server-2.png" alt="hugo-server-2" %}}
+{{% img src="/media/hugo-server-change.png" alt="hugo-server-change" %}}
 
 # 评论功能
 
@@ -184,9 +182,9 @@ spf13在/layouts/partials/disqus.html中已经添加好了。
 disqusShortname = "yourdisqusShortname"
 ```
 
-注意-w参数是不能监测config.toml里参数变化的，因此需要重新运行Hugo，进入localhost:1313/about，可以看到评论功能。
+注意-w参数是不能监测``config.toml``里参数变化的，因此需要重新运行Hugo，进入localhost:1313/about，可以看到评论功能。
 
-{{ % img src="/media/comments.png" alt="hugo-server-2" %}}
+{{% img src="/media/comments.png" alt="comments" %}}
 
 # 代码高亮
 
@@ -202,10 +200,13 @@ $pip install Pygments
 
 没有pip的先下载 https://bootstrap.pypa.io/get-pip.py，安装pip：
 
+
 ```
 $python get-pip.py
 ```
-Pygments的调用采用shortcodes实现，spf13里也写好了，在/layouts/shortcode/highlight.html里
+
+Pygments的调用采用shortcodes实现，spf13里也写好了，在``/layouts/shortcode/highlight.html``里
+
 
 ```
 {{ $lang := index .Params 0 }}
@@ -215,22 +216,28 @@ Pygments的调用采用shortcodes实现，spf13里也写好了，在/layouts/sho
 要使代码高亮，在你的代码外面加上：
 
 ```
-{{ < highlight python > }}
+{{ % highlight python %}}
 your code here.
-{{ /highlight }}
+{{ % /highlight %}}
 ```
 
-第二种方法比较简单，在layouts/partials/header_includes.html中加上：
+这里为了避免以上两行被识别为代码高亮的标示，在``{{``和``%``之间多加了一个空格，实际使用的时候需要把空格去掉。
 
-{{ < highlight python > }}
-<link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+第二种方法比较简单，在``layouts/partials/header_includes.html``中加上：
+
+
+
+{{% highlight html %}}
 <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
 <script>hljs.initHighlightingOnLoad();</script>
-{{ /highlight }}
+
+{{% /highlight %}}
+
 
 这里使用了[Yandex](http://yandex.ru/)的[Highlight.js](http://highlightjs.org/)。
 
-其他的可以实现高亮的js库还有：
+其他的可以实现代码高亮的js库还有：
 
 * [Highlight.js](http://highlightjs.org/)
 * [Rainbow](http://craig.is/making/rainbows)
@@ -239,21 +246,24 @@ your code here.
 
 # 插入图片
 
-图片文件放在static/media文件中，插入图片：
+图片文件放在``static/media``文件中，插入图片：
 
 ```
 {{ % img src="/media/example.jpg" alt="example" %}}
 ```
 
+注意这里的``{{``和``%``之间也加上了空格，避免这行代码起作用，实际使用也需要把空格去掉。
+
 # 使用Mathjax
 
-在需要渲染公式的页面加入以下代码，比如layouts/_default/single.html文件，这个文件是对于所有post进行页面生成的模版，如果你希望所有页面都对公式渲染的话，可以加入layouts/partials/footer.html文件里，保证所有生成的页面都有这几行代码。
+在需要渲染公式的页面加入以下代码，比如``layouts/_default/single.html``文件，这个文件是对于所有post进行页面生成的模版，如果你希望所有页面都对公式渲染的话，可以加入``layouts/partials/footer.html``文件里，保证所有生成的页面都有这几行代码。
 
-{{ < highlight python > }}
+
+{{% highlight html %}}
 <script type="text/javascript"
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-{{ /highlight}}
+{{% /highlight %}}
 
 Mathjax和Markdown会有冲突问题，[这里](http://doswa.com/2011/07/20/mathjax-in-markdown.html)提供了解决方案。
 
