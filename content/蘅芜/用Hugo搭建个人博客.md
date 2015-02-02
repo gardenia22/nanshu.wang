@@ -163,7 +163,7 @@ $Hugo server --buildDrafts -w
 </header>
 {{% /highlight %}}
 
-将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了，你可以根据自己的需要修改对应的文件。
+将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了，你可以根据自己的需要修改对应的文件，当然得懂一点css,html。
 
 {{% img src="/media/hugo-server-change.png" alt="hugo-server-change" %}}
 
@@ -270,11 +270,78 @@ Mathjax和Markdown会有冲突问题，[这里](http://doswa.com/2011/07/20/math
 
 # 用github pages作为网站的Host
 
-Github pages分为两种，一种是项目主页，每个项目都可以有一个，另一种是用户主页，一个用户只能有一个。
+Github pages分为两种，一种是项目主页，每个项目都可以有一个；另一种是用户主页，一个用户只能有一个。
 
-建议
+因为用户主页只能有一个，所以建议使用项目主页托管，不过我这里采用了用户主页，反正我也只用一个博客，使用个人主页作为Host也相对更简单一点。
 
-# 域名绑定
+我们需要创建两个单独的repo，一个用于放Hugo的输入文件，即除了``public/``文件夹之外的所有文件，另一个放我们生成的静态网站，也就是``public/``的内容。
+
+步骤如下：
+
+1. 在Github上创建repo ``<your-project>-hugo``，托管Hugo的输入文件。
+2. 创建repo ``<username>.github.io``，用于托管``public/``文件夹，注意这里的repo名字一定要用自己的用户名，才会被当作是个人主页。
+3. git clone <<your-project>-hugo-url
+4. cd <your-project>-hugo
+5. rm -rf public，删掉public目录（这个目录每次运行Hugo都会再次生成，不用担心）
+6. git submodule add git@github.com:<username>/<username>.github.io.git public
+7. 下面是写好的一个deploy.sh，拷过去直接就能用，记得chmod +x deploy.sh加上运行权限。
+
+{{% highlight shell %}}
+#!/bin/bash
+echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
+
+msg="rebuilding site `date`"
+if [ $# -eq 1 ]
+  then msg="$1"
+fi
+
+# Push Hugo content 
+git add -A
+git commit -m "$msg"
+git push origin master
+
+
+# Build the project. 
+hugo # if using a theme, replace by `hugo -t <yourtheme>`
+
+# Go To Public folder
+cd public
+# Add changes to git.
+git add -A
+
+# Commit changes.
+
+git commit -m "$msg"
+
+# Push source and build repos.
+git push origin master
+
+# Come Back
+cd ..
+
+{{% /highlight %}}
+
+等一小会儿（10分钟左右），你就能在http://username.github.io/ 这个页面看到你的网站了！每次更新网站或者写了新文章，只需要运行./deploy.sh 发布就搞定了，简单吧？
+
+Github pages还支持域名绑定，三个步骤：
+
+1. 在``<username>.github.io`` repo的跟目录下添加``CNAME``文件，文件里写上你的域名，不用加http://的开头。
+3. ping http://username.github.io/，记下ip地址。
+3. 在你的域名管理中加上两条A记录，分别是www和@，记录指向http://username.github.io/ 的ip地址，也需要等一小会儿生效。
+
 # 更改字体服务商
 
-内核恐慌关于静态网站生成器 http://ipn.li/kernelpanic/3/
+我的博客模版里用的字体是从googleapis里获取的，国内访问会下载失败，把字体库改成360的。
+找到``layouts/partials/head_includes.html``文件：
+
+{{% highlight html %}}
+<link href='http://fonts.googleapis.com/css?family=Fjalla+One|Open+Sans:300' rel='stylesheet' type='text/css'>
+{{% /highlight %}}
+
+将其中的googleapis替换为useso就行了。
+
+# 参考
+1. [Hugo docs](http://gohugo.io/overview/introduction/)
+2. [《内核恐慌》静态网站生成器](http://ipn.li/kernelpanic/3/) 
+3. [Build Static Sites in Seconds with Hugo](https://www.udemy.com/build-static-sites-in-seconds-with-hugo/)
+4. [github pages]()
