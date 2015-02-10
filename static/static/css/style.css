@@ -390,3 +390,8 @@ body>section:after,body>aside:after,body>.content:after,body>footer:after,#comme
 .icon-arrow-right-3:before{content:"\e012"}
 .icon-arrow-left-3:before{content:"\e013"}
 .icon-headphones:before{content:"\e014"}
+code.has-jax {font: inherit;
+              font-size: 100%;
+              background: inherit;
+              border: inherit;
+              color: inherit;}

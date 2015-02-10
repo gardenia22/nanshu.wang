@@ -199,7 +199,7 @@ disqusShortname = "yourdisqusShortname"
 $pip install Pygments
 ```
 
-没有pip的先下载 https://bootstrap.pypa.io/get-pip.py，安装pip：
+没有pip的先下载 https://bootstrap.pypa.io/get-pip.py ，然后安装pip：
 
 
 ```
@@ -222,7 +222,7 @@ your code here.
 {{ % /highlight %}}
 ```
 
-这里为了避免以上两行被识别为代码高亮的标示，在``{{``和``%``之间多加了一个空格，实际使用的时候需要把空格去掉。
+这里为了避免以上两行被识别为代码高亮的标识，在``{{``和``%``之间多加了一个空格，实际使用的时候需要把空格去掉。
 
 第二种方法比较简单，在``layouts/partials/header_includes.html``中加上：
 
