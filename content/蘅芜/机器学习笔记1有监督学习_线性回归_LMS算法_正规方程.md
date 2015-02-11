@@ -1,8 +1,8 @@
 ---
 date: 2015-02-10
 description: ""
-tags: ["机器学习","有监督学习","线性回归","LMS","梯度下降"]
-title: "机器学习笔记1 有监督学习 线性回归 LMS算法"
+tags: ["机器学习","有监督学习","线性回归","LMS","梯度下降","正规方程"]
+title: "机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程"
 topics: []
 draft: false
 ---
@@ -108,6 +108,31 @@ for i=1 to m,{
         
 随机梯度下降和批量梯度下降不同点在于，批量梯度下降每一步更新$\theta$值，都需要遍历全部的训练样本，而随机梯度下降在遇到每个训练样本时，更新$\theta$之后继续处理下一个样本，每个样本只遍历一次，算法的学习时间比批量梯度下降快很多。但是，随机梯度下降可能永远不会收敛到全局最优值，而是在成本函数$J(\theta)$最优值周围附近摇摆。但是在实际问题中，接近最优值的参数值可能已经是足够好的结果了，特别是对于数据量非常大的训练集来说，随机梯度下降是比批量梯度下降更好的选择。
 
+## 正规方程(The normal equations)
 
+梯度下降是最小化$J(\theta)$的一种方式，正规方程是另一种求解参数$\theta$的方法，这种方法可以直接求出最优值参数结果，不需要迭代更新。这种方法实际上是直接求出$J(\theta)$的导数，并令其为0。
 
+<div>
+$$J(\theta)=\sum_{i=1}^m(h_{\theta}(x^{(i)}-y^{(i)}))^2=\frac12(X\theta-\overrightarrow y)^T(X\theta-\overrightarrow y)$$
+
+$$\nabla_{\theta}J(\theta)=0$$ 
+</div>
+
+解之，
+
+<div>
+$$\nabla_{\theta}J(\theta) = X^TX\theta-X^T\overrightarrow y=0$$
+</div>
+
+得到正规方程：
+
+<div>
+$$X^TX\theta=X^T\overrightarrow y$$
+</div>
+
+求解$\theta$：
+
+<div>
+$$\theta=(X^TX)^{-1}X^T\overrightarrow y$$
+</div>
 
