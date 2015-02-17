@@ -10,7 +10,7 @@ Andrew Ng cs229 Machine Learning 笔记
 
 # 分类问题
 
-分类问题和回归问题不同的是，分类问题的预测值$y$只能取离散值，而非连续值。首先来看一个二类分类问题，预测值$y$只能取0或1。0又被称作负例(negative class)，1被称作正例(positive class)。通常也有"-","+"符号来表示。对于一个样本集输入$x^{(i)}$，对应的目标值$y^{(i)}$也被为标注(lable)。
+分类问题和回归问题不同的是，分类问题的预测值$y$只能取离散值，而非连续值。首先来看一个二类分类问题，预测值$y$只能取0或1。0又被称作负例(negative class)，1被称作正例(positive class)。通常也用"-","+"符号来表示。对于一个样本集输入$x^{(i)}$，对应的目标值$y^{(i)}$也被为标注(lable)。
 
 ## logistic回归
 也可以用线性回归的方法运用到分类问题上，但是这样做很容易得到不好的结果。稍微改变一下我们的假设函数$h_\theta(x)$，使其的取值在{0,1}范围内：
@@ -26,7 +26,7 @@ $g(z)$叫做logistic函数，也叫做sigmoid函数。$g(z)$的函数图像如�
 
 {{% img src="/media/logistic-function.png" alt="logistic-function" %}}
 
-当$z\rightarrow \inf$时，$g(z)$趋近于1；当$z\rightarrow -\inf$时，$g(z)$趋近于0。因此$h(x)$的取值在0到1范围内。
+当$z\rightarrow \infty$时，$g(z)$趋近于1；当$z\rightarrow -\infty$时，$g(z)$趋近于0。因此$h(x)$的取值在0到1范围内。
 
 求$g(z)$的导数可得：
 
@@ -34,7 +34,7 @@ $g(z)$叫做logistic函数，也叫做sigmoid函数。$g(z)$的函数图像如�
 $$g'(z)=g(z)(1-g(z))$$
 </div>
 
-下面是对分类问题作出的一些假设，预测函数$h_\theta(x)$将给出分类为1的概率：
+下面是对分类问题作出的一些假设，预测函数$h_\theta(x)$将给出样本目标值分类为1的概率：
 
 <div>
 $$P(y=1|x;\theta) = h_{\theta}(x)$$
