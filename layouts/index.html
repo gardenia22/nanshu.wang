@@ -19,8 +19,10 @@
 <section id="main">
   <div>
       <h1 id="title">Carpe Diem</h1>
-    {{ range first 20 .Data.Pages }}
+    {{ range .Data.Pages }}
+      {{ if .Section}}
         {{ .Render "summary"}}
+      {{ end }}
     {{ end }}
   </div>
 </section>
