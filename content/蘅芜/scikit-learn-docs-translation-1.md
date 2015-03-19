@@ -6,6 +6,7 @@ Tags:
   - Python
 Title: Scikit-Learn机器学习介绍（中文翻译）
 date: 2014-12-02
+url: /post/2014-12-02
 ---
 
 

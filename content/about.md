@@ -4,6 +4,7 @@ description: ""
 tags:
 title: about
 topics:
+url: /about
 ---
 
 ## 关于我

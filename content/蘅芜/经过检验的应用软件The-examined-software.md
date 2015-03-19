@@ -5,6 +5,7 @@ Tags:
   - 排名
 Title: 经过检验的应用软件The examined software
 date: 2013-01-04
+url: /post/2013-01-04
 ---
 
 在图书馆看关于苏格拉底的一篇文章《The examined life》，越看越觉得人生不值得过。不过对于应用软件来说，好像道理也是一样，套用苏格拉底的话来说就是 The unexaminedsoftware is not worth applicating.未经检验的软件是不值得应用的软件。按下win键发现还是有好些软件在电脑里的存活时间挺长了，也可以算是经过检验了，心血来潮数了数。（排名不分先后）

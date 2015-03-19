@@ -5,6 +5,7 @@ tags: ["机器学习","有监督学习","线性回归","logistic回归","正则�
 title: "机器学习笔记4 正则化"
 topics: []
 draft: false
+url: /post/2015-02-17
 ---
 Andrew Ng cs229 Machine Learning 笔记
 

@@ -5,6 +5,7 @@ tags: ["机器学习","有监督学习","线性回归","LMS","梯度下降","正
 title: "机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程"
 topics: []
 draft: false
+url: /post/2015-02-10
 ---
 Andrew Ng cs229 Machine Learning 笔记
 

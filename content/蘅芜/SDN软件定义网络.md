@@ -6,6 +6,7 @@ Tags:
   - 研究生
 Title: 软件自定义网络Software-Definded Networking
 date: 2013-10-22
+url: /post/2013-10-22
 ---
 
 译自：https://en.wikipedia.org/wiki/Software-defined_networking

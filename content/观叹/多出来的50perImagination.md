@@ -7,6 +7,7 @@ Tags:
   - OI
 Title: 多出来的 50% Imagination ——读《思考的乐趣》
 date: 2012-09-09
+url: /post/2012-09-09
 ---
 
 最初发在豆瓣上: http://book.douban.com/review/5577939/

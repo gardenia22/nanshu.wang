@@ -5,6 +5,7 @@ tags: ["Hugo","静态网站生成器","博客","教程","网站"]
 title: "Hugo静态网站生成器中文教程"
 topics: []
 draft: false
+url: /post/2015-01-31
 ---
 
 # 前言

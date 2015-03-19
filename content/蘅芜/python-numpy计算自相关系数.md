@@ -5,6 +5,7 @@ tags: ["python","numpy","统计","自相关系数"]
 title: "python numpy 计算自相关系数"
 topics: []
 draft: false
+url: /post/2015-03-15
 ---
 
 在分析时间序列时，通常需要计算一个序列的自相关系数。自相关([Autocorrelation](http://en.wikipedia.org/wiki/Autocorrelation))又叫做序列相关，通常采用自相关系数来发现序列的重复规律，周期等信息。

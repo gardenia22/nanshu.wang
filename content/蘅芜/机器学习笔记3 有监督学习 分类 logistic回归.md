@@ -5,6 +5,7 @@ tags: ["机器学习","有监督学习","线性回归","logistic回归","分类"
 title: "机器学习笔记3 有监督学习 分类 logistic回归"
 topics: []
 draft: false
+url: /post/2015-02-12
 ---
 Andrew Ng cs229 Machine Learning 笔记
 

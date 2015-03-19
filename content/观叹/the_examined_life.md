@@ -5,6 +5,7 @@ tags: ["翻译","苏格拉底","读书","希腊哲学"]
 title: "经过省察的人生The examined life"
 topics: []
 draft: false
+url: /post/2015-03-03
 ---
 
 译自[《A companion to Socrates》第14章](http://books.google.lt/books?id=WwpZVuylPgYC&pg=PA228&hl=zh-CN&source=gbs_toc_r&cad=3#v=onepage&q&f=false)，作者Richard Kraut
