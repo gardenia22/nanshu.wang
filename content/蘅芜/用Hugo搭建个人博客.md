@@ -117,7 +117,7 @@ title = "about"
 
 
 ```
-$ Hugo server -t hyde --buildDrafts
+$ hugo server -t hyde --buildDrafts
 ```
 
 ``-t``参数的意思是使用hyde主题渲染我们的页面，注意到``about.md``目前是作为草稿，即``draft``参数设置为``true``，运行Hugo时要加上``--buildDrafts``参数才会生成被标记为草稿的页面。
@@ -141,7 +141,7 @@ $ git clone git@github.com:spf13/spf13.com.git
 把项目中的``static/``和``layouts/``文件复制到自己网站的目录下替换原来的文件夹。再次运行Hugo:
 
 ```
-$ Hugo server --buildDrafts -w
+$ hugo server --buildDrafts -w
 ```
 
 这次没有选择主题，如果选择了主题会将当前的主题覆盖掉。参数``-w``意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，不需要重新运行\$hugo server，方便我们进行修改。这是采用了spf13主题的页面：
