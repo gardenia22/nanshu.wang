@@ -11,22 +11,22 @@ url: /post/2015-03-22
 翻译自：[PEP 8 - Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
 
 
-介绍
+介绍(Introduction)
 ============
 
 这篇文档说明了组成Python主要现行版中标准库的Python代码所遵守的一个规范。请参考用于实现Python的C代码风格的指南信息PEP。
 
-这篇文档和PEP 257(Docstring Conventions)都改编自Guido(注：Python之父)最早的Python风格指南文章，并加入了Barry的风格指南里的内容。
+这篇文档和PEP 257(Docstring Conventions)都改编自Guido(译注：Python之父)最早的Python风格指南文章，并加入了Barry的风格指南里的内容。
 
 语言自身在发生着改变，随着新的规范的出现和旧规范的过时，代码风格也会随着时间演变。
 
 很多项目都有自己的一套风格指南。若和本指南有任何冲突，应该优先考虑其项目相关的那套指南。
 
 
-保持盲目的一致是头脑简单的表现
+保持盲目的一致是头脑简单的表现(A Foolish Consistency is the Hobgoblin of Little Minds)
 ======================================================
 
-(语出自Ralph Waldo Emerson, 原文：A Foolish Consistency is the Hobgoblin of Little Minds，Hobgolin意指民间故事中友好但常制造麻烦的动物角色。)
+(注：标题语出自Ralph Waldo Emerson, Hobgolin意指民间故事中友好但常制造麻烦的动物角色。)
 
 Guido的一个重要观点是代码被读的次数远多于被写的次数。这篇指南意在于提高代码的可读性，使浩瀚如烟的Python代码风格能保持一致。正如PEP 20那首《Zen of Python》的小诗里所说的：“可读性很重要(Readability counts)”。
 
@@ -46,92 +46,78 @@ Guido的一个重要观点是代码被读的次数远多于被写的次数。这
 
 4. 代码需要和更老的版本的Python保持兼容，而老版本的Python不支持风格指南所推荐的特性。
 
-Code lay-out
+代码设计(Code lay-out)
 ============
 
-Indentation
+缩进(Indentation)
 -----------
 
-Use 4 spaces per indentation level.
+每个缩进级别采用4个空格。
 
-Continuation lines should align wrapped elements either vertically
-using Python's implicit line joining inside parentheses, brackets and
-braces, or using a *hanging indent* [#fn-hi]_.  When using a hanging
-indent the following considerations should be applied; there should be
-no arguments on the first line and further indentation should be used
-to clearly distinguish itself as a continuation line.
+连续行应该将包装的元素要么采用Python隐式续行垂直对齐于圆括号、方括号和花括号，要么采用*悬挂缩进(hanging indent)*。采用悬挂缩进时需考虑以下两点：第一行不应该包括参数，并且在续行中需要再缩进一级以便清楚表示。
 
-Yes::
+正确的例子::
 
-    # Aligned with opening delimiter.
+    # 同开始分界符(左括号)对齐
     foo = long_function_name(var_one, var_two,
                              var_three, var_four)
 
-    # More indentation included to distinguish this from the rest.
+    # 续行多缩进一级以同其他代码区别
     def long_function_name(
             var_one, var_two, var_three,
             var_four):
         print(var_one)
 
-    # Hanging indents should add a level.
+    # 悬挂缩进需要多缩进一级
     foo = long_function_name(
         var_one, var_two,
         var_three, var_four)
 
-No::
+错误的例子::
 
-    # Arguments on first line forbidden when not using vertical alignment.
+    # 采用垂直对齐时第一行不应该有参数
     foo = long_function_name(var_one, var_two,
         var_three, var_four)
 
-    # Further indentation required as indentation is not distinguishable.
+    # 续行并没有被区分开，因此需要再缩进一级
     def long_function_name(
         var_one, var_two, var_three,
         var_four):
         print(var_one)
 
-The 4-space rule is optional for continuation lines.
+对于续行来说，4空格的规则可以不遵守。
 
-Optional::
+同样可行的例子::
 
-    # Hanging indents *may* be indented to other than 4 spaces.
+    # 悬挂缩进可以不采用4空格的缩进方法。
     foo = long_function_name(
       var_one, var_two,
       var_three, var_four)
 
 .. _`multiline if-statements`:
 
-When the conditional part of an ``if``-statement is long enough to require
-that it be written across multiple lines, it's worth noting that the
-combination of a two character keyword (i.e. ``if``), plus a single space,
-plus an opening parenthesis creates a natural 4-space indent for the
-subsequent lines of the multiline conditional.  This can produce a visual
-conflict with the indented suite of code nested inside the ``if``-statement,
-which would also naturally be indented to 4 spaces.  This PEP takes no
-explicit position on how (or whether) to further visually distinguish such
-conditional lines from the nested suite inside the ``if``-statement.
-Acceptable options in this situation include, but are not limited to::
+`多行if语句`
 
-    # No extra indentation.
+如果``if``语句太长，需要用多行书写，2个字符(例如,``if``)加上一个空格和一个左括号的组合刚好是4空格的缩进，但这对多行条件语句的续行是没用的。因为这会和``if``语句中嵌套的其他的缩进的语句产生视觉上的冲突。这份PEP中并没有做出明确的说明应该怎样来区分条件语句和``if``语句中所嵌套的语句。以下几种方法都是可行的，但不仅仅只限于这几种方法：
+
+    # 不采用额外缩进
     if (this_is_one_thing and
         that_is_another_thing):
         do_something()
 
-    # Add a comment, which will provide some distinction in editors
+    # 增加一行注释，在编辑器中显示时能有所区分
     # supporting syntax highlighting.
     if (this_is_one_thing and
         that_is_another_thing):
         # Since both conditions are true, we can frobnicate.
         do_something()
 
-    # Add some extra indentation on the conditional continuation line.
+    # 在条件语句的续行增加一级缩进
     if (this_is_one_thing
             and that_is_another_thing):
         do_something()
 
-The closing brace/bracket/parenthesis on multi-line constructs may
-either line up under the first non-whitespace character of the last
-line of list, as in::
+多行的结束右圆/方/花括号可以单独一行书写，和上一行的缩进对齐：
 
     my_list = [
         1, 2, 3,
@@ -142,8 +128,7 @@ line of list, as in::
         'd', 'e', 'f',
         )
 
-or it may be lined up under the first character of the line that
-starts the multi-line construct, as in::
+也可以和多行开始的第一行的第一个字符对齐：
 
     my_list = [
         1, 2, 3,
@@ -155,76 +140,47 @@ starts the multi-line construct, as in::
     )
 
 
-Tabs or Spaces?
+Tab还是空格？(Tab or space?)
 ---------------
 
-Spaces are the preferred indentation method.
+推荐使用空格来进行缩进。
 
-Tabs should be used solely to remain consistent with code that is
-already indented with tabs.
+Tab应该只在现有代码已经使用tab进行缩进的情况下使用，以便和现有代码保持一致。
 
-Python 3 disallows mixing the use of tabs and spaces for indentation.
+Python 3不允许tab和空格混合使用。
 
-Python 2 code indented with a mixture of tabs and spaces should be
-converted to using spaces exclusively.
+Python 2的代码若有tab和空格混合使用的情况，应该把tab全部转换为只有空格。
 
-When invoking the Python 2 command line interpreter with
-the ``-t`` option, it issues warnings about code that illegally mixes
-tabs and spaces.  When using ``-tt`` these warnings become errors.
-These options are highly recommended!
+当使用命令行运行Python 2时，使用``-t``选项，会出现非法混用tab和空格的警告。当使用``-tt``选项时，这些警告会变成错误。强烈推荐使用这些选项！
 
-
-Maximum Line Length
+每行最大长度(Maximum Line Length)
 -------------------
 
-Limit all lines to a maximum of 79 characters.
+将所有行都限制在79个字符长度以内。
 
-For flowing long blocks of text with fewer structural restrictions
-(docstrings or comments), the line length should be limited to 72
-characters.
+对于连续的大段文字（文档字符串(docstring)或注释），其结构上的限制更少，这些行应该被限制在72个字符长度内。
 
-Limiting the required editor window width makes it possible to have
-several files open side-by-side, and works well when using code
-review tools that present the two versions in adjacent columns.
+限制编辑器的窗口宽度能让好几个文件同时打开在屏幕上显示，在使用代码评审(code review)工具时在两个相邻窗口显示两个版本的代码效果很好。
 
-The default wrapping in most tools disrupts the visual structure of the
-code, making it more difficult to understand. The limits are chosen to
-avoid wrapping in editors with the window width set to 80, even
-if the tool places a marker glyph in the final column when wrapping
-lines. Some web based tools may not offer dynamic line wrapping at all.
+很多工具的默认自动换行会破坏代码的结构，使代码更难以理解。在窗口大小设置为80个字符的编辑器中，为避免自动换行而需要限制每行字符长度，即使编辑器可能在换行时在最后一列会放置一个记号。一些基于web的工具可能根本没有自动换行的功能。
 
-Some teams strongly prefer a longer line length.  For code maintained
-exclusively or primarily by a team that can reach agreement on this
-issue, it is okay to increase the nominal line length from 80 to
-100 characters (effectively increasing the maximum length to 99
-characters), provided that comments and docstrings are still wrapped
-at 72 characters.
+一些团队强烈偏好更长的行长度。当代码仅仅只由一个团队维护时，可以达成一致让行长度增加到80到100字符(实际上最大行长是99字符)，注释和文档字符串仍然是以72字符换行。
 
-The Python standard library is conservative and requires limiting
-lines to 79 characters (and docstrings/comments to 72).
+Python标准库比较传统，将行长限制在79个字符以内（文档字符串/注释为72个字符）。
 
-The preferred way of wrapping long lines is by using Python's implied
-line continuation inside parentheses, brackets and braces.  Long lines
-can be broken over multiple lines by wrapping expressions in
-parentheses. These should be used in preference to using a backslash
-for line continuation.
+一种推荐的换行方式是利用Python圆括号、方括号和花括号中的隐式续行。长行可以通过在括号内换行来分成多行。应该最好加上反斜杠来区别续行。
 
-Backslashes may still be appropriate at times.  For example, long,
-multiple ``with``-statements cannot use implicit continuation, so
-backslashes are acceptable::
+有时续行只有反斜杠才适用。例如，长的多个``with``语句不能采用隐式续行，只能接受反斜杠表示换行：
 
     with open('/path/to/some/file/you/want/to/read') as file_1, \
          open('/path/to/some/file/being/written', 'w') as file_2:
         file_2.write(file_1.read())
 
-(See the previous discussion on `multiline if-statements`_ for further
-thoughts on the indentation of such multiline ``with``-statements.)
+（参照前面关于 `多行if语句`的讨论来进一步考虑这里`with`语句的缩进。）
 
-Another such case is with ``assert`` statements.
+另一个这样的例子是``assert``语句。
 
-Make sure to indent the continued line appropriately.  The preferred
-place to break around a binary operator is *after* the operator, not
-before it.  Some examples::
+要确保续行的缩进适当。逻辑运算符附近的换行处最好是在运算符*之后*，而不是在其之前。来看一些例子：
 
     class Rectangle(Blob):
 
@@ -241,62 +197,40 @@ before it.  Some examples::
             Blob.__init__(self, width, height,
                           color, emphasis, highlight)
 
-Blank Lines
+空行(Blank line)
 -----------
 
-Separate top-level function and class definitions with two blank
-lines.
+使用2个空行来分隔最高级的函数(function)和类(class)定义。
 
-Method definitions inside a class are separated by a single blank
-line.
+使用1个空行来分隔类中的方法(method)定义。
 
-Extra blank lines may be used (sparingly) to separate groups of
-related functions.  Blank lines may be omitted between a bunch of
-related one-liners (e.g. a set of dummy implementations).
+（尽量少地）使用额外的空行来分隔一组相关的函数。在一系列相关的只有一行的函数之间，空格也可以被省略，比如一组dummy实现。
 
-Use blank lines in functions, sparingly, to indicate logical sections.
+在函数内（尽量少地）使用空行使代码逻辑更清晰。
 
-Python accepts the control-L (i.e. ^L) form feed character as
-whitespace; Many tools treat these characters as page separators, so
-you may use them to separate pages of related sections of your file.
-Note, some editors and web-based code viewers may not recognize
-control-L as a form feed and will show another glyph in its place.
+Python支持control-L（如:^L）换页符作为空格；许多工具将这些符号作为分页符，因此你可以使用这些符号来分页或者区分文件中的相关区域。注意，一些编辑器和基于web的代码预览器可能不会将control-L识别为分页符，而是显示成其他符号。
 
-
-Source File Encoding
+源文件编码(Source File Encoding)
 --------------------
 
-Code in the core Python distribution should always use UTF-8 (or ASCII
-in Python 2).
+Python核心发行版中的代码应该一直使用UTF-8（Python 2中使用ASCII）。
 
-Files using ASCII (in Python 2) or UTF-8 (in Python 3) should not have
-an encoding declaration.
+使用ASCII（Python 2）或者UTF-8（Python 3）的文件不应该添加编码声明。
 
-In the standard library, non-default encodings should be used only for
-test purposes or when a comment or docstring needs to mention an author
-name that contains non-ASCII characters; otherwise, using ``\x``,
-``\u``, ``\U``, or ``\N`` escapes is the preferred way to include
-non-ASCII data in string literals.
+再标准库中，只有用作测试目的，或者注释或文档字符串需要提及作者名字不得不使用非ASCII字符时，才能使用非默认的编码。否则，在字符串文字中包括非ASCII数据时，推荐使用``\x``, ``\u``, ``\U``或``\N``等转义符。
 
-For Python 3.0 and beyond, the following policy is prescribed for the
-standard library (see PEP 3131): All identifiers in the Python
-standard library MUST use ASCII-only identifiers, and SHOULD use
-English words wherever feasible (in many cases, abbreviations and
-technical terms are used which aren't English). In addition, string
-literals and comments must also be in ASCII. The only exceptions are
-(a) test cases testing the non-ASCII features, and
-(b) names of authors. Authors whose names are not based on the
-latin alphabet MUST provide a latin transliteration of their
-names.
+对于Python 3.0及其以后的版本中，标准库遵循以下原则（参见PEP 3131）：Python标准库中的所有标识符都**必须**只采用ASCII编码的标识符，在可行的条件下也**应当**使用英文词（很多情况下，使用的缩写和技术术语词都不是英文）。此外，字符串文字和注释应该只包括ASCII编码。只有两种例外：
+(a) 测试情况下为了测试非ASCII编码的特性
+(b) 作者名字。作者名字不是由拉丁字母组成的也**必须**提供一个拉丁音译名。
 
-Open source projects with a global audience are encouraged to adopt a
-similar policy.
+鼓励面向全世界的开源项目都采用类似的原则。
 
 
 Imports
 -------
 
 - Imports should usually be on separate lines, e.g.::
+- Imports应该分行写，而不是都写在一行，例如：
 
       Yes: import os
            import sys
@@ -304,26 +238,35 @@ Imports
       No:  import sys, os
 
   It's okay to say this though::
+  但这样写也是可以的：
 
       from subprocess import Popen, PIPE
 
 - Imports are always put at the top of the file, just after any module
   comments and docstrings, and before module globals and constants.
+- Imports应该写在代码文件的开头，位于module注释和文档字符串之后，module全局变量(globals)和常量(constants)声明之前。
 
   Imports should be grouped in the following order:
+  Imports应该按照下面的顺序分组来写：
 
   1. standard library imports
   2. related third party imports
   3. local application/library specific imports
+  4. 标准库imports
+  5. 相关第三方imports
+  6. 本地应用/库的具体imports
 
   You should put a blank line between each group of imports.
+  不同组的imports之前用空格隔开。
 
   Put any relevant ``__all__`` specification after the imports.
+  将任何相关的``__all__``说明(specification)放在imports之后。
 
 - Absolute imports are recommended, as they are usually more readable
   and tend to be better behaved (or at least give better error
   messages) if the import system is incorrectly configured (such as
   when a directory inside a package ends up on ``sys.path``)::
+- 推荐使用绝对(absolute)imports，因为这样通常更易读，在import系统没有正确配置（比如中的路径以``sys.path``结束）的情况下，也会有更好的表现（或者至少会给出错误信息）：
 
     import mypkg.sibling
     from mypkg import sibling
@@ -332,28 +275,34 @@ Imports
   However, explicit relative imports are an acceptable alternative to
   absolute imports, especially when dealing with complex package layouts
   where using absolute imports would be unnecessarily verbose::
+  然而，除了绝对imports，显式的相对imports也是一种可以接受的替代方式。特别是当处理复杂的包布局(package layouts)时，采用绝对imports会显得啰嗦。
 
     from . import sibling
     from .sibling import example
 
   Standard library code should avoid complex package layouts and always
   use absolute imports.
+  标准库代码应当避免复杂的包布局，一直使用绝对imports。
 
   Implicit relative imports should *never* be used and have been removed
   in Python 3.
+  隐式的相对imports应该**永不**使用，并且Python 3中已经被去掉了。
 
 - When importing a class from a class-containing module, it's usually
   okay to spell this::
+- 当从一个包括类的模块中import一个类时，通常可以这样写：
 
       from myclass import MyClass
       from foo.bar.yourclass import YourClass
 
   If this spelling causes local name clashes, then spell them ::
+  如果和本地命名的拼写产生了冲突，应当直接import模块：
 
       import myclass
       import foo.bar.yourclass
 
   and use "myclass.MyClass" and "foo.bar.yourclass.YourClass".
+  然后使用"myclass.MyClass"和"foo.bar.yourclass.YourClass".
 
 - Wildcard imports (``from <module> import *``) should be avoided, as
   they make it unclear which names are present in the namespace,
@@ -363,12 +312,15 @@ Imports
   a pure Python implementation of an interface with the definitions
   from an optional accelerator module and exactly which definitions
   will be overwritten isn't known in advance).
+- 避免使用通配符imports(``from <module> import *``)，因为会造成在当前命名空间出现的命名含义不清晰，给读者和许多自动化工具造成困扰。有一个可以正当使用通配符import的情形，即将一个内部接口重新发布成公共API的一部分。比如，使用备选的加速模块中的定义去覆盖纯Python实现的接口，将被覆盖的定义恰好在不能提前知晓。
 
   When republishing names this way, the guidelines below regarding
   public and internal interfaces still apply.
+  当使用这种方式重新发布命名时，以下关于公共和内部接口的指南仍然适用。
 
 
 String Quotes
+字符串引用
 =============
 
 In Python, single-quoted strings and double-quoted strings are the
@@ -376,25 +328,31 @@ same.  This PEP does not make a recommendation for this.  Pick a rule
 and stick to it.  When a string contains single or double quote
 characters, however, use the other one to avoid backslashes in the
 string. It improves readability.
+在Python中，用单引号和双引号来表示字符串是一样的。但在这里不推荐将这两种方式看作一样。选择一种规则并坚持使用。当字符串中包含单引号（双引号）时，采用双引号（单引号）来表示字符串，避免使用反斜杠。这样使代码更易读。
 
 For triple-quoted strings, always use double quote characters to be
 consistent with the docstring convention in PEP 257.
-
+对于三引号表示的字符串，永远在其中使用双引号字符来和PEP 257的文档字符串规则保持一致。
 
 Whitespace in Expressions and Statements
+表达式和语句中的空格
 ========================================
 
 Pet Peeves
+一些痛点
 ----------
 
 Avoid extraneous whitespace in the following situations:
+在下列情形中避免使用过多的空白：
 
 - Immediately inside parentheses, brackets or braces. ::
+- 方括号，圆括号和花括号之后：
 
       Yes: spam(ham[1], {eggs: 2})
       No:  spam( ham[ 1 ], { eggs: 2 } )
 
 - Immediately before a comma, semicolon, or colon::
+- 逗号，分号或冒号之前：
 
       Yes: if x == 4: print x, y; x, y = y, x
       No:  if x == 4 : print x , y ; x , y = y , x
@@ -404,7 +362,7 @@ Avoid extraneous whitespace in the following situations:
   operator with the lowest priority).  In an extended slice, both
   colons must have the same amount of spacing applied.  Exception:
   when a slice parameter is omitted, the space is omitted.
-
+- 不过，在分片操作时，冒号和二元运算符是一样的，应该在其左右两边有相同数量的空格（就像对待优先级最低的运算符一样）。在扩展的分片操作中，所有的冒号的左右两边的空格数都应该相等。也有例外：当切片操作中的参数被省略时，应该也忽略空格。
   Yes::
 
       ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
@@ -422,18 +380,21 @@ Avoid extraneous whitespace in the following situations:
 
 - Immediately before the open parenthesis that starts the argument
   list of a function call::
+- 在调用函数时传递参数list的括号之前：
 
       Yes: spam(1)
       No:  spam (1)
 
 - Immediately before the open parenthesis that starts an indexing or
   slicing::
+- 在索引和切片操作的左括号之前：
 
       Yes: dct['key'] = lst[index]
       No:  dct ['key'] = lst [index]
 
 - More than one space around an assignment (or other) operator to
   align it with another.
+- 赋值(或其他)运算符周围使用多个空格来和其他语句对齐：
 
   Yes::
 
@@ -449,6 +410,7 @@ Avoid extraneous whitespace in the following situations:
 
 
 Other Recommendations
+其他建议
 ---------------------
 
 - Always surround these binary operators with a single space on either
@@ -456,12 +418,17 @@ Other Recommendations
   etc.), comparisons (``==``, ``<``, ``>``, ``!=``, ``<>``, ``<=``,
   ``>=``, ``in``, ``not in``, ``is``, ``is not``), Booleans (``and``,
   ``or``, ``not``).
+- 在二元云算符的两边都使用一个空格：赋值运算符(``=``)，增量赋值运算符(``+=``, ``-=``
+  etc.)，比较运算符(``==``, ``<``, ``>``, ``!=``, ``<>``, ``<=``,
+  ``>=``, ``in``, ``not in``, ``is``, ``is not``)，布尔运算符(``and``,
+  ``or``, ``not``)。
 
 - If operators with different priorities are used, consider adding
   whitespace around the operators with the lowest priority(ies). Use
   your own judgment; however, never use more than one space, and
   always have the same amount of whitespace on both sides of a binary
   operator.
+- 如果使用了优先级不同的运算符，则在优先级较低的操作符周围增加空白。请你自行判断，不过永远不要用超过1个空格，永远保持二元运算符两侧的空白数量一样。
 
   Yes::
 
@@ -481,6 +448,7 @@ Other Recommendations
 
 - Don't use spaces around the ``=`` sign when used to indicate a
   keyword argument or a default parameter value.
+- 使用``=``符号来表示关键字参数或默认参数值时，不要在其周围使用空格。
 
   Yes::
 
@@ -495,6 +463,7 @@ Other Recommendations
 - Do use spaces around the ``=`` sign  of an annotated function definition.
   Additionally, use a single space after the ``:``, as well as a single space
   on either side of the ``->`` sign representing an annotated return value.
+- 在带注释的函数定义中需要在``=``符号周围加上空格。此外, 在``:``后使用一个空格，在``->``表示带注释的返回值时，其两侧各使用一个空格。
 
   Yes::
 
@@ -511,6 +480,7 @@ Other Recommendations
 
 - Compound statements (multiple statements on the same line) are
   generally discouraged.
+- 复合语句（即将多行语句写在一行）一般是不鼓励使用的。
 
   Yes::
 
@@ -528,7 +498,7 @@ Other Recommendations
 - While sometimes it's okay to put an if/for/while with a small body
   on the same line, never do this for multi-clause statements.  Also
   avoid folding such long lines!
-
+- 有时也可以将短小的if/for/while中的语句写在一行，但对于有多个分句的语句永远不要这样做。也要避免将多行都写在一起。
   Rather not::
 
       if foo == 'blah': do_blah_thing()
@@ -549,30 +519,38 @@ Other Recommendations
       if foo == 'blah': one(); two(); three()
 
 Comments
+注释
 ========
 
 Comments that contradict the code are worse than no comments.  Always
 make a priority of keeping the comments up-to-date when the code
 changes!
+和代码矛盾的注释还不如没有。当代码有改动时，一定要优先更改注释使保持更新。
 
 Comments should be complete sentences.  If a comment is a phrase or
 sentence, its first word should be capitalized, unless it is an
 identifier that begins with a lower case letter (never alter the case
 of identifiers!).
+注释应该是完整的几个句子。如果注释是一个短语或一个句子，其首字母应该大写，除非开头是一个以小写字母开头的标识符（永远不要更改标识符的大小写）。
 
 If a comment is short, the period at the end can be omitted.  Block
 comments generally consist of one or more paragraphs built out of
 complete sentences, and each sentence should end in a period.
+如果注释很短，结束的句号可以被忽略。块注释通常由一段或几段完整的句子组成，每个句子都应该以句号结束。
 
 You should use two spaces after a sentence-ending period.
+你应该在句尾的句号后再加上2个空格。
 
 When writing English, follow Strunk and White.
+使用英文写作，参考Strunk和White的《The Elements of Style》
 
 Python coders from non-English speaking countries: please write your
 comments in English, unless you are 120% sure that the code will never
 be read by people who don't speak your language.
+来自非英语国家的Python程序员们，请使用英文来写注释，除非你120%确定你的代码永远不会被不使用你所用语言的人阅读到。
 
 Block Comments
+块注释
 --------------
 
 Block comments generally apply to some (or all) code that follows
