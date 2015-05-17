@@ -557,42 +557,53 @@ Block comments generally apply to some (or all) code that follows
 them, and are indented to the same level as that code.  Each line of a
 block comment starts with a ``#`` and a single space (unless it is
 indented text inside the comment).
+块注释一般写在对应代码之前，并且和对应代码有同样的缩进级别。块注释的每一行都应该以``#``和一个空格开头（除非这在注释内缩进对齐的文本）。
 
 Paragraphs inside a block comment are separated by a line containing a
 single ``#``.
+块注释中的段落应该用只含有单个``#``的一行隔开。
 
 Inline Comments
+行内注释
 ---------------
 
 Use inline comments sparingly.
+尽量少用行内注释。
 
 An inline comment is a comment on the same line as a statement.
 Inline comments should be separated by at least two spaces from the
 statement.  They should start with a # and a single space.
+行内注释是和代码语句写在一行内的注释。行内注释应该至少和代码语句之间有两个空格的间隔，并且以``#``和一个空格开始。
 
 Inline comments are unnecessary and in fact distracting if they state
 the obvious.  Don't do this::
+行内注释不是必要的，在代码含义很明显时甚至会让人分心。请不要这样做：
 
     x = x + 1                 # Increment x
 
 But sometimes, this is useful::
+但这样做是有用的：
 
     x = x + 1                 # Compensate for border
 
 Documentation Strings
+文档字符串
 ---------------------
 
 Conventions for writing good documentation strings
 (a.k.a. "docstrings") are immortalized in PEP 257.
+要知道如何写出好的文档字符串（docstring），请参考PEP 257。
 
 - Write docstrings for all public modules, functions, classes, and
   methods.  Docstrings are not necessary for non-public methods, but
   you should have a comment that describes what the method does.  This
   comment should appear after the ``def`` line.
+- 所有的公共模块，函数，类和方法都应该有文档字符串。对于非公共方法，文档字符串不是必要的，但你应该留有注释说明该方法的功能，该注释应当出现在``def``的下一行。
 
 - PEP 257 describes good docstring conventions.  Note that most
   importantly, the ``"""`` that ends a multiline docstring should be
   on a line by itself, e.g.::
+- PEP 257描述了好的文档字符应该遵循的规则。其中最重要的是，多行文档字符串以单行``"""``结尾，不能有其他字符，例如：
 
       """Return a foobang
 
@@ -601,22 +612,27 @@ Conventions for writing good documentation strings
 
 - For one liner docstrings, please keep the closing ``"""`` on
   the same line.
+- 对于仅有一行的文档字符串，结尾处的``"""``应该也写在这一行里。
 
 
 Version Bookkeeping
+版本注记
 ===================
 
 If you have to have Subversion, CVS, or RCS crud in your source file,
 do it as follows. ::
+如果你必须在源代码中包含Subversion, CVS或RCS crud，请这样做：
 
     __version__ = "$Revision$"
     # $Source$
 
 These lines should be included after the module's docstring, before
 any other code, separated by a blank line above and below.
+以上几行的内容应当在模块的文档字符串之后，在其他代码之前，并且在其开始和结束都使用一个空行隔开。
 
 
 Naming Conventions
+命名约定
 ==================
 
 The naming conventions of Python's library are a bit of a mess, so
@@ -625,38 +641,45 @@ the currently recommended naming standards.  New modules and packages
 (including third party frameworks) should be written to these
 standards, but where an existing library has a different style,
 internal consistency is preferred.
+Python标准库的命名约定有一些混乱，所以我们永远都无法保持一致。不过，还是有一些现在推荐的命名标准。新的模块和包（包括第三方框架）应该采用这些标准，但若是已经存在的库有另一套风格的话，还是应当与原有的风格保持内部一致。
 
 Overriding Principle
+重写原则
 --------------------
 
 Names that are visible to the user as public parts of the API should
 follow conventions that reflect usage rather than implementation.
+用户可见的公共部分API的命名应当展示其功能而非其实现。
 
 Descriptive: Naming Styles
+描述性：命名风格
 --------------------------
 
 There are a lot of different naming styles.  It helps to be able to
 recognize what naming style is being used, independently from what
 they are used for.
+有很多不同的命名风格，能够独立地从命名对象的用途看出采用了哪种命名风格，将是很有帮助的。
 
 The following naming styles are commonly distinguished:
+以下是常用于区分的命名风格：
 
-- ``b`` (single lowercase letter)
-- ``B`` (single uppercase letter)
+- ``b`` (single lowercase letter单个小写字母)
+- ``B`` (single uppercase letter单个大写字母)
 - ``lowercase``
 - ``lower_case_with_underscores``
 - ``UPPERCASE``
 - ``UPPER_CASE_WITH_UNDERSCORES``
 - ``CapitalizedWords`` (or CapWords, or CamelCase -- so named because
-  of the bumpy look of its letters [3]_).  This is also sometimes known
-  as StudlyCaps.
+  of the bumpy look of its letters [3]_也叫做CapWords或者CamelCase -- 因为单词字母大写看起来很像驼峰).  This is also sometimes known
+  as StudlyCaps. 也被称作StudlyCaps。
 
   Note: When using abbreviations in CapWords, capitalize all the
   letters of the abbreviation.  Thus HTTPServerError is better than
   HttpServerError.
+  注意：当CapWords里包含缩写时，将缩写部分的字母都大写。HTTPServerError比HttpServerError要好。
 - ``mixedCase`` (differs from CapitalizedWords by initial lowercase
-  character!)
-- ``Capitalized_Words_With_Underscores`` (ugly!)
+  character!和CapitalizedWords不同在于其首字母小写！)
+- ``Capitalized_Words_With_Underscores`` (ugly!超丑！)
 
 There's also the style of using a short unique prefix to group related
 names together.  This is not used much in Python, but it is mentioned
@@ -665,125 +688,161 @@ tuple whose items traditionally have names like ``st_mode``,
 ``st_size``, ``st_mtime`` and so on.  (This is done to emphasize the
 correspondence with the fields of the POSIX system call struct, which
 helps programmers familiar with that.)
+也有风格使用短小唯一的前缀来表示一组相关的命名。这在Python中并不常见，但为了完整起见这里也捎带提一下。比如，``os.stat()``函数返回一个tuple，其中的元素名原本为``st_mode``,``st-size``,``st_mtime``等等。（这样做是为了强调和POSIX系统调用结构之间的关系，可以帮助程序员更好熟悉。）
 
 The X11 library uses a leading X for all its public functions.  In
 Python, this style is generally deemed unnecessary because attribute
 and method names are prefixed with an object, and function names are
 prefixed with a module name.
+X11库中的公共函数名都以X开头。在Python中这样的风格一般被认为是不必要的，因为属性和方法名之前已经有了对象名的前缀，而函数名前也有了模块名的前缀。
 
 In addition, the following special forms using leading or trailing
 underscores are recognized (these can generally be combined with any
 case convention):
+此外，要区别以下划线开始或结尾的特殊形式（可以和气其它的规则结合起来）：
 
 - ``_single_leading_underscore``: weak "internal use" indicator.
   E.g. ``from M import *`` does not import objects whose name starts
   with an underscore.
+- ``_single_leading_underscore``: 以单个下划线开头是"内部使用"的弱指示符。
+  E.g. ``from M import *``不会import以下划线开头的对象。
 
 - ``single_trailing_underscore_``: used by convention to avoid
   conflicts with Python keyword, e.g. ::
+- ``single_trailing_underscore_``: 以单个下划线结尾用来避免和Python关键词产生冲突，例如:
 
       Tkinter.Toplevel(master, class_='ClassName')
 
 - ``__double_leading_underscore``: when naming a class attribute,
   invokes name mangling (inside class FooBar, ``__boo`` becomes
   ``_FooBar__boo``; see below).
+- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示采用命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
 
 - ``__double_leading_and_trailing_underscore__``: "magic" objects or
   attributes that live in user-controlled namespaces.
   E.g. ``__init__``, ``__import__`` or ``__file__``.  Never invent
   such names; only use them as documented.
+- ``__double_leading_and_trailing_underscore__``: 以双下划线开头和结尾的命名风格表示生存在用户控制的命名空间里“魔法的”对象或属性。
+  E.g. ``__init__``, ``__import__`` 或 ``__file__``。请依照文档描述来使用这些命名，千万不要自己发明。
 
 Prescriptive: Naming Conventions
+规范性：命名约定
 --------------------------------
 
 Names to Avoid
+需要避免的命名
 ~~~~~~~~~~~~~~
 
 Never use the characters 'l' (lowercase letter el), 'O' (uppercase
 letter oh), or 'I' (uppercase letter eye) as single character variable
 names.
+不要使用字符'l'（小写的字母el），'O'（大写的字母oh），或者'I'（大写的字母eye）来作为单个字符的变量名。
 
 In some fonts, these characters are indistinguishable from the
 numerals one and zero.  When tempted to use 'l', use 'L' instead.
+在一些字体中，这些字符和数字1和0无法区别开来。当想使用'l'时，使用'L'代替。
 
 Package and Module Names
+包和模块命名
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Modules should have short, all-lowercase names.  Underscores can be
 used in the module name if it improves readability.  Python packages
 should also have short, all-lowercase names, although the use of
 underscores is discouraged.
+模块命名应短小，且为全小写。若下划线能提高可读性，也可以在模块名中使用。Python包命名也应该短小，且为全小写，但不应使用下划线。
 
 Since module names are mapped to file names, and some file systems are
 case insensitive and truncate long names, it is important that module
 names be chosen to be fairly short -- this won't be a problem on Unix,
 but it may be a problem when the code is transported to older Mac or
 Windows versions, or DOS.
+模块名是对应到文件名的，一些文件系统会区分大小写并且会将长的文件名截断。因此模块名应该尽量短小，这个问题在Unix系统上是不存在的，但把代码移植到较旧的Mac，Windows版本或DOS系统上时，可能会出现问题。
 
 When an extension module written in C or C++ has an accompanying
 Python module that provides a higher level (e.g. more object oriented)
 interface, the C/C++ module has a leading underscore
 (e.g. ``_socket``).
+当使用C或C++写的扩展模块有相应的Python模块提供更高级的接口时（e.g. 更加面向对象），C/C++模块名以下划线开头（e.g. ``_sociket``）。
 
 Class Names
+类命名
 ~~~~~~~~~~~
 
 Class names should normally use the CapWords convention.
+类命名应该使用单词字母大写（CapWords）的命名约定。
 
 The naming convention for functions may be used instead in cases where
 the interface is documented and used primarily as a callable.
+当接口已有文档说明且主要是被用作调用时，也可以使用函数的命名约定。
 
 Note that there is a separate convention for builtin names: most builtin
 names are single words (or two words run together), with the CapWords
 convention used only for exception names and builtin constants.
+注意对于内建命名有一个特殊的约定：大部分内建名都是一个单词（或者两个一起使用的单词），单词首字母大写(CapWords)的约定只对异常命名和内建常量使用。
 
 Exception Names
+异常命名
 ~~~~~~~~~~~~~~~
 
 Because exceptions should be classes, the class naming convention
 applies here.  However, you should use the suffix "Error" on your
 exception names (if the exception actually is an error).
+由于异常实际上也是类，因此类命名约定也适用与异常。不同的是，如果异常实际上是抛出错误的话，异常名前应该加上"Error"的前缀。
 
 Global Variable Names
+全局变量命名
 ~~~~~~~~~~~~~~~~~~~~~
 
 (Let's hope that these variables are meant for use inside one module
 only.)  The conventions are about the same as those for functions.
+（在此之前，我们先假定这些变量都仅在同一个模块内使用。）这些约定同样也适用于函数命名。
 
 Modules that are designed for use via ``from M import *`` should use
 the ``__all__`` mechanism to prevent exporting globals, or use the
 older convention of prefixing such globals with an underscore (which
 you might want to do to indicate these globals are "module
 non-public").
+对于引用方式设计为``from M import *``的模块，应该使用``__all__``机制来避免引入全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块私有的”。
 
 Function Names
+函数命名
 ~~~~~~~~~~~~~~
 
 Function names should be lowercase, with words separated by
 underscores as necessary to improve readability.
+函数命名应该都是小写，必要时使用下划线来提高可读性。
 
 mixedCase is allowed only in contexts where that's already the
 prevailing style (e.g. threading.py), to retain backwards
 compatibility.
+只有当已有代码风格已经是混合大小写时（比如threading.py），为了保留向后兼容性才使用混合大小写。
 
 Function and method arguments
+函数和方法参数
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Always use ``self`` for the first argument to instance methods.
+实例方法的第一参数永远都是``self``。
 
 Always use ``cls`` for the first argument to class methods.
+类方法的第一个参数永远都是``cls``。
 
 If a function argument's name clashes with a reserved keyword, it is
 generally better to append a single trailing underscore rather than
 use an abbreviation or spelling corruption.  Thus ``class_`` is better
 than ``clss``.  (Perhaps better is to avoid such clashes by using a
 synonym.)
+在函数参数名和保留关键字冲突时，相对于使用缩写或拼写简化，使用以下划线结尾的命名一般更好。比如，``class_``比``clss``更好。（或许使用同义词避免这样的冲突是更好的方式。）
+
 
 Method Names and Instance Variables
+方法命名和实例变量
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Use the function naming rules: lowercase with words separated by
 underscores as necessary to improve readability.
+使用函数命名的规则：必要时小写单词使用下划线分开以提高可读性。
 
 Use one leading underscore only for non-public methods and instance
 variables.

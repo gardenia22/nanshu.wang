@@ -228,11 +228,11 @@ your code here.
 第二种方法比较简单，在``layouts/partials/header_includes.html``中加上：
 
 
-
-  <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-  <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
-  <script>hljs.initHighlightingOnLoad();</script>
-
+```
+<script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+<link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+<script>hljs.initHighlightingOnLoad();</script>
+```
 
 
 这里使用了[Yandex](http://yandex.ru/)的[Highlight.js](http://highlightjs.org/)。
@@ -354,6 +354,10 @@ $ ping username.github.io
 将其中的googleapis替换为useso就行了。
 
 教程会根据我的博客遇到的问题继续更新。
+
+# 增加网站分析
+
+使用网站分析可以帮助我们更好地了解博客的读者和流量来源，我使用了[百度统计](http://tongji.baidu.com)和[谷歌统计](http://www.google.cn/webmasters/)，注册帐号后只需要按照提示在模板中加入相应的script代码就可以了。
 
 # 参考
 1. [Hugo docs](http://gohugo.io/overview/introduction/)
