@@ -242,6 +242,14 @@
 				"buffer_size": 44745,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
+			"settings":
+			{
+				"buffer_size": 4331,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -300,6 +308,7 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记7_应用经验.md",
 		"/Users/gardenia/Documents/throughput/pptv1Day/hmm_pptvData/transpose.py",
 		"/Users/gardenia/Documents/throughput/hmm/transpose.py",
 		"/Users/gardenia/Documents/throughput/pptv2015/calcMedian.py",
@@ -426,8 +435,7 @@
 		"/Users/gardenia/Documents/throughput/timewindow_avgStddev2",
 		"/Users/gardenia/Documents/throughput/timewindow_cdf.gp",
 		"/Users/gardenia/Documents/throughput/stddev.gp",
-		"/Users/gardenia/Documents/throughput/normalized_stddev.gp",
-		"/Users/gardenia/Documents/throughput/autocorrelation.gp"
+		"/Users/gardenia/Documents/throughput/normalized_stddev.gp"
 	],
 	"find":
 	{
@@ -445,6 +453,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"_",
+			"高偏差（欠拟合）：",
 			"error2_median",
 			" \"))",
 			"error2_75per",
@@ -570,9 +580,7 @@
 			"with lines",
 			"_hour",
 			"time_stability_1023_5s_hour",
-			"using",
-			"2",
-			"1"
+			"using"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -590,7 +598,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -617,6 +625,32 @@
 						},
 						"translation.x": 0.0,
 						"translation.y": 19916.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
+					"settings":
+					{
+						"buffer_size": 4331,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								220,
+								220
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
