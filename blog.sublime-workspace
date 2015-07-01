@@ -244,10 +244,10 @@
 			}
 		},
 		{
-			"file": "content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
+			"file": "content/蘅芜/机器学习中的最优化问题.md",
 			"settings":
 			{
-				"buffer_size": 4331,
+				"buffer_size": 6787,
 				"line_ending": "Unix"
 			}
 		}
@@ -308,6 +308,10 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/用Hugo搭建个人博客.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习中的最优化问题.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记7_应用经验.md",
 		"/Users/gardenia/Documents/throughput/pptv1Day/hmm_pptvData/transpose.py",
 		"/Users/gardenia/Documents/throughput/hmm/transpose.py",
@@ -397,7 +401,6 @@
 		"/Users/gardenia/nanshu.wang/content/about.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记6_神经网络2.d",
 		"/Users/gardenia/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
-		"/Users/gardenia/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/gardenia/Documents/throughput/test.awk",
 		"/Users/gardenia/Documents/throughput/autocorrelation_lags",
 		"/Users/gardenia/Documents/throughput/error",
@@ -432,10 +435,7 @@
 		"/Users/gardenia/Documents/throughput/timewindow_avgStddev",
 		"/Users/gardenia/Documents/throughput/timewindow_avg.gp",
 		"/Users/gardenia/Documents/throughput/isp_averStability_minute.gp",
-		"/Users/gardenia/Documents/throughput/timewindow_avgStddev2",
-		"/Users/gardenia/Documents/throughput/timewindow_cdf.gp",
-		"/Users/gardenia/Documents/throughput/stddev.gp",
-		"/Users/gardenia/Documents/throughput/normalized_stddev.gp"
+		"/Users/gardenia/Documents/throughput/timewindow_avgStddev2"
 	],
 	"find":
 	{
@@ -453,6 +453,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"</div>",
+			"<div>",
+			"限制",
+			"权衡",
+			"_",
+			"draft",
 			"_",
 			"高偏差（欠拟合）：",
 			"error2_median",
@@ -574,12 +580,6 @@
 			"using",
 			"time_stability_1023_15s",
 			"time_stability_1023_10s",
-			"using",
-			"4320",
-			"using",
-			"with lines",
-			"_hour",
-			"time_stability_1023_5s_hour",
 			"using"
 		],
 		"highlight": true,
@@ -631,23 +631,24 @@
 				},
 				{
 					"buffer": 1,
-					"file": "content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
+					"file": "content/蘅芜/机器学习中的最优化问题.md",
 					"settings":
 					{
-						"buffer_size": 4331,
+						"buffer_size": 6787,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								220,
-								220
+								862,
+								862
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"wrap_width": 0
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -703,6 +704,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"hugo",
+				"content/蘅芜/用Hugo搭建个人博客.md"
+			],
 			[
 				"mean",
 				"hsdpa/mean_error_step.gp"
@@ -1210,10 +1215,6 @@
 			[
 				"key",
 				"extractActiveIP_Kmerge.py"
-			],
-			[
-				"up",
-				"updateScore.py"
 			]
 		],
 		"width": 0.0
@@ -1229,7 +1230,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true
 }

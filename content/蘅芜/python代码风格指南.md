@@ -14,7 +14,7 @@ url: /post/2015-03-22
 介绍(Introduction)
 ============
 
-这篇文档说明了组成Python主要现行版中标准库的Python代码所遵守的一个规范。请参考用于实现Python的C代码风格的指南信息PEP。
+这篇文档说明了Python主要发行版中标准库代码所遵守的规范。请参考用于实现Python的C代码风格的指南信息PEP。
 
 这篇文档和PEP 257(Docstring Conventions)都改编自Guido(译注：Python之父)最早的Python风格指南文章，并加入了Barry的风格指南里的内容。
 
@@ -28,7 +28,7 @@ url: /post/2015-03-22
 
 (注：标题语出自Ralph Waldo Emerson, Hobgolin意指民间故事中友好但常制造麻烦的动物角色。)
 
-Guido的一个重要观点是代码被读的次数远多于被写的次数。这篇指南意在于提高代码的可读性，使浩瀚如烟的Python代码风格能保持一致。正如PEP 20那首《Zen of Python》的小诗里所说的：“可读性很重要(Readability counts)”。
+Guido的一个重要观点是代码被读的次数远多于被写的次数。这篇指南旨在提高代码的可读性，使浩瀚如烟的Python代码风格能保持一致。正如PEP 20那首《Zen of Python》的小诗里所说的：“可读性很重要(Readability counts)”。
 
 一本风格指南是关于一致性的。同风格指南保持一致性是重要的，同项目保持一致性则更加重要，同一个模块和一个函数保持一致性则最为重要。
 
@@ -716,7 +716,7 @@ case convention):
 - ``__double_leading_underscore``: when naming a class attribute,
   invokes name mangling (inside class FooBar, ``__boo`` becomes
   ``_FooBar__boo``; see below).
-- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示采用命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
+- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示触发命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
 
 - ``__double_leading_and_trailing_underscore__``: "magic" objects or
   attributes that live in user-controlled namespaces.
@@ -803,7 +803,7 @@ the ``__all__`` mechanism to prevent exporting globals, or use the
 older convention of prefixing such globals with an underscore (which
 you might want to do to indicate these globals are "module
 non-public").
-对于引用方式设计为``from M import *``的模块，应该使用``__all__``机制来避免引入全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块私有的”。
+对于引用方式设计为``from M import *``的模块，应该使用``__all__``机制来避免引入全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块非公开的”。
 
 Function Names
 函数命名
@@ -846,41 +846,51 @@ underscores as necessary to improve readability.
 
 Use one leading underscore only for non-public methods and instance
 variables.
+仅对于非公开方法和变量命名在开头使用一个下划线。
 
 To avoid name clashes with subclasses, use two leading underscores to
 invoke Python's name mangling rules.
+避免和子类的命名冲突，使用两个下划线开头来触发Python的命名修饰机制。
 
 Python mangles these names with the class name: if class Foo has an
 attribute named ``__a``, it cannot be accessed by ``Foo.__a``.  (An
 insistent user could still gain access by calling ``Foo._Foo__a``.)
 Generally, double leading underscores should be used only to avoid
 name conflicts with attributes in classes designed to be subclassed.
+Python类名的命名修饰规则：如果类Foo有一个属性叫``__a``，不能使用``Foo.__a``的方式访问该变量。（有用户可能仍然坚持使用``Foo._Foo__a``的方法访问。）一般来说，两个下划线开头的命名方法只应该用来避免设计为子类的属性中的命名冲突。
 
 Note: there is some controversy about the use of __names (see below).
+注意：关于__names的使用也有一些争论（见下）。
 
 Constants
+常量
 ~~~~~~~~~
 
 Constants are usually defined on a module level and written in all
 capital letters with underscores separating words.  Examples include
 ``MAX_OVERFLOW`` and ``TOTAL``.
+常量通常是在模块级别定义的，使用全部大写并用下划线将单词分开。例如：``MAX_OVERFLOW``和``TOTAL``
 
 Designing for inheritance
+继承的设计
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Always decide whether a class's methods and instance variables
 (collectively: "attributes") should be public or non-public.  If in
 doubt, choose non-public; it's easier to make it public later than to
 make a public attribute non-public.
+记得永远区别类的方法和实例变量（属性）应该是公开的还是非公开的。如果有疑虑的话，请选择非公开的；因为之后将非公开属性变为公开属性要容易些。
 
 Public attributes are those that you expect unrelated clients of your
 class to use, with your commitment to avoid backward incompatible
 changes.  Non-public attributes are those that are not intended to be
 used by third parties; you make no guarantees that non-public
 attributes won't change or even be removed.
+公开属性是那些和你希望和你定义的类无关的客户来使用的，并且承诺避免向后不兼容的改变。非公开属性是那些不希望被第三方使用的部分，你可以不用保证非公开属性不会变化或被移除。
 
 We don't use the term "private" here, since no attribute is really
 private in Python (without a generally unnecessary amount of work).
+我们在这里没有使用“私有（private）”这个词，因为在Python里没有什么属性是真正私有的（这样设计省略了大量不必要的工作）。
 
 Another category of attributes are those that are part of the
 "subclass API" (often called "protected" in other languages).  Some
@@ -889,10 +899,13 @@ aspects of the class's behavior.  When designing such a class, take
 care to make explicit decisions about which attributes are public,
 which are part of the subclass API, and which are truly only to be
 used by your base class.
+另一类属性属于子类API的一部分（在其他语言中经常被称为"protected"）。一些类是为继承设计的，要么扩展要么修改类行为的部分。当设计这样的类时，需要谨慎明确地决定哪些属性是公开的，哪些属于子类API，哪些真的只会被你的基类调用。
 
 With this in mind, here are the Pythonic guidelines:
+在大脑中形成这种想法后，下面是Python化的指南说明：
 
 - Public attributes should have no leading underscores.
+- 公开属性不应该有开头下划线。
 
 - If your public attribute name collides with a reserved keyword,
   append a single trailing underscore to your attribute name.  This is
@@ -900,8 +913,10 @@ With this in mind, here are the Pythonic guidelines:
   notwithstanding this rule, 'cls' is the preferred spelling for any
   variable or argument which is known to be a class, especially the
   first argument to a class method.)
+- 如果公开属性的名字和保留关键字有冲突，在你的属性名尾部加上一个下划线。这比采用缩写和简写更好。（然而，和这条规则冲突的是，‘cls’对任何变量和参数来说都是一个更好地拼写，因为大家都知道这表示class，特别是在类方法的第一个参数里。）
 
   Note 1: See the argument name recommendation above for class methods.
+  注意 1：对于类方法，参考之前的参数命名建议。
 
 - For simple public data attributes, it is best to expose just the
   attribute name, without complicated accessor/mutator methods.  Keep
@@ -910,15 +925,19 @@ With this in mind, here are the Pythonic guidelines:
   functional behavior.  In that case, use properties to hide
   functional implementation behind simple data attribute access
   syntax.
+-对于简单地公共数据属性，最后仅公开属性名字，不要公开复杂的调用或mutator方法。记住在Python中，提供了一条简单的路径来实现未来增强，你应该简单数据属性需要增加功能行为。这种情况下，使用properties来将功能实现隐藏在简单数据属性访问语法之后。
 
   Note 1: Properties only work on new-style classes.
+  注意 1：Properties 仅仅对新风格类有用。
 
   Note 2: Try to keep the functional behavior side-effect free,
   although side-effects such as caching are generally fine.
+  注意 2：尽量保证功能行为没有副作用，尽管副作用比如缓存等并没有什么大问题。
 
   Note 3: Avoid using properties for computationally expensive
   operations; the attribute notation makes the caller believe that
   access is (relatively) cheap.
+  注意 3: 对计算量大的运算避免试用properties；属性的注解会让调用者相信访问的运算量是相对较小的。
 
 - If your class is intended to be subclassed, and you have attributes
   that you do not want subclasses to use, consider naming them with
@@ -927,56 +946,69 @@ With this in mind, here are the Pythonic guidelines:
   class is mangled into the attribute name.  This helps avoid
   attribute name collisions should subclasses inadvertently contain
   attributes with the same name.
+- 如果你的类是子类的话，你有一些属性并不像让子类访问，考虑将他们命名为两个下划线开头并且结尾处没有下划线。这样会触发Python命名修饰算法，类名会被修饰添加到属性名中。这样可以避免属性命名冲突，以免子类会不经意间包含相同的命名。
 
   Note 1: Note that only the simple class name is used in the mangled
   name, so if a subclass chooses both the same class name and attribute
   name, you can still get name collisions.
+  注意 1：注意命名修饰仅仅是简单地将类名加入到修饰名中，所以如果子类有相同的类名合属性名，你可能仍然会遇到命名冲突问题。
 
   Note 2: Name mangling can make certain uses, such as debugging and
   ``__getattr__()``, less convenient.  However the name mangling
   algorithm is well documented and easy to perform manually.
+  注意 2：命名修饰可以有特定用途，比如在调试时，``__getattr__()``比较不方便。然而命名修饰算法的可以很好地记录，并且容意手动执行。
 
   Note 3: Not everyone likes name mangling.  Try to balance the
   need to avoid accidental name clashes with potential use by
   advanced callers.
+  注意 3：不是所有人都喜欢命名修饰。试着权衡避免偶然命名冲突的需求和试用高级调用者使用的潜在可能性。
 
 
 Public and internal interfaces
+公开和内部接口
 ------------------------------
 
 Any backwards compatibility guarantees apply only to public interfaces.
 Accordingly, it is important that users be able to clearly distinguish
 between public and internal interfaces.
+任何向后兼容性保证仅对公开接口适用。相应地，用户能够清楚分辨公开接口和内部接口是很重要的。
 
 Documented interfaces are considered public, unless the documentation
 explicitly declares them to be provisional or internal interfaces exempt
 from the usual backwards compatibility guarantees. All undocumented
 interfaces should be assumed to be internal.
+文档化的接口被认为是公开的，除非文档中明确申明了它们是临时的或者内部接口，不保证向后兼容性。所有文档中未提到的接口应该被认为是内部的。
 
 To better support introspection, modules should explicitly declare the
 names in their public API using the ``__all__`` attribute. Setting
 ``__all__`` to an empty list indicates that the module has no public API.
+为了更好审视公开接口和内部接口，模块应该在``__all``属性中明确申明公开API是哪些。将``__all__``设为空list表示该模块中没有公开API。
 
 Even with ``__all__`` set appropriately, internal interfaces (packages,
 modules, classes, functions, attributes or other names) should still be
 prefixed with a single leading underscore.
+即使正确设置了``__all``属性，内部接口（包，模块，类，函数，属性或其他命名）也应该以一个下划线开头。
 
 An interface is also considered internal if any containing namespace
 (package, module or class) is considered internal.
+如果接口的任一一个命名空间（包，模块或类）是内部的，那么该接口也应该是内部的。
 
 Imported names should always be considered an implementation detail.
 Other modules must not rely on indirect access to such imported names
 unless they are an explicitly documented part of the containing module's
 API, such as ``os.path`` or a package's ``__init__`` module that exposes
 functionality from submodules.
+导入的命名应该永远被认为是实现细节。其他模块不应当依赖这些非直接访问的导入命名，除非它们在文档中明确地被写为模块的API，例如``os.path``或者包的``__init__``模块，那些从子模块展现的功能。
 
 
 Programming Recommendations
+编程建议
 ===========================
 
 - Code should be written in a way that does not disadvantage other
   implementations of Python (PyPy, Jython, IronPython, Cython, Psyco,
   and such).
+- 代码实现应该最好不会在其他Python实现版本中存在缺陷。
 
   For example, do not rely on CPython's efficient implementation of
   in-place string concatenation for statements in the form ``a += b``
@@ -986,19 +1018,23 @@ Programming Recommendations
   library, the ``''.join()`` form should be used instead.  This will
   ensure that concatenation occurs in linear time across various
   implementations.
+  比如，不要依赖CPython对于in-place字符串连接的高效实现，针对``a += b``或``a = a + b``的语句形式。该优化在CPython中很脆弱（只对几种类型有效）并且在不使用refcounting的实现中根本没用。在库中性能敏感的部分，应当使用``''.join()``形式。这可以保证在各种实现版本中的字符串连接都是线性时间。
 
 - Comparisons to singletons like None should always be done with
   ``is`` or ``is not``, never the equality operators.
+- 对于单件（singleton）如None的比较应当永远使用``is``或``is not``，绝不使用等号运算符。
 
   Also, beware of writing ``if x`` when you really mean ``if x is not
   None`` -- e.g. when testing whether a variable or argument that
   defaults to None was set to some other value.  The other value might
   have a type (such as a container) that could be false in a boolean
   context!
+  并且，小心使用``if x``，当你真正想表达的是``if x is not None``。比如，当测试一个变量或参数的默认None是否被赋了其他值时。其他的值的类型（比如作为一个容器container）可能是布尔含义下地false。
 
 - Use ``is not`` operator rather than ``not ... is``.  While both
   expressions are functionally identical, the former is more readable
   and preferred.
+- 使用``is not``比使用``not ... is``更好。尽管两种表达的功能是一样的，但前者的可读性更好。
 
   Yes::
 
@@ -1012,6 +1048,7 @@ Programming Recommendations
   best to implement all six operations (``__eq__``, ``__ne__``,
   ``__lt__``, ``__le__``, ``__gt__``, ``__ge__``) rather than relying
   on other code to only exercise a particular comparison.
+- 当
 
   To minimize the effort involved, the ``functools.total_ordering()``
   decorator provides a tool to generate missing comparison methods.
