@@ -239,15 +239,31 @@
 			"file": "content/蘅芜/python代码风格指南.md",
 			"settings":
 			{
-				"buffer_size": 44745,
+				"buffer_size": 46990,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "content/蘅芜/机器学习中的最优化问题.md",
+			"file": "content/观叹/《黑客与画家》读书笔记.md",
 			"settings":
 			{
-				"buffer_size": 6787,
+				"buffer_size": 1251,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
+			"settings":
+			{
+				"buffer_size": 5077,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/潇湘/什么都是叠加态.md",
+			"settings":
+			{
+				"buffer_size": 1709,
 				"line_ending": "Unix"
 			}
 		}
@@ -308,10 +324,12 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/潇湘/2015.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习中的最优化问题.md",
 		"/Users/gardenia/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/用Hugo搭建个人博客.md",
-		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习中的最优化问题.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记7_应用经验.md",
 		"/Users/gardenia/Documents/throughput/pptv1Day/hmm_pptvData/transpose.py",
 		"/Users/gardenia/Documents/throughput/hmm/transpose.py",
@@ -433,9 +451,7 @@
 		"/Users/gardenia/Documents/throughput/timeofday_speed.gp",
 		"/Users/gardenia/Documents/throughput/timeofday_stddev.gp",
 		"/Users/gardenia/Documents/throughput/timewindow_avgStddev",
-		"/Users/gardenia/Documents/throughput/timewindow_avg.gp",
-		"/Users/gardenia/Documents/throughput/isp_averStability_minute.gp",
-		"/Users/gardenia/Documents/throughput/timewindow_avgStddev2"
+		"/Users/gardenia/Documents/throughput/timewindow_avg.gp"
 	],
 	"find":
 	{
@@ -453,6 +469,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"corrupted",
+			"私有",
+			"私有的",
 			"</div>",
 			"<div>",
 			"限制",
@@ -577,9 +596,6 @@
 			"ChinaMobile",
 			"ChinaNet",
 			"ChinaUnicom",
-			"using",
-			"time_stability_1023_15s",
-			"time_stability_1023_10s",
 			"using"
 		],
 		"highlight": true,
@@ -598,7 +614,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -606,15 +622,15 @@
 					"file": "content/蘅芜/python代码风格指南.md",
 					"settings":
 					{
-						"buffer_size": 44745,
+						"buffer_size": 46990,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								26832,
-								26832
+								177,
+								177
 							]
 						],
 						"settings":
@@ -624,34 +640,85 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 19916.0,
+						"translation.y": 267.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "content/蘅芜/机器学习中的最优化问题.md",
+					"file": "content/观叹/《黑客与画家》读书笔记.md",
 					"settings":
 					{
-						"buffer_size": 6787,
+						"buffer_size": 1251,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								862,
-								862
+								335,
+								335
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"wrap_width": 0
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 222.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
+					"settings":
+					{
+						"buffer_size": 5077,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1145,
+								1145
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1012.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "content/潇湘/什么都是叠加态.md",
+					"settings":
+					{
+						"buffer_size": 1709,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								145,
+								145
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 66.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1230,7 +1297,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true
 }
