@@ -255,7 +255,7 @@
 			"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
 			"settings":
 			{
-				"buffer_size": 5077,
+				"buffer_size": 5096,
 				"line_ending": "Unix"
 			}
 		},
@@ -676,23 +676,25 @@
 					"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
 					"settings":
 					{
-						"buffer_size": 5077,
+						"buffer_size": 5096,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1145,
-								1145
+								3914,
+								3914
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1012.0,
+						"translation.y": 4031.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
