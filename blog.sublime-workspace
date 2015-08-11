@@ -239,7 +239,23 @@
 			"file": "content/蘅芜/python代码风格指南.md",
 			"settings":
 			{
-				"buffer_size": 46990,
+				"buffer_size": 46964,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/蘅芜/Python代码风格指南(1).md",
+			"settings":
+			{
+				"buffer_size": 7335,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/蘅芜/Python代码风格指南(2).md",
+			"settings":
+			{
+				"buffer_size": 7051,
 				"line_ending": "Unix"
 			}
 		},
@@ -248,22 +264,6 @@
 			"settings":
 			{
 				"buffer_size": 1251,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
-			"settings":
-			{
-				"buffer_size": 5096,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "content/潇湘/什么都是叠加态.md",
-			"settings":
-			{
-				"buffer_size": 1709,
 				"line_ending": "Unix"
 			}
 		}
@@ -324,6 +324,8 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/潇湘/什么都是叠加态.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/阿里移动推荐算法比赛总结.md",
 		"/Users/gardenia/nanshu.wang/content/潇湘/2015.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习中的最优化问题.md",
@@ -449,9 +451,7 @@
 		"/Users/gardenia/Documents/throughput/extractAllTrace_maxSpeed.py",
 		"/Users/gardenia/Documents/throughput/day_averStability_hour.gp",
 		"/Users/gardenia/Documents/throughput/timeofday_speed.gp",
-		"/Users/gardenia/Documents/throughput/timeofday_stddev.gp",
-		"/Users/gardenia/Documents/throughput/timewindow_avgStddev",
-		"/Users/gardenia/Documents/throughput/timewindow_avg.gp"
+		"/Users/gardenia/Documents/throughput/timeofday_stddev.gp"
 	],
 	"find":
 	{
@@ -614,7 +614,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -622,15 +622,15 @@
 					"file": "content/蘅芜/python代码风格指南.md",
 					"settings":
 					{
-						"buffer_size": 46990,
+						"buffer_size": 46964,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								177,
-								177
+								9637,
+								9637
 							]
 						],
 						"settings":
@@ -640,13 +640,69 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 267.0,
+						"translation.y": 14219.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
+					"file": "content/蘅芜/Python代码风格指南(1).md",
+					"settings":
+					{
+						"buffer_size": 7335,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								232,
+								232
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2818.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "content/蘅芜/Python代码风格指南(2).md",
+					"settings":
+					{
+						"buffer_size": 7051,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2428,
+								2428
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
 					"file": "content/观叹/《黑客与画家》读书笔记.md",
 					"settings":
 					{
@@ -666,61 +722,7 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 222.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "content/蘅芜/阿里移动推荐算法比赛总结.md",
-					"settings":
-					{
-						"buffer_size": 5096,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3914,
-								3914
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 4031.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "content/潇湘/什么都是叠加态.md",
-					"settings":
-					{
-						"buffer_size": 1709,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								145,
-								145
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 66.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1299,7 +1301,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true
 }
