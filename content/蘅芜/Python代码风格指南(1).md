@@ -218,8 +218,9 @@ Python核心发行版中的代码应该一直使用UTF-8（Python 2中使用ASCI
 在标准库中，只有用作测试目的，或者注释或文档字符串需要提及作者名字而不得不使用非ASCII字符时，才能使用非默认的编码。否则，在字符串文字中包括非ASCII数据时，推荐使用``\x``, ``\u``, ``\U``或``\N``等转义符。
 
 对于Python 3.0及其以后的版本中，标准库遵循以下原则（参见PEP 3131）：Python标准库中的所有标识符都**必须**只采用ASCII编码的标识符，在可行的条件下也**应当**使用英文词（很多情况下，使用的缩写和技术术语词都不是英文）。此外，字符串文字和注释应该只包括ASCII编码。只有两种例外：
-(a) 测试情况下为了测试非ASCII编码的特性
-(b) 作者名字。作者名字不是由拉丁字母组成的也**必须**提供一个拉丁音译名。
+
+- (a) 测试情况下为了测试非ASCII编码的特性
+- (b) 作者名字。作者名字不是由拉丁字母组成的也**必须**提供一个拉丁音译名。
 
 鼓励面向全世界的开源项目都采用类似的原则。
 
@@ -229,14 +230,19 @@ Imports
 
 - Imports应该分行写，而不是都写在一行，例如：
 
-      Yes: import os
-           import sys
+```
+# 分开写
+import os
+import sys
+# 不要像下面一样写在一行
+import sys, os
+```
 
-      No:  import sys, os
+  这样写也是可以的：
 
-  但这样写也是可以的：
-
-      from subprocess import Popen, PIPE
+```
+from subprocess import Popen, PIPE
+```
 
 - Imports应该写在代码文件的开头，位于模块(module)注释和文档字符串之后，模块全局变量(globals)和常量(constants)声明之前。
 
@@ -252,14 +258,18 @@ Imports
 
 - 推荐使用绝对(absolute)imports，因为这样通常更易读，在import系统没有正确配置（比如中的路径以``sys.path``结束）的情况下，也会有更好的表现（或者至少会给出错误信息）：
 
-    import mypkg.sibling
-    from mypkg import sibling
-    from mypkg.sibling import example
+```
+import mypkg.sibling
+from mypkg import sibling
+from mypkg.sibling import example
+```
 
   然而，除了绝对imports，显式的相对imports也是一种可以接受的替代方式。特别是当处理复杂的包布局(package layouts)时，采用绝对imports会显得啰嗦。
 
-    from . import sibling
-    from .sibling import example
+```
+from . import sibling
+from .sibling import example
+```
 
   Standard library code should avoid complex package layouts and always
   use absolute imports.
@@ -269,13 +279,17 @@ Imports
 
 - 当从一个包括类的模块中import一个类时，通常可以这样写：
 
-      from myclass import MyClass
-      from foo.bar.yourclass import YourClass
+```
+from myclass import MyClass
+from foo.bar.yourclass import YourClass
+```
 
   如果和本地命名的拼写产生了冲突，应当直接import模块：
 
-      import myclass
-      import foo.bar.yourclass
+```
+import myclass
+import foo.bar.yourclass
+```
 
   然后使用"myclass.MyClass"和"foo.bar.yourclass.YourClass".
 

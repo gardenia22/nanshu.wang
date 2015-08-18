@@ -252,10 +252,19 @@
 			}
 		},
 		{
+			"file": "content/蘅芜/最长回文子串解题报告.md",
+			"settings":
+			{
+				"buffer_size": 3915,
+				"line_ending": "Unix",
+				"name": "# 最长回文子串解题报告"
+			}
+		},
+		{
 			"file": "content/蘅芜/Python代码风格指南(2).md",
 			"settings":
 			{
-				"buffer_size": 7051,
+				"buffer_size": 7061,
 				"line_ending": "Unix"
 			}
 		},
@@ -264,6 +273,22 @@
 			"settings":
 			{
 				"buffer_size": 1251,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/蘅芜/机器学习笔记7_应用经验.md",
+			"settings":
+			{
+				"buffer_size": 5827,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "content/蘅芜/用Hugo搭建个人博客.md",
+			"settings":
+			{
+				"buffer_size": 9680,
 				"line_ending": "Unix"
 			}
 		}
@@ -469,6 +494,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"title",
+			"</>](",
+			"title",
+			"最长回文子串",
+			"``",
+			"```",
+			"``",
+			"S3",
+			"c2",
+			"c1",
+			"S2",
+			"S1",
 			"corrupted",
 			"私有",
 			"私有的",
@@ -584,19 +621,7 @@
 			"100",
 			"theta",
 			"udp",
-			"los",
-			"rate",
-			"Stability",
-			"stability",
-			"udplost_stability",
-			"1HourAllTrack",
-			"city_averStability_hour",
-			"minute",
-			"beijing_stability_minute",
-			"ChinaMobile",
-			"ChinaNet",
-			"ChinaUnicom",
-			"using"
+			"los"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -614,7 +639,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -640,7 +665,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 14219.0,
+						"translation.y": 738.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -657,8 +682,8 @@
 						"selection":
 						[
 							[
-								232,
-								232
+								1553,
+								1553
 							]
 						],
 						"settings":
@@ -668,31 +693,32 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2818.0,
+						"translation.y": 4114.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "content/蘅芜/Python代码风格指南(2).md",
+					"file": "content/蘅芜/最长回文子串解题报告.md",
 					"settings":
 					{
-						"buffer_size": 7051,
+						"buffer_size": 3915,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2428,
-								2428
+								186,
+								186
 							]
 						],
 						"settings":
 						{
+							"auto_name": "# 最长回文子串解题报告",
 							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"tab_size": 2,
+							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -703,6 +729,34 @@
 				},
 				{
 					"buffer": 3,
+					"file": "content/蘅芜/Python代码风格指南(2).md",
+					"settings":
+					{
+						"buffer_size": 7061,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								505,
+								505
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
 					"file": "content/观叹/《黑客与画家》读书笔记.md",
 					"settings":
 					{
@@ -713,8 +767,8 @@
 						"selection":
 						[
 							[
-								335,
-								335
+								632,
+								632
 							]
 						],
 						"settings":
@@ -722,7 +776,61 @@
 							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 223.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "content/蘅芜/机器学习笔记7_应用经验.md",
+					"settings":
+					{
+						"buffer_size": 5827,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1454.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "content/蘅芜/用Hugo搭建个人博客.md",
+					"settings":
+					{
+						"buffer_size": 9680,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9331,
+								9335
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 8935.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -1301,7 +1409,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 150.0,
 	"status_bar_visible": true
 }
