@@ -247,7 +247,7 @@
 			"file": "content/蘅芜/Python代码风格指南(1).md",
 			"settings":
 			{
-				"buffer_size": 7335,
+				"buffer_size": 7323,
 				"line_ending": "Unix"
 			}
 		},
@@ -675,15 +675,15 @@
 					"file": "content/蘅芜/Python代码风格指南(1).md",
 					"settings":
 					{
-						"buffer_size": 7335,
+						"buffer_size": 7323,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1553,
-								1553
+								5864,
+								5864
 							]
 						],
 						"settings":
@@ -693,7 +693,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4114.0,
+						"translation.y": 6823.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
