@@ -3,7 +3,7 @@ date: 2015-07-04
 description: ""
 tags: ["Python","代码风格","翻译","风格指南","缩进","Tab","每行最大长度","代码设计","imports","编码","空行"]
 title: "Python代码风格指南（一）代码设计(Style Guide for Python Code中文翻译)"
-topics: []
+topics: ["Python代码风格指南"]
 draft: false
 url: /post/2015-07-04
 ---

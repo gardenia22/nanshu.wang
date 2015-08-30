@@ -261,14 +261,6 @@
 			}
 		},
 		{
-			"file": "content/蘅芜/Python代码风格指南(2).md",
-			"settings":
-			{
-				"buffer_size": 7061,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "content/观叹/《黑客与画家》读书笔记.md",
 			"settings":
 			{
@@ -296,9 +288,13 @@
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 392.0,
+		"height": 207.0,
 		"selected_items":
 		[
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
 			[
 				"sni",
 				"Snippet: html"
@@ -332,7 +328,7 @@
 				"Preferences: Browse Packages"
 			]
 		],
-		"width": 575.0
+		"width": 449.0
 	},
 	"console":
 	{
@@ -349,6 +345,7 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/蘅芜/Python代码风格指南(2).md",
 		"/Users/gardenia/nanshu.wang/content/潇湘/什么都是叠加态.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/阿里移动推荐算法比赛总结.md",
 		"/Users/gardenia/nanshu.wang/content/潇湘/2015.md",
@@ -475,8 +472,7 @@
 		"/Users/gardenia/Documents/throughput/maxHTTPSpeed.gp",
 		"/Users/gardenia/Documents/throughput/extractAllTrace_maxSpeed.py",
 		"/Users/gardenia/Documents/throughput/day_averStability_hour.gp",
-		"/Users/gardenia/Documents/throughput/timeofday_speed.gp",
-		"/Users/gardenia/Documents/throughput/timeofday_stddev.gp"
+		"/Users/gardenia/Documents/throughput/timeofday_speed.gp"
 	],
 	"find":
 	{
@@ -665,7 +661,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 738.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -710,8 +706,8 @@
 						"selection":
 						[
 							[
-								186,
-								186
+								86,
+								86
 							]
 						],
 						"settings":
@@ -729,34 +725,6 @@
 				},
 				{
 					"buffer": 3,
-					"file": "content/蘅芜/Python代码风格指南(2).md",
-					"settings":
-					{
-						"buffer_size": 7061,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								505,
-								505
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "content/观叹/《黑客与画家》读书笔记.md",
 					"settings":
 					{
@@ -782,7 +750,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "content/蘅芜/机器学习笔记7_应用经验.md",
 					"settings":
 					{
@@ -808,7 +776,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "content/蘅芜/用Hugo搭建个人博客.md",
 					"settings":
 					{
