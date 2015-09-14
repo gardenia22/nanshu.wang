@@ -236,10 +236,10 @@
 	"buffers":
 	[
 		{
-			"file": "content/蘅芜/python代码风格指南.md",
+			"file": "content/蘅芜/Python代码风格指南(2).md",
 			"settings":
 			{
-				"buffer_size": 46964,
+				"buffer_size": 4883,
 				"line_ending": "Unix"
 			}
 		},
@@ -247,40 +247,15 @@
 			"file": "content/蘅芜/Python代码风格指南(1).md",
 			"settings":
 			{
-				"buffer_size": 7323,
+				"buffer_size": 7337,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "content/蘅芜/最长回文子串解题报告.md",
+			"file": "content/蘅芜/python代码风格指南(3).md",
 			"settings":
 			{
-				"buffer_size": 3915,
-				"line_ending": "Unix",
-				"name": "# 最长回文子串解题报告"
-			}
-		},
-		{
-			"file": "content/观叹/《黑客与画家》读书笔记.md",
-			"settings":
-			{
-				"buffer_size": 1251,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "content/蘅芜/机器学习笔记7_应用经验.md",
-			"settings":
-			{
-				"buffer_size": 5827,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "content/蘅芜/用Hugo搭建个人博客.md",
-			"settings":
-			{
-				"buffer_size": 9680,
+				"buffer_size": 15953,
 				"line_ending": "Unix"
 			}
 		}
@@ -345,16 +320,19 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/Python代码风格指南(1).md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/最长回文子串解题报告.md",
+		"/Users/gardenia/nanshu.wang/content/观叹/《黑客与画家》读书笔记.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记7_应用经验.md",
+		"/Users/gardenia/nanshu.wang/content/蘅芜/用Hugo搭建个人博客.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/Python代码风格指南(2).md",
 		"/Users/gardenia/nanshu.wang/content/潇湘/什么都是叠加态.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/阿里移动推荐算法比赛总结.md",
 		"/Users/gardenia/nanshu.wang/content/潇湘/2015.md",
-		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习中的最优化问题.md",
 		"/Users/gardenia/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记1有监督学习_线性回归_LMS算法_正规方程.md",
-		"/Users/gardenia/nanshu.wang/content/蘅芜/用Hugo搭建个人博客.md",
-		"/Users/gardenia/nanshu.wang/content/蘅芜/机器学习笔记7_应用经验.md",
 		"/Users/gardenia/Documents/throughput/pptv1Day/hmm_pptvData/transpose.py",
 		"/Users/gardenia/Documents/throughput/hmm/transpose.py",
 		"/Users/gardenia/Documents/throughput/pptv2015/calcMedian.py",
@@ -469,10 +447,7 @@
 		"/Users/gardenia/Documents/throughput/timeCalc.sh",
 		"/Users/gardenia/Documents/3.22.md",
 		"/Users/gardenia/Documents/throughput/avgSpeed_avgNormalizedStddev.gp",
-		"/Users/gardenia/Documents/throughput/maxHTTPSpeed.gp",
-		"/Users/gardenia/Documents/throughput/extractAllTrace_maxSpeed.py",
-		"/Users/gardenia/Documents/throughput/day_averStability_hour.gp",
-		"/Users/gardenia/Documents/throughput/timeofday_speed.gp"
+		"/Users/gardenia/Documents/throughput/maxHTTPSpeed.gp"
 	],
 	"find":
 	{
@@ -635,23 +610,23 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "content/蘅芜/python代码风格指南.md",
+					"file": "content/蘅芜/Python代码风格指南(2).md",
 					"settings":
 					{
-						"buffer_size": 46964,
+						"buffer_size": 4883,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								9637,
-								9637
+								231,
+								0
 							]
 						],
 						"settings":
@@ -661,7 +636,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5274.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -671,50 +646,21 @@
 					"file": "content/蘅芜/Python代码风格指南(1).md",
 					"settings":
 					{
-						"buffer_size": 7323,
+						"buffer_size": 7337,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5864,
-								5864
+								219,
+								219
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Markdown/Markdown.tmLanguage",
 							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 6823.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "content/蘅芜/最长回文子串解题报告.md",
-					"settings":
-					{
-						"buffer_size": 3915,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								86,
-								86
-							]
-						],
-						"settings":
-						{
-							"auto_name": "# 最长回文子串解题报告",
-							"syntax": "Packages/Markdown/Markdown.tmLanguage",
-							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -724,71 +670,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "content/观叹/《黑客与画家》读书笔记.md",
+					"buffer": 2,
+					"file": "content/蘅芜/python代码风格指南(3).md",
 					"settings":
 					{
-						"buffer_size": 1251,
+						"buffer_size": 15953,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								632,
-								632
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 223.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "content/蘅芜/机器学习笔记7_应用经验.md",
-					"settings":
-					{
-						"buffer_size": 5827,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1454.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "content/蘅芜/用Hugo搭建个人博客.md",
-					"settings":
-					{
-						"buffer_size": 9680,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9331,
-								9335
+								266,
+								266
 							]
 						],
 						"settings":
@@ -798,7 +692,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 8935.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

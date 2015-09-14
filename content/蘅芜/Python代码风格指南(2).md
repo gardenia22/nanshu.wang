@@ -1,8 +1,8 @@
 ---
 date: 2015-08-30
 description: ""
-tags: ["Python","代码风格","翻译","风格指南","字符串引用"]
-title: "Python代码风格指南（二）字符串引用、表达式和语句中的空格(Style Guide for Python Code中文翻译)"
+tags: ["Python","代码风格","翻译","风格指南","字符串引用","注释","PEP8"]
+title: "Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译)"
 topics: ["Python代码风格指南"]
 draft: false
 url: /post/2015-08-30
