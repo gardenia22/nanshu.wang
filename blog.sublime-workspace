@@ -239,7 +239,7 @@
 			"file": "content/蘅芜/Python代码风格指南(2).md",
 			"settings":
 			{
-				"buffer_size": 4883,
+				"buffer_size": 4859,
 				"line_ending": "Unix"
 			}
 		},
@@ -247,15 +247,15 @@
 			"file": "content/蘅芜/Python代码风格指南(1).md",
 			"settings":
 			{
-				"buffer_size": 7337,
+				"buffer_size": 7321,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "content/蘅芜/python代码风格指南(3).md",
+			"file": "content/蘅芜/python代码风格指南.md",
 			"settings":
 			{
-				"buffer_size": 15953,
+				"buffer_size": 46964,
 				"line_ending": "Unix"
 			}
 		}
@@ -320,6 +320,7 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南(3).md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/Python代码风格指南(1).md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/最长回文子串解题报告.md",
@@ -446,8 +447,7 @@
 		"/Users/gardenia/Documents/throughput/precision",
 		"/Users/gardenia/Documents/throughput/timeCalc.sh",
 		"/Users/gardenia/Documents/3.22.md",
-		"/Users/gardenia/Documents/throughput/avgSpeed_avgNormalizedStddev.gp",
-		"/Users/gardenia/Documents/throughput/maxHTTPSpeed.gp"
+		"/Users/gardenia/Documents/throughput/avgSpeed_avgNormalizedStddev.gp"
 	],
 	"find":
 	{
@@ -465,6 +465,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"~+",
 			"title",
 			"</>](",
 			"title",
@@ -591,13 +592,12 @@
 			"/)*",
 			"100",
 			"theta",
-			"udp",
-			"los"
+			"udp"
 		],
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
 		],
@@ -610,7 +610,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -618,15 +618,15 @@
 					"file": "content/蘅芜/Python代码风格指南(2).md",
 					"settings":
 					{
-						"buffer_size": 4883,
+						"buffer_size": 4859,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								231,
-								0
+								181,
+								181
 							]
 						],
 						"settings":
@@ -636,7 +636,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 5274.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -646,15 +646,15 @@
 					"file": "content/蘅芜/Python代码风格指南(1).md",
 					"settings":
 					{
-						"buffer_size": 7337,
+						"buffer_size": 7321,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								219,
-								219
+								159,
+								159
 							]
 						],
 						"settings":
@@ -664,25 +664,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2968.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 2,
-					"file": "content/蘅芜/python代码风格指南(3).md",
+					"file": "content/蘅芜/python代码风格指南.md",
 					"settings":
 					{
-						"buffer_size": 15953,
+						"buffer_size": 46964,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								266,
-								266
+								25276,
+								25287
 							]
 						],
 						"settings":
@@ -692,7 +692,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 18813.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
