@@ -51,7 +51,7 @@ Instead of pushing and popping the element, can we directly delete adjacent matc
         else:
             return False
 
-This solution is easy to understand with 125 chars. Then let's cut down the chars. 
+This solution is easy to understand with 125 chars. Then let's start to cut down the chars. 
 
 ## Lessen the return statement
 
@@ -65,7 +65,7 @@ In Python, empty string has False value in bool type. This works too:
 
 ## Use subn() instead of sub()
 
-subn() return 2 arguments, first is the modified string and second is the times of modification. Then this solution becomes:
+subn() return 2 arguments: first one is the modified string and second one is the times of modification. Then this solution becomes:
 
     def MatchingParentheses(p):
         # d function deletes adjacent matching parentheses and whitespace
@@ -85,7 +85,7 @@ Since we only use d function once, there is no need to define it separately.
             p,n= re.subn('\(\)|{}|\[\]| ','',p)
         return not p
 
-Now we have reduce this solution to 79 chars, but we still have room to go even further.
+Now we have reduced this solution to 79 chars, but we still have rooms to go even further.
 
 ## Lambda function
 
@@ -105,13 +105,13 @@ Answer is still YES!
 
 ## Ternary in Python
 
-There is no ternary expression in Python, instead we have one-line if else. But there is a **dangerous** way to use bool operation as a proxy of ternary expression. 
+There is no ternary expression in Python, instead we have one-line if else. But there is a ***dangerous*** way to use bool operation as a substitute of ternary expression. 
     
     (condition)? v1:v2 #ternary expression
     v1 if condition else v2 #one-line if else
     condition and v1 or v2 #dangerous bool expression
 
-This is dangerous because this proxy is wrong when v1 has possible 0 value. The right bool expression is: 
+This is dangerous because this substitute is actually ***wrong*** when v1 has possible 0 value. The right bool expression is: 
 
     (condition and [v1] or [v2])[0]. 
 
@@ -119,7 +119,7 @@ In this problem,
 
     v1 = f(*re.subn('\(\)|{}|\[\]| ','',p))
 
-v1 is a tuple of 2 values, so there is no chance v1 equals to 0. So we take a risk here and get our **final solution**:
+v1 is a tuple of 2 values, so there is no chance v1 equals to 0. So we take a risk here and get our ***final solution***:
 
     MatchingParentheses = f = lambda p,n=1:n and f(*re.subn('\(\)|{}|\[\]| ','',p)) or not p
 
