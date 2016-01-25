@@ -12,20 +12,23 @@ I was so enthralled by the [Codefights](https://codefights.com) Challenges of wr
 
 Curtailing chars of solution is fun with little tricks. In the following I will show the tricks I used in this problem.
 
-Here is the problem description:
+## Problem Description:
 
-    Given a string para, consisting of symbols '(', '[', '{', ')', ']', '}' and ' ', find out if it is a correct bracket sequence (CBS in short) with occasional whitespace (' ') characters. A CBS can be defined as follows:
-    empty string ("") is a CBS;
-    if S is a CBS, then (S), [S], {S} are CBSs;
-    if S1, S2 are CBS, then S1S2 is a CBS.
-    
-    Example:
+Given a string para, consisting of symbols `'('`, `'['`, `'{'`, `')'`, `']'`, `'}'` and `' '`, find out if it is a correct bracket sequence (CBS in short) with occasional whitespace `(' ')` characters. A CBS can be defined as follows:
+
+    - empty string ("") is a CBS;
+    - if S is a CBS, then (S), \[S\], {S} are CBSs;
+    - if S1, S2 are CBS, then S1S2 is a CBS.
+
+### Example:
     MatchingParentheses("( )(( )){([( )])}") = true
     MatchingParentheses(")(") = false
-    [input] string para
-    A string of symbols '(', '[', '{', ')', ']', '}' and ' '.
-    [output] boolean
-    true if the given string is CBS, false otherwise.
+
+### input: string para
+A string of symbols  `'('`, `'['`, `'{'`, `')'`, `']'`, `'}'` and `' '`.
+
+### output: boolean
+`true` if the given string is CBS, `false` otherwise.
 
 Let me put my solution here. It is short and hard to understand. I will explain step by step how I get there.
 
@@ -50,7 +53,7 @@ Instead of pushing and popping the element, can we directly delete adjacent matc
 
 This solution is easy to understand with 125 chars. Then let's cut down the chars. 
 
-##Lessen the return statement
+## Lessen the return statement
 
 We can absolutely lose the if-else statement and write just:
 
@@ -60,7 +63,7 @@ In Python, empty string has False value in bool type. This works too:
 
     return not p
 
-##use subn() instead of sub
+## Use subn() instead of sub()
 
 subn() return 2 arguments, first is the modified string and second is the times of modification. Then this solution becomes:
 
@@ -84,7 +87,7 @@ Since we only use d function once, there is no need to define it separately.
 
 Now we have reduce this solution to 79 chars, but we still have room to go even further.
 
-##Lambda function
+## Lambda function
 
 Let's translate the whole function into lambda expression. Because lambda can only have one-line, we need to use recursion as an alternative to while loop.
 
@@ -100,15 +103,29 @@ And can we reduce even more chars?
 
 Answer is still YES!
 
-##Ternary in Python
+## Ternary in Python
 
-There is no ternary expression in Python like `(condition)? v1:v2`, instead we have `v1 if condition else v2`. But there is a **dangerous** way to use bool operation as a proxy of ternary expression: `condition and v1 or v2`. This is dangerous because this proxy is wrong when `v1` has possible `0` value. The right bool expression is: `(condition and [v1] or [v2])[0]`. In this problem, `v1 = f(*re.subn('\(\)|{}|\[\]| ','',p))` is a tuple of 2 values, so there is no chance `v1` equals to `0`. So we take a risk here and get our **final solution**:
+There is no ternary expression in Python, instead we have one-line if else. But there is a **dangerous** way to use bool operation as a proxy of ternary expression. 
+    
+    (condition)? v1:v2 #ternary expression
+    v1 if condition else v2 #one-line if else
+    condition and v1 or v2 #dangerous bool expression
+
+This is dangerous because this proxy is wrong when v1 has possible 0 value. The right bool expression is: 
+
+    (condition and [v1] or [v2])[0]. 
+
+In this problem,
+
+    v1 = f(*re.subn('\(\)|{}|\[\]| ','',p))
+
+v1 is a tuple of 2 values, so there is no chance v1 equals to 0. So we take a risk here and get our **final solution**:
 
     MatchingParentheses = f = lambda p,n=1:n and f(*re.subn('\(\)|{}|\[\]| ','',p)) or not p
 
 Fortunately, this trick saves one more char for us. The final solution has 77 chars in total.
 
-##Some takeaway
+## Some takeaway
 
 1. Never pursue writing shortest code in real practice.
 2. Never overuse tricks.
