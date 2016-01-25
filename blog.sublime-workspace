@@ -258,6 +258,14 @@
 				"buffer_size": 46964,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "content/观叹/《黑客与画家》读书笔记.md",
+			"settings":
+			{
+				"buffer_size": 1381,
+				"line_ending": "Unix"
+			}
 		}
 	],
 	"build_system": "",
@@ -320,6 +328,7 @@
 	},
 	"file_history":
 	[
+		"/Users/gardenia/nanshu.wang/content/蘅芜/SDN软件定义网络.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南(3).md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/python代码风格指南.md",
 		"/Users/gardenia/nanshu.wang/content/蘅芜/Python代码风格指南(1).md",
@@ -446,8 +455,7 @@
 		"/Users/gardenia/Documents/throughput/precision_harmonic",
 		"/Users/gardenia/Documents/throughput/precision",
 		"/Users/gardenia/Documents/throughput/timeCalc.sh",
-		"/Users/gardenia/Documents/3.22.md",
-		"/Users/gardenia/Documents/throughput/avgSpeed_avgNormalizedStddev.gp"
+		"/Users/gardenia/Documents/3.22.md"
 	],
 	"find":
 	{
@@ -610,7 +618,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -625,8 +633,8 @@
 						"selection":
 						[
 							[
-								181,
-								181
+								207,
+								0
 							]
 						],
 						"settings":
@@ -692,7 +700,33 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 18813.0,
+						"translation.y": 10243.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "content/观叹/《黑客与画家》读书笔记.md",
+					"settings":
+					{
+						"buffer_size": 1381,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								57,
+								57
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
