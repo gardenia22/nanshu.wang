@@ -4,7 +4,7 @@ description: ""
 tags: ["Python","shortest","algorithm"]
 title: "How to write shortest code with Python"
 topics: []
-draft: true
+draft: false
 url: /post/2016-01-25
 ---
 
