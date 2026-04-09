@@ -8,7 +8,7 @@ MetaDataFormat = "yaml"
 [author]
     name = "Nanshu Wang"
 
-[indexes]
+[taxonomies]
     tag = "tags"
     topic = "topics"
 
