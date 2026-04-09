@@ -1,0 +1,51 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>自相关系数 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E8%87%AA%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Sun, 15 Mar 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>python numpy 计算自相关系数</title>
+      <link>https://nanshu.wang/post/2015-03-15/</link>
+      <pubDate>Sun, 15 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-15/</guid>
+      <description>&lt;p&gt;在分析时间序列时，通常需要计算一个序列的自相关系数。自相关(&lt;a href=&#34;http://en.wikipedia.org/wiki/Autocorrelation&#34;&gt;Autocorrelation&lt;/a&gt;)又叫做序列相关，通常采用自相关系数来发现序列的重复规律，周期等信息。&lt;/p&gt;
+&lt;p&gt;我们有序列$X:x_1,x_2,x_3,&amp;hellip;,x_n$，设$X_{s,t}$为$s$时刻开始，$t$时刻结束的序列：$x_s,x_{s+1}&amp;hellip;,x_{t-1},x_t$。$\mu_{s,t}$为序列$X_{s,t}$的均值，$\sigma_{s,t}$为序列$X_{s,t}$的标准差。那么一阶自相关系数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$$R(1) = \frac{E(X_{2,n}-\mu_{2,n})(X_{1,n-1}-\mu_{1,n-1})}{\sigma_{2,n}\sigma_{1,n-1}}$$&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;同理$k$阶自相关系数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$$R(k) = \frac{E(X_{k+1,n}-\mu_{k+1,n})(X_{1,n-k}-\mu_{1,n-k})}{\sigma_{k+1,n}\sigma_{1,n-k}}$$&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;python的numpy库里没有直接计算序列自相关系数的函数，但有计算两个不同序列的相关系数函数： &lt;a href=&#34;http://docs.scipy.org/doc/numpy/reference/generated/numpy.correlate.html&#34;&gt;correlate&lt;/a&gt;。给定两个序列$X,Y$，correlation(X,Y) = $\sum XY$。可以利用correlate函数计算$X$的自相关性：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;autocorrelation&lt;/span&gt;(x,lags):&lt;span style=&#34;color:#75715e&#34;&gt;#计算lags阶以内的自相关系数，返回lags个值，分别计算序列均值，标准差&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	n &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(x)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; numpy&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array(x)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [numpy&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;correlate(x[i:]&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;x[i:]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean(),x[:n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;i]&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;x[:n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean())[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;]\
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(x[i:]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;std()&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;x[:n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;i]&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;std()&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;(n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;i)) \
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,lags&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; result
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;通常在实际中，很多时间序列的均值和标准受时间变化的影响较小，可以看作是恒定的，此时：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$$R(k) = \frac{E(X_{k+1,n}-\mu)(X_{1,n-k}-\mu)}{\sigma^2}$$&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;同样可以利用correlate函数实现：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;autocorrelation&lt;/span&gt;(x,lags):&lt;span style=&#34;color:#75715e&#34;&gt;#计算lags阶以内的自相关系数，返回lags个值，将序列均值、标准差视为不变&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	n &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; len(x)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; numpy&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;array(x)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	variance &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;var()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;x&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;mean()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; numpy&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;correlate(x, x, mode &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;full&amp;#39;&lt;/span&gt;)[&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;:&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;n&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;lags&lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;		(variance&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;(numpy&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;arange(n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;,n&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;lags,&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; result
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;参考：http://stackoverflow.com/questions/643699/how-can-i-use-numpy-correlate-to-do-autocorrelation&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

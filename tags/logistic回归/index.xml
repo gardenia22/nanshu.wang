@@ -1,0 +1,117 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Logistic回归 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/logistic%E5%9B%9E%E5%BD%92/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Tue, 17 Feb 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记4 正则化</title>
+      <link>https://nanshu.wang/post/2015-02-17/</link>
+      <pubDate>Tue, 17 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-17/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;正则化-regularization&#34;&gt;正则化 Regularization&lt;/h1&gt;
+&lt;p&gt;为了和正规方程(normal equation)里&amp;quot;正规&amp;quot;区分开来，这里Regularization都译作“正则化”，有些地方也用的是“正规化”。以下内容来自&lt;a href=&#34;http://en.wikipedia.org/w/index.php?title=Regularization_(mathematics)&#34;&gt;wikipedia&lt;/a&gt;：&lt;/p&gt;
+&lt;p&gt;正则化是指通过引入额外新信息来解决机器学习中过拟合问题的一种方法。这种额外信息通常的形式是模型复杂性带来的惩罚度。正则化的一种理论解释是它试图引入&lt;a href=&#34;http://en.wikipedia.org/wiki/Occam%27s_razor&#34;&gt;奥卡姆剃刀原则&lt;/a&gt;。而从贝叶斯的观点来看，正则化则是在模型参数上引入了某种先验的分布。&lt;/p&gt;
+&lt;p&gt;机器学习中最常见的正则化是$L_1$和$L_2$正则化。正则化是在学习算法的损失(成本)函数$E(X,Y)$的基础上在加上一项正则化参数项：$E(X,Y)+\alpha|w|$，其中$w$是参数向量，$\alpha$是正则项的参数值，需要在实际训练中调整。正则化在许多模型中都适用，对于线性回归模型来说，采用$L_1$正则化的模型叫作lasso回归，采用$L_2$的叫作ridge回归。对于logistic回归，神经网络，支持向量机，随机条件场和一些矩阵分解方法，正则化也适用。在神经网络中，$L_2$正则化又叫作“权重衰减”(weight decay)。$L_1$正则化能产生稀疏模型，因此在特征选择中很有用，但是$L_1$范式不可微，所以需要在学习算法中修改，特别是基于梯度下降的算法。&lt;/p&gt;
+&lt;h1 id=&#34;过拟合问题&#34;&gt;过拟合问题&lt;/h1&gt;
+&lt;p&gt;欠拟合(也叫做高偏差(high bias))是指不能很好地拟合数据，一般是因为模型函数太简单或者特征较少。过拟合问题是指过于完美拟合了训练集数据，而对新的样本失去了一般性，不能有效预测新样本，这个问题也叫做高方差(high variances)。造成过拟合的原因可能是特征量太多或者模型函数过于复杂。线性回归和logistic回归都存在欠拟合和过拟合的问题。&lt;/p&gt;
+&lt;p&gt;要解决过拟合的问题，通常有两种方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;减少特征数量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手动筛选特征&lt;/li&gt;
+&lt;li&gt;采用特征筛选算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;正则化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留所有的特征，但尽可能使参数$\theta_j$尽量小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;正则化在很多特征变量对目标值只有很小影响的情况下非常有用。&lt;/p&gt;
+&lt;h1 id=&#34;成本函数&#34;&gt;成本函数&lt;/h1&gt;
+&lt;p&gt;在原有的成本函数的基础上加上使参数$\theta_j$正则化的项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中$\lambda$叫做正则化参数，决定了参数正则化项的影响大小。引入正则化参数项，可以避免模型过拟合的问题。如果$\lambda$的值设置过大，可能会使模型函数出现欠拟合的问题。&lt;/p&gt;
+&lt;h1 id=&#34;正则化线性回归&#34;&gt;正则化线性回归&lt;/h1&gt;
+&lt;h2 id=&#34;梯度下降法&#34;&gt;梯度下降法&lt;/h2&gt;
+&lt;p&gt;常数项$\theta_0$不用正则化，因此更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上面的式子可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意到$(1 - \alpha \frac{\lambda}m) &amp;lt; 1$，直观上可以理解为将式子中第一项$\theta_j$值减小了一点，第二项还是和无正则化的更新策略的第二项一致。&lt;/p&gt;
+&lt;h2 id=&#34;正规方程&#34;&gt;正规方程&lt;/h2&gt;
+&lt;p&gt;正则化正规方程求解$\theta$为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$L$是(n+1)*(n+1)的矩阵，除了右上角的值为0外，对角线上其他值都为1。直观上理解，不包括右上角$X_0$项，$L$是一个单位矩阵。&lt;/p&gt;
+&lt;p&gt;当$m\leq n$时，$X^TX$不可逆，但加入$\lambda L$后，$X^TX$也变得可逆了。&lt;/p&gt;
+&lt;h1 id=&#34;正则化logistic回归&#34;&gt;正则化logistic回归&lt;/h1&gt;
+&lt;h2 id=&#34;成本函数-1&#34;&gt;成本函数&lt;/h2&gt;
+&lt;p&gt;加上正则化参数$\theta$项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意$\sum_{j=1}^n \theta_j^2$中参数的下标时从1到n，没有包括常数项$\theta_0$&lt;/p&gt;
+&lt;h2 id=&#34;梯度下降&#34;&gt;梯度下降&lt;/h2&gt;
+&lt;p&gt;和线性回归一样，$\theta_0$和其他参数要分开更新：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和正则化线性回归的更新策略是一样的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记3 有监督学习 分类 logistic回归</title>
+      <link>https://nanshu.wang/post/2015-02-12/</link>
+      <pubDate>Thu, 12 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-12/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;分类问题&#34;&gt;分类问题&lt;/h1&gt;
+&lt;p&gt;分类问题和回归问题不同的是，分类问题的预测值$y$只能取离散值，而非连续值。首先来看一个二类分类问题，预测值$y$只能取0或1。0又被称作负例(negative class)，1被称作正例(positive class)。通常也用&amp;quot;-&amp;quot;,&amp;quot;+&amp;ldquo;符号来表示。对于一个样本集输入$x^{(i)}$，对应的目标值$y^{(i)}$也被为标注(lable)。&lt;/p&gt;
+&lt;h2 id=&#34;logistic回归&#34;&gt;logistic回归&lt;/h2&gt;
+&lt;p&gt;也可以用线性回归的方法运用到分类问题上，但是这样做很容易得到不好的结果。稍微改变一下我们的假设函数$h_\theta(x)$，使其的取值在{0,1}范围内：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$g(z)$叫做logistic函数，也叫做sigmoid函数。$g(z)$的函数图像如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/logistic-function.png&amp;quot; alt=&amp;quot;logistic-function&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$z\rightarrow \infty$时，$g(z)$趋近于1；当$z\rightarrow -\infty$时，$g(z)$趋近于0。因此$h(x)$的取值在0到1范围内。&lt;/p&gt;
+&lt;p&gt;求$g(z)$的导数可得：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;下面是对分类问题作出的一些假设，预测函数$h_\theta(x)$将给出样本目标值分类为1的概率：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么$\theta$的似然函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求log似然函数:&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求最大似然估计，同样可以采用梯度下降的方法，更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这里是求最大值，因此更新$\theta$是加上$l(\theta)$的偏导。&lt;/p&gt;
+&lt;p&gt;解之得到：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和之前在线性回归模型得到的LMS更新策略一样，这并不是巧合，而是因为线性回归和logistic回归都属于广义线性模型(GLM models)。&lt;/p&gt;
+&lt;h2 id=&#34;perceptron学习算法&#34;&gt;perceptron学习算法&lt;/h2&gt;
+&lt;p&gt;有趣的是，如果这里不采用logistic函数，而是采用一种简单粗暴的只考虑阈值的函数g(z)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;我们得到的更新$\theta$的策略和采用logistic函数得到的策略是一致。这种算法叫做感知器(perceptron)学习算法，感知器原指一种用来刻画大脑神经元的粗糙模型。虽然表面上看这种简单粗暴的方式和其他算法得到的结果是一样的，但是这是一种和logistic回归以及最小二乘线性回归非常不同的一类算法，它不能推导出有意义的概率解释，也不能通过极大似然估计得到。&lt;/p&gt;
+&lt;h2 id=&#34;牛顿法&#34;&gt;牛顿法&lt;/h2&gt;
+&lt;p&gt;为了求$f(\theta)=0$时$\theta$的取值，牛顿法每次更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;要最大化似然函数$l(\theta)$的值，使其导数$l&amp;rsquo;(\theta)＝0$。更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$\theta$为向量时，推广更一般的牛顿法，这种方法也叫做牛顿－拉普森法(Newton-Raphson method)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\nabla_\theta l(\theta)$是$l(\theta)$对于$\theta$的偏导。$H$是$(n+1)*(n+1)$的矩阵，叫做Hessian：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;牛顿法收敛的速度通常比批量梯度下降要快，但是牛顿法每次迭代的计算量更大，每次迭代重新计算Hessian矩阵，需要$O(n^2)$的时间复杂度。但在n没有很大的情况下，牛顿法是更有效率的。将牛顿法用于logistic回归的log似然函数$l(\theta)$得到的方法也被称为Fisher scoring。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

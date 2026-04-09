@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="python, numpy, 统计, 自相关系数, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="python numpy 计算自相关系数 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-03-15/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-03-15"/>
+<meta property="article:modified_time" content="2015-03-15"/>
+
+
+
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="numpy">
+<meta property="article:tag" content="统计">
+<meta property="article:tag" content="自相关系数">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> python numpy 计算自相关系数 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-03-15/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >python numpy 计算自相关系数</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Sun Mar 15, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/python">python</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/numpy">numpy</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BB%9F%E8%AE%A1">统计</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E8%87%AA%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0">自相关系数</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="63">
+<meta itemprop="datePublished" content="2015-03-15">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-03-15/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>在分析时间序列时，通常需要计算一个序列的自相关系数。自相关(<a href="http://en.wikipedia.org/wiki/Autocorrelation">Autocorrelation</a>)又叫做序列相关，通常采用自相关系数来发现序列的重复规律，周期等信息。</p>
+<p>我们有序列$X:x_1,x_2,x_3,&hellip;,x_n$，设$X_{s,t}$为$s$时刻开始，$t$时刻结束的序列：$x_s,x_{s+1}&hellip;,x_{t-1},x_t$。$\mu_{s,t}$为序列$X_{s,t}$的均值，$\sigma_{s,t}$为序列$X_{s,t}$的标准差。那么一阶自相关系数为：</p>
+<!-- raw HTML omitted -->
+<p>$$R(1) = \frac{E(X_{2,n}-\mu_{2,n})(X_{1,n-1}-\mu_{1,n-1})}{\sigma_{2,n}\sigma_{1,n-1}}$$</p>
+<!-- raw HTML omitted -->
+<p>同理$k$阶自相关系数为：</p>
+<!-- raw HTML omitted -->
+<p>$$R(k) = \frac{E(X_{k+1,n}-\mu_{k+1,n})(X_{1,n-k}-\mu_{1,n-k})}{\sigma_{k+1,n}\sigma_{1,n-k}}$$</p>
+<!-- raw HTML omitted -->
+<p>python的numpy库里没有直接计算序列自相关系数的函数，但有计算两个不同序列的相关系数函数： <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.correlate.html">correlate</a>。给定两个序列$X,Y$，correlation(X,Y) = $\sum XY$。可以利用correlate函数计算$X$的自相关性：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">autocorrelation</span>(x,lags):<span style="color:#75715e">#计算lags阶以内的自相关系数，返回lags个值，分别计算序列均值，标准差</span>
+</span></span><span style="display:flex;"><span>	n <span style="color:#f92672">=</span> len(x)
+</span></span><span style="display:flex;"><span>	x <span style="color:#f92672">=</span> numpy<span style="color:#f92672">.</span>array(x)
+</span></span><span style="display:flex;"><span>	result <span style="color:#f92672">=</span> [numpy<span style="color:#f92672">.</span>correlate(x[i:]<span style="color:#f92672">-</span>x[i:]<span style="color:#f92672">.</span>mean(),x[:n<span style="color:#f92672">-</span>i]<span style="color:#f92672">-</span>x[:n<span style="color:#f92672">-</span>i]<span style="color:#f92672">.</span>mean())[<span style="color:#ae81ff">0</span>]\
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">/</span>(x[i:]<span style="color:#f92672">.</span>std()<span style="color:#f92672">*</span>x[:n<span style="color:#f92672">-</span>i]<span style="color:#f92672">.</span>std()<span style="color:#f92672">*</span>(n<span style="color:#f92672">-</span>i)) \
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>,lags<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> result
+</span></span></code></pre></div><p>通常在实际中，很多时间序列的均值和标准受时间变化的影响较小，可以看作是恒定的，此时：</p>
+<!-- raw HTML omitted -->
+<p>$$R(k) = \frac{E(X_{k+1,n}-\mu)(X_{1,n-k}-\mu)}{\sigma^2}$$</p>
+<!-- raw HTML omitted -->
+<p>同样可以利用correlate函数实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">autocorrelation</span>(x,lags):<span style="color:#75715e">#计算lags阶以内的自相关系数，返回lags个值，将序列均值、标准差视为不变</span>
+</span></span><span style="display:flex;"><span>	n <span style="color:#f92672">=</span> len(x)
+</span></span><span style="display:flex;"><span>	x <span style="color:#f92672">=</span> numpy<span style="color:#f92672">.</span>array(x)
+</span></span><span style="display:flex;"><span>	variance <span style="color:#f92672">=</span> x<span style="color:#f92672">.</span>var()
+</span></span><span style="display:flex;"><span>	x <span style="color:#f92672">=</span> x<span style="color:#f92672">-</span>x<span style="color:#f92672">.</span>mean()
+</span></span><span style="display:flex;"><span>	result <span style="color:#f92672">=</span> numpy<span style="color:#f92672">.</span>correlate(x, x, mode <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;full&#39;</span>)[<span style="color:#f92672">-</span>n<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:<span style="color:#f92672">-</span>n<span style="color:#f92672">+</span>lags<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]<span style="color:#f92672">/</span>\
+</span></span><span style="display:flex;"><span>		(variance<span style="color:#f92672">*</span>(numpy<span style="color:#f92672">.</span>arange(n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>,n<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>lags,<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)))
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> result
+</span></span></code></pre></div><p>参考：http://stackoverflow.com/questions/643699/how-can-i-use-numpy-correlate-to-do-autocorrelation</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

@@ -1,0 +1,90 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>留学申请 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E7%95%99%E5%AD%A6%E7%94%B3%E8%AF%B7/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Thu, 04 May 2017 00:00:00 UTC</updated>
+    
+    <item>
+      <title>17Fall计算机CS硕士TOP30申请总结</title>
+      <link>https://nanshu.wang/post/2017-05-04/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2017-05-04/</guid>
+      <description>&lt;p&gt;还剩下两个pending的项目，不过结果也不会影响我最后的选择。申请季算是告一段落了，记录一下申请季的经验教训。&lt;/p&gt;
+&lt;h1 id=&#34;申请条件&#34;&gt;申请条件&lt;/h1&gt;
+&lt;p&gt;【!重要!】没有做WES认证后悔哭了，人大的同学请一定不怕麻烦做WES，会涨至少0.1的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;本科：人力资源管理@人大 | GPA:3.72 / 4 | 89 / 100&lt;/li&gt;
+&lt;li&gt;研究生：CS@中科院计算所 | GPA:88 / 100&lt;/li&gt;
+&lt;li&gt;托福：103(S24)&lt;/li&gt;
+&lt;li&gt;GRE：158+170+4&lt;/li&gt;
+&lt;li&gt;论文：网络方向非一作3篇，其中顶会2篇&lt;/li&gt;
+&lt;li&gt;推荐信：研究生期间导师一篇，算法课老师一篇（后来去当了助教），创业公司实习老板一篇&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;申请结果&#34;&gt;申请结果&lt;/h1&gt;
+&lt;p&gt;一共申请了15个项目，5个录取，8个被拒，2个Pending中。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AD(5): SV-SE@CMU, MSIN@CMU, CS@Columbia, CS@UT@Austin, CIT-MSE@Upenn&lt;/li&gt;
+&lt;li&gt;REJ(8): CSE@Harvard, CS@Yale, Stats(DS)@Stanford, CS@Uwisc, MSML@CMU, CS- Meng@Berkeley, CS@UCSD, CS@UCSB&lt;/li&gt;
+&lt;li&gt;Pending(2): CS@Purdue, CS-Meng@Cornell&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;申请方向选校&#34;&gt;申请方向+选校&lt;/h1&gt;
+&lt;p&gt;我本身在国内已经是硕士在读，虽然是网络方向，研究生也在积极地往机器学习/数据科学的方向转，申请学校的时候首选纯CS项目，有track的也都是选了ML/DS方向的。也申请了一些非CS的项目，比如Harvard的CSE和Stanford的Data Science。&lt;/p&gt;
+&lt;p&gt;选校的时候做了一个excel表格，把TOP30的学校都放了进去，综合考虑了排名、地理位置、学费、项目时间等信息，顺便收集了各个学校的课程、Track、官网链接、截止日期、托福GRE代码等信息。最终去掉了一些不合适的项目，包括：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;学费天价&lt;/li&gt;
+&lt;li&gt;MS基本不招人&lt;/li&gt;
+&lt;li&gt;有硕士的Duplicate degree限制&lt;/li&gt;
+&lt;li&gt;时间超过一年半的&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这里的条件也不是那么死，很多有Duplicate degree限制的学校我也申请了，比如加州的那几个（实在太想去加州，甚至之前只想申请加州的学校，了解到有硕士限制的时候真的心凉了半截）。时间超过一年半的项目不想申请是因为自己本身已经读了硕士（国内坑爹的三年），考虑时间成本同时也不想落后同龄（级）人太多。&lt;/p&gt;
+&lt;h1 id=&#34;duplicate-degree&#34;&gt;Duplicate degree&lt;/h1&gt;
+&lt;p&gt;说到Duplicate degree这个可以好好总结一下，我了解到的TOP30里的情况是:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;明确不可以申请的有：Stanford, Umich, UCSD, UCLA&lt;/li&gt;
+&lt;li&gt;不倾向录取已有硕士的有：UIUC, UT-Austin, Purdue, UCI, Berkeley&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这里面的学校我放弃了Umich, UCLA, UIUC, UCI,其它几个学校依然强申：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Stanford申请了统计学院下的Data Science，避开了申请CS。&lt;/li&gt;
+&lt;li&gt;Berkeley申请了Meng项目，因为实在太想去了。&lt;/li&gt;
+&lt;li&gt;UCSD比较奇怪，官网上说卡Master of Science硕士，不卡Master of Engineering。因为我本身是专硕，加之非常想去加州，也就当碰运气申了。&lt;/li&gt;
+&lt;li&gt;UT-Austin和Purdue强申，主要是看它们学费便宜。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以上这些有Duplicate degree限制的项目里，只有UT-Austin给我发了AD，Purdue还在Pending，其他都被拒了。我知道UT-Austin也有给别的国内在读硕士的同学发了申请，所以它应该也不是说的那么严格。&lt;/p&gt;
+&lt;h1 id=&#34;三维哪个重要&#34;&gt;三维哪个重要?&lt;/h1&gt;
+&lt;p&gt;自我感觉申请最大的短板在于本科的GPA。一开始收到连续4连拒，每天刷录取播报就没有看到GPA低于3.8的。所以非常后悔没有去做WES认证，人大的GPA给分比较保守，身边的同学基本做了WES的都涨了0.1。我没有做的原因是因为懒且真的没有学校强行要求做WES(USC好像是需要的，所以懒得申了)。当时也觉得GPA也就那样，3.7和3.8好像也没差多少，如果当时知道GPA有如此大作用的话，肯定再麻烦都会去做的。人大的师弟师妹请一定要去WES认证，血泪教训。&lt;/p&gt;
+&lt;p&gt;GT没必要太纠结分数，过线就可以。CS申请的话保守的线是100+320，如果想稳一点105+325。口语尽量23，数学尽量满分，作文尽量3.5。有部分藤校会很在意分数，比如Upenn和Cornell。&lt;/p&gt;
+&lt;h1 id=&#34;ps怎么写&#34;&gt;PS怎么写?&lt;/h1&gt;
+&lt;p&gt;CS申请和其他的学科特别是人文类的申请还是有一些区别的。CS申请重点还是讲“干货”，描述自己做过的项目和经历，课程+比赛+实习+科研分别一段就差不多了。不用讲太多情怀的东西，比如你小时候有什么梦想，你爸妈对你的影响和看法，这些基本不重要（个人观点）。&lt;/p&gt;
+&lt;p&gt;如果申请某一个方向，可以花几句话讲讲你对这个方向的认识，以及你是怎么被motivate的。我当时准备了两份PS，一份是针对ML/DS方向的，一份是比较General的。为了让人读起来有连贯性，可以找一个“点”把整篇PS串起来，前后呼应。《The elements of style》是一本教写作非常棒的书，可以避免踩很多英文写作的雷，非常建议阅读。&lt;/p&gt;
+&lt;p&gt;PS修改也非常重要，我找了大概5、6个申请过的同学修改了我的PS，有CS的也有非CS背景的。每修改一次，我会改一版再拿给下一个同学看。最终自己觉得改到满意了之后，再找专业的native speaker修改，推荐大家找国外的文书机构，帮你修改的老师都能查到简历资料。帮我改文书的是一个Stanford的姐姐，在语言表达上帮我做了不少修改建议。&lt;/p&gt;
+&lt;h1 id=&#34;diy-or-中介&#34;&gt;DIY or 中介?&lt;/h1&gt;
+&lt;p&gt;DIY。&lt;/p&gt;
+&lt;p&gt;整个网申的过程还是挺复杂挺累的，搞15遍的寄成绩+网申+填推荐信说真的还是很崩溃，特别是有的网申系统做得很容易让人崩溃。所以把这些这么容易让人崩溃的事情交给中介做还是别了吧，我是觉得挺危险的。&lt;/p&gt;
+&lt;p&gt;过程中最好能找到一个靠谱细心的好伙伴帮忙check一下。&lt;/p&gt;
+&lt;h1 id=&#34;录取选择&#34;&gt;录取选择&lt;/h1&gt;
+&lt;p&gt;做决定的过程还是有点纠结。收到四连拒的时候赶紧去雍和宫拜了拜文殊菩萨，接着收到了Columbia和CMU的MSIN的录取。一开始偏向Columbia，它催得着急还交了1000刀的定金（肉疼）。中途去了CMU INI的Open House后又偏向去CMU（被糖衣炮弹收买）。再之后又收到了SV-SE和UT-Austin的录取，因为我一开始只想去加州，拿到CMU的SV-SE基本就决定了。但是SV-SE选课和我想学的ML/DS差得实在有点远，Austin学费便宜还是AI的track。犹豫到了4.15号还是选了SV-SE，这个项目对我的好处在于：1.可以一年毕业；2.在加州；3.毕竟CMU。再之后收到了Upenn第二轮的AD，不过也不会影响我的选择了。&lt;/p&gt;
+&lt;p&gt;还有一点想说的，其实申请的bar高或低不应该成为一个选校的因素。因为1.有些项目的bar本来就比较奇怪，称之为玄学；2.同档次的学校其实差不太多，不用一定要争哪个项目更好。申请是一个你match学校的过程，选校是看学校match自己。没有更好的项目，只有更适合自己的项目。&lt;/p&gt;
+&lt;h1 id=&#34;cs申请趋势&#34;&gt;CS申请趋势&lt;/h1&gt;
+&lt;p&gt;最后多说一点关于CS申请的趋势，总之一句话：&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;水涨船高，越来越难。&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;除了科班本科CS申请的比率越来越大之外，还有很多跟我一样国内在读研究生申请的、工作毕业了好几年申请的、跨专业申请的……&lt;/p&gt;
+&lt;p&gt;那么为什么这么多人出国读CS啊？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先国内国外薪资差距大。湾区硕士毕业10k+是很正常的，国内的硕士毕业薪资每年虽然也在涨，今年还出现了很多倒挂的现象，我在申请前也很幸运拿到了猪厂做算法30w+的offer，但差距还是明显的。&lt;/li&gt;
+&lt;li&gt;对人的尊重。对人的尊重这一点国内还是差很多的，国内三巨头也频繁爆出负面新闻，以及压榨青春的加班文化，在国内面试找工作的时候也有遇到过一些“奇葩”的面试官加深了我的排斥。美帝在这点上还是好非常多的，整个互联网公司的价值观里就是尊重个体和差异的，而且劳动者的权利保护制度也更加完善。&lt;/li&gt;
+&lt;li&gt;很多工作几年的人容易感觉到瓶颈期，或者是工作太轻松没有挑战，或者是觉得目前的行业不景气，或者仅仅是加班太多难以忍受，给自己一个break再读个书充个电也很合理，换个专业转CS就更合理了。&lt;/li&gt;
+&lt;li&gt;国内的生存压力。国内一线大城市的房价和雾霾，住房和空气这两个刚需足以逼走大部分人了。明显感觉逃离北上广这句话不是说说而已，我这一届硕士毕业的四川同学，大部分选择了成都和杭州。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;当然美帝也不是全部都好，比如湾区的税、就业的天花板、空虚寂寞吃不好等等……但也挡不住大家猛烈的申请势头。&lt;/p&gt;
+&lt;p&gt;最终的结果就是今年知乎上已经在流行晒全聚德的拒信了……&lt;/p&gt;
+&lt;p&gt;越来越多的人开始挤CS出国大坑了，目测明年申请形势更难，也不知道这个泡沫什么时候会破……&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

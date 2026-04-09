@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="Hugo, 静态网站生成器, 博客, 教程, 网站, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="Hugo静态网站生成器中文教程 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-01-31/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-01-31"/>
+<meta property="article:modified_time" content="2015-01-31"/>
+
+
+
+<meta property="article:tag" content="Hugo">
+<meta property="article:tag" content="静态网站生成器">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="教程">
+<meta property="article:tag" content="网站">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> Hugo静态网站生成器中文教程 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-01-31/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >Hugo静态网站生成器中文教程</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Sat Jan 31, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/hugo">Hugo</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E9%9D%99%E6%80%81%E7%BD%91%E7%AB%99%E7%94%9F%E6%88%90%E5%99%A8">静态网站生成器</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E5%8D%9A%E5%AE%A2">博客</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%95%99%E7%A8%8B">教程</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BD%91%E7%AB%99">网站</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="587">
+<meta itemprop="datePublished" content="2015-01-31">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-01-31/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <h1 id="前言">前言</h1>
+<p><a href="http://gohugo.io">Hugo</a>是什么？官方文档是这样介绍它的：</p>
+<blockquote>
+<p>Hugo is a general-purpose website framework. Technically speaking, Hugo is a static site generator.</p>
+</blockquote>
+<p>Hugo是一种通用的网站框架。严格来说，Hugo应该被称作静态网站生成器。</p>
+<p>静态网站生成器从字面上来理解，就是将你的内容生成静态网站。所谓“静态”的含义其实反映在网站页面的生成的时间。一般的web服务器（WordPress, Ghost, Drupal等等）在收到页面请求时，需要调用数据库生成页面（也就是HTML代码），再返回给用户请求。而静态网站则不需要在收到请求后生成页面，而是在整个网站建立起之前就将所有的页面全部生成完成，页面一经生成便称为静态文件，访问时直接返回现成的静态页面，不需要数据库的参与。</p>
+<p>采用静态网站的维护也相当简单，实际上你根本不需要什么维护，完全不用考虑复杂的运行时间，依赖和数据库的问题。再有也不用担心安全性的问题，没有数据库，网站注入什么的也无从下手。</p>
+<p>静态网站最大好处就是访问快速，不用每次重新生成页面。当然，一旦网站有任何更改，静态网站生成器需要重新生成所有的与更改相关的页面。然而对于小型的个人网站，项目主页等等，网站规模很小，重新生成整个网站也是非常快的。Hugo在速度方面做得非常好，Dan Hersam在他这个<a href="https://www.udemy.com/build-static-sites-in-seconds-with-hugo/">Hugo教程</a>里提到，5000篇文章的博客，Hugo生成整个网站只花了6秒，而很多其他的静态网站生成器则需要几分钟的时间。我的博客目前文章只有几十篇，用Hugo生成整个网站只需要0.1秒。官方文档提供的数据是每篇页面的生成时间不到1ms。</p>
+<p>我认为对于个人博客来说，应该将时间花在内容上而不是各种折腾网站。Hugo会将Markdown格式的内容和设置好模版一起，生成漂亮干净的页面。挑选折腾好一个喜爱的模版，在Sublime Text里用Markdown写博客，再敲一行命令生成同步到服务器就OK了。整个体验是不是非常优雅简单还有点geek的味道呢？</p>
+<p>Hugo是用<a href="http://golang.org/">Go语言</a>写的，为什么使用Go，作者<a href="http://spf13.com">Steve Francia</a>的原话是：</p>
+<blockquote>
+<p>I looked at existing static site generators like Jekyll, Middleman and nanoc. All had complicated dependencies to install and took far longer to render my blog with hundreds of posts than I felt was acceptable. I wanted a framework to be able to get rapid feedback while making changes to the templates, and the 5+-minute render times was just too slow. In general, they were also very blog minded and didn’t have the ability to have different content types and flexible URLs.</p>
+</blockquote>
+<blockquote>
+<p>I wanted to develop a fast and full-featured website framework without dependencies. The Go language seemed to have all of the features I needed in a language. I began developing Hugo in Go and fell in love with the language. I hope you will enjoy using (and contributing to) Hugo as much as I have writing it.</p>
+</blockquote>
+<p>总结他的一下大意：</p>
+<ul>
+<li>吐槽脸：Jekyll以及那一堆静态网站生成器安装麻烦（依赖多），速度又慢，内容类型单一，url死板</li>
+<li>挽袖子状：Go挺萌的符合我对语言的一切幻想，就用它重写一个吧</li>
+</ul>
+<p>我为啥用Hugo？除了以上提到的原因，很重要的一点是<a href="http://gohugo.io">Hugo主页</a>很漂亮，看了一圈静态网站生成器的主页，一眼就被Hugo的美到了，首页的照片里的那个格子小本子应该是<a href="http://www.paperthinks.com">Paperthinks</a>，我正好也在用，有种刚好看到自己桌面的感觉。</p>
+<h1 id="安装">安装</h1>
+<p>如果说速度快是Hugo的第一大优点，那么安装简单应该就是Hugo的第二大优点。对于Mac用户，没有brew的话先安装brew，在命令行里敲：</p>
+<pre tabindex="0"><code>$ ruby -e &#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&#34;
+</code></pre><p>然后再敲一行安装Hugo:</p>
+<pre tabindex="0"><code>$ brew new Hugo
+</code></pre><p>当然你也可以在<a href="https://github.com/spf13/hugo/releases">这里</a>直接下载对应系统的binary文件，解压就行了。</p>
+<h1 id="了解hugo">了解Hugo</h1>
+<p>首先建立自己的网站，mysite是网站的路径</p>
+<pre tabindex="0"><code>$ hugo new site mysite
+</code></pre><p>然后进入该路径</p>
+<pre tabindex="0"><code>$ cd mysite
+</code></pre><p>在该目录下你可以看到以下几个目录和<code>config.toml</code>文件</p>
+<pre tabindex="0"><code> ▸ archetypes/ 
+ ▸ content/
+ ▸ layouts/
+ ▸ static/
+   config.toml
+</code></pre><p><code>config.toml</code>是网站的配置文件，包括<code>baseurl</code>, <code>title</code>, <code>copyright</code>等等网站参数。</p>
+<p>这几个文件夹的作用分别是：</p>
+<ul>
+<li>archetypes：包括内容类型，在创建新内容时自动生成内容的配置</li>
+<li>content：包括网站内容，全部使用markdown格式</li>
+<li>layouts：包括了网站的模版，决定内容如何呈现</li>
+<li>static：包括了css, js, fonts, media等，决定网站的外观</li>
+</ul>
+<p>Hugo提供了一些完整的主题可以使用，下载这些主题：</p>
+<pre tabindex="0"><code>$ git clone --recursive https://github.com/spf13/hugoThemes themes
+</code></pre><p>此时现成的主题存放在<code>themes/</code>文件夹中。</p>
+<p>现在我们先熟悉一下Hugo，创建新页面：</p>
+<pre tabindex="0"><code>$ hugo new about.md
+</code></pre><p>进入<code>content/</code>文件夹可以看到，此时多了一个markdown格式的文件<code>about.md</code>，打开文件可以看到时间和文件名等信息已经自动加到文件开头，包括创建时间，页面名，是否为草稿等。</p>
+<pre tabindex="0"><code>---
++++
+date = &#34;2015-02-01T18:19:54+08:00&#34;
+draft = true
+title = &#34;about&#34;
+
++++
+
+# 关于我
+- 2010  HR@RUC
+- 2014  CS@ICT, CAS
+</code></pre><p>我在页面中加入了一些内容，然后运行Hugo:</p>
+<pre tabindex="0"><code>$ hugo server -t hyde --buildDrafts
+</code></pre><p><code>-t</code>参数的意思是使用hyde主题渲染我们的页面，注意到<code>about.md</code>目前是作为草稿，即<code>draft</code>参数设置为<code>true</code>，运行Hugo时要加上<code>--buildDrafts</code>参数才会生成被标记为草稿的页面。
+在浏览器输入localhost:1313，就可以看到我们刚刚创建的页面。</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/hugo-server-1.png&quot; alt=&quot;hugo-server-1&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>注意观察当前目录下多了一个文件夹<code>public/</code>，这里面是Hugo生成的整个静态网站，如果使用Github pages来作为博客的Host，你只需要将<code>public/</code>里的文件上传就可以，这相当于是Hugo的输出。</p>
+<h1 id="主题选择">主题选择</h1>
+<p>进入<code>themes/hyde</code>文件夹，可以看到熟悉的文件夹名，和主题相关的文件主要是在<code>layouts/</code>和<code>static/</code>这两个文件内，选择好一个主题后，可以将<code>themes/</code>中的文件夹直接复制到<code>mysite/</code>目录下，覆盖原来的<code>layouts/</code>, <code>static/</code>文件夹，此时直接使用$Hugo server就可以看到主题效果，修改主题也可以直接修改其中的css, js, html等文件。</p>
+<p>我的博客模版是在Hugo作者spf13的<a href="http://spf13.com">博客</a>基础上修改的。第一步，先去他的博客网站源码<a href="https://github.com/spf13/spf13.com">主页</a>把整个项目clone下来</p>
+<pre tabindex="0"><code>$ git clone git@github.com:spf13/spf13.com.git
+</code></pre><p>把项目中的<code>static/</code>和<code>layouts/</code>文件复制到自己网站的目录下替换原来的文件夹。再次运行Hugo:</p>
+<pre tabindex="0"><code>$ hugo server --buildDrafts -w
+</code></pre><p>这次没有选择主题，如果选择了主题会将当前的主题覆盖掉。参数<code>-w</code>意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，不需要重新运行$hugo server，方便我们进行修改。这是采用了spf13主题的页面：</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/hugo-server-2.png&quot; alt=&quot;hugo-server-2&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>我们尝试在他的主题基础上修改，找到<code>/layouts/partials/subheader.html</code>文件:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">header</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;header&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">figure</span>&gt;
+</span></span><span style="display:flex;"><span>      &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#a6e22e">border</span><span style="color:#f92672">=</span><span style="color:#e6db74">0</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;logolink&#34;</span>&gt;&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;icon-spf13-3&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;logo&#34;</span>&gt; &lt;/<span style="color:#f92672">div</span>&gt;&lt;/<span style="color:#f92672">a</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">figure</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;byline&#34;</span>&gt;by Steve Francia&lt;/<span style="color:#f92672">div</span>&gt;
+</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">nav</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;nav&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>    {{ partial &#34;nav.html&#34; . }}
+</span></span><span style="display:flex;"><span>    {{ partial &#34;social.html&#34; . }}
+</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">nav</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">header</span>&gt;
+</span></span></code></pre></div><p>将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了，你可以根据自己的需要修改对应的文件，当然得懂一点css, html。</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/hugo-server-change.png&quot; alt=&quot;hugo-server-change&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h1 id="评论功能">评论功能</h1>
+<p>个人博客当然不能没有评论，Hugo默认支持<a href="https://disqus.com/">Disqus</a>的评论，需要在模版中添加以下代码：</p>
+<pre tabindex="0"><code>{{ template &#34;_internal/disqus.html&#34; . }}
+</code></pre><p>spf13在<code>/layouts/partials/disqus.html</code>中已经添加好了。</p>
+<p>只需要去Disqus注册一个账号，然后在<code>config.toml</code>里加上：</p>
+<pre tabindex="0"><code>disqusShortname = &#34;yourdisqusShortname&#34;
+</code></pre><p>注意<code>-w</code>参数是不能监测<code>config.toml</code>里参数变化的，因此需要重新运行Hugo，进入localhost:1313/about，可以看到评论功能。</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/comments.png&quot; alt=&quot;comments&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h1 id="代码高亮">代码高亮</h1>
+<p>作为码农，代码高亮对于写博客来说当然必不可少。有两种方法：第一种是在生成页面时就生成好代码高亮过的页面；第二种是使用js，用户加载页面时浏览器再进行渲染。</p>
+<p>第一种方法需要使用<a href="http://pygments.org/">Pygments</a>，一个python写的工具。</p>
+<p>安装Pygments：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ pip install Pygments
+</span></span></code></pre></div><p>没有pip的先下载 <a href="https://bootstrap.pypa.io/get-pip.py">https://bootstrap.pypa.io/get-pip.py</a> ，然后安装pip：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python get-pip.py
+</span></span></code></pre></div><p>Pygments的调用采用shortcodes实现，spf13里也写好了，在<code>/layouts/shortcode/highlight.html</code>里</p>
+<pre tabindex="0"><code>{{ $lang := index .Params 0 }}
+{{ highlight .Inner $lang }}
+</code></pre><p>要使代码高亮，在你的代码外面加上：</p>
+<pre tabindex="0"><code>{{ % highlight python %}}
+your code here.
+{{ % /highlight %}}
+</code></pre><p>这里为了避免以上两行被识别为代码高亮的标识，在<code>{{</code>和<code>%</code>之间多加了一个空格，实际使用的时候需要把空格去掉。</p>
+<p>第二种方法比较简单，在<code>layouts/partials/header_includes.html</code>中加上：</p>
+<pre tabindex="0"><code>&lt;script src=&#34;https://yandex.st/highlightjs/8.0/highlight.min.js&#34;&gt;&lt;/script&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://yandex.st/highlightjs/8.0/styles/default.min.css&#34;&gt;
+&lt;script&gt;hljs.initHighlightingOnLoad();&lt;/script&gt;
+</code></pre><p>这里使用了<a href="http://yandex.ru/">Yandex</a>的<a href="http://highlightjs.org/">Highlight.js</a>。</p>
+<p>其他的可以实现代码高亮的js库还有：</p>
+<ul>
+<li><a href="http://highlightjs.org/">Highlight.js</a></li>
+<li><a href="http://craig.is/making/rainbows">Rainbow</a></li>
+<li><a href="http://alexgorbatchev.com/SyntaxHighlighter/">Syntax Highlighter</a></li>
+<li><a href="https://code.google.com/p/google-code-prettify/">Google Prettify</a></li>
+</ul>
+<h1 id="插入图片">插入图片</h1>
+<p>图片文件放在<code>static/media</code>文件中，插入图片：</p>
+<pre tabindex="0"><code>{{ % img src=&#34;/media/example.jpg&#34; alt=&#34;example&#34; %}}
+</code></pre><p>注意这里的<code>{{</code>和<code>%</code>之间也加上了空格，避免这行代码起作用，实际使用也需要把空格去掉。</p>
+<h1 id="使用mathjax">使用Mathjax</h1>
+<p>在需要渲染公式的页面加入以下代码，比如<code>layouts/_default/single.html</code>文件，这个文件是对于所有post进行页面生成的模版，如果你希望所有页面都对公式渲染的话，可以加入<code>layouts/partials/footer.html</code>文件里，保证所有生成的页面都有这几行代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/javascript&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
+</span></span></code></pre></div><p>Mathjax和Markdown会有冲突问题，<a href="http://doswa.com/2011/07/20/mathjax-in-markdown.html">这里</a>提供了解决方案。</p>
+<h1 id="用github-pages作为网站的host">用github pages作为网站的Host</h1>
+<p>Github pages分为两种：一种是项目主页，每个项目都可以有一个；另一种是用户主页，一个用户只能有一个。</p>
+<p>因为用户主页只能有一个，所以建议使用项目主页托管，不过我这里采用了用户主页，反正我也只用一个博客，使用个人主页作为Host也相对更简单一点。</p>
+<p>我们需要创建两个单独的repo，一个用于放Hugo的输入文件，即除了<code>public/</code>文件夹之外的所有文件，另一个放我们生成的静态网站，也就是<code>public/</code>的内容。</p>
+<p>步骤如下：</p>
+<ol>
+<li>在Github上创建repo <code>&lt;your-project&gt;-hugo</code>，托管Hugo的输入文件。</li>
+<li>创建repo <code>&lt;username&gt;.github.io</code>，用于托管<code>public/</code>文件夹，注意这里的repo名字一定要用自己的用户名，才会被当作是个人主页。</li>
+<li>clone your-project</li>
+</ol>
+<pre tabindex="0"><code>$ git clone &lt;&lt;your-project&gt;-hugo-url&gt;
+</code></pre><ol start="4">
+<li>进入your-project 目录</li>
+</ol>
+<pre tabindex="0"><code>$ cd &lt;your-project&gt;-hugo
+</code></pre><ol start="5">
+<li>删掉public目录（这个目录每次运行Hugo都会再次生成，不用担心）</li>
+</ol>
+<pre tabindex="0"><code>$ rm -rf public
+</code></pre><ol start="6">
+<li>把public/目录添加为submodule 与<!-- raw HTML omitted -->.github.io同步</li>
+</ol>
+<pre tabindex="0"><code>$ git submodule add git@github.com:&lt;username&gt;/&lt;username&gt;.github.io.git public
+</code></pre><ol start="7">
+<li>添加.gitignore文件，文件中写<code>public/</code>，在同步<code>&lt;your-project&gt;-hugo</code>时会忽略public文件夹</li>
+<li>下面是写好的一个script <code>deploy.sh</code>，拷贝过去直接就能用，记得chmod +x deploy.sh加上运行权限。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>echo -e <span style="color:#e6db74">&#34;\033[0;32mDeploying updates to GitHub...\033[0m&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rebuilding site `date`&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> $# -eq <span style="color:#ae81ff">1</span> <span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">then</span> msg<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$1<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Push Hugo content </span>
+</span></span><span style="display:flex;"><span>git add -A
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>git push origin master
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Build the project. </span>
+</span></span><span style="display:flex;"><span>hugo <span style="color:#75715e"># if using a theme, replace by `hugo -t &lt;yourtheme&gt;`</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Go To Public folder</span>
+</span></span><span style="display:flex;"><span>cd public
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Add changes to git.</span>
+</span></span><span style="display:flex;"><span>git add -A
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Commit changes.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git commit -m <span style="color:#e6db74">&#34;</span>$msg<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Push source and build repos.</span>
+</span></span><span style="display:flex;"><span>git push origin master
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Come Back</span>
+</span></span><span style="display:flex;"><span>cd ..
+</span></span></code></pre></div><p>等一小会儿（10分钟左右），你就能在http://username.github.io/ 这个页面看到你的网站了！每次更新网站或者写了新文章，只需要运行./deploy.sh 发布就搞定了，简单吧？</p>
+<p>Github pages还支持域名绑定，三个步骤：</p>
+<ol>
+<li>在<code>&lt;username&gt;.github.io</code> repo的跟目录下添加<code>CNAME</code>文件，文件里写上你的域名，不用加http://的开头。</li>
+<li>记下http://username.github.io/ 的ip地址。</li>
+</ol>
+<pre tabindex="0"><code>$ ping username.github.io
+</code></pre><ol start="3">
+<li>在你的域名管理中加上两条A记录，分别是www和@，记录指向http://username.github.io/ 的ip地址，也需要等一小会儿生效。</li>
+</ol>
+<h1 id="更改字体服务商">更改字体服务商</h1>
+<p>我的博客模版里用的字体是从googleapis里获取的，国内访问会下载失败，把字体库改成360的。
+找到<code>layouts/partials/head_includes.html</code>文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;http://fonts.googleapis.com/css?family=Fjalla+One|Open+Sans:300&#39;</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;stylesheet&#39;</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;text/css&#39;</span>&gt;
+</span></span></code></pre></div><p>将其中的googleapis替换为useso就行了。</p>
+<p>教程会根据我的博客遇到的问题继续更新。</p>
+<h1 id="增加网站分析">增加网站分析</h1>
+<p>使用网站分析可以帮助我们更好地了解博客的读者和流量来源，我使用了<a href="http://tongji.baidu.com">百度统计</a>和<a href="http://www.google.cn/webmasters/">谷歌统计</a>，注册帐号后只需要按照提示在模板中加入相应的script代码就可以了。</p>
+<h1 id="参考">参考</h1>
+<ol>
+<li><a href="http://gohugo.io/overview/introduction/">Hugo docs</a></li>
+<li><a href="http://ipn.li/kernelpanic/3/">《内核恐慌》静态网站生成器</a></li>
+<li><a href="https://www.udemy.com/build-static-sites-in-seconds-with-hugo/">Build Static Sites in Seconds with Hugo</a></li>
+<li><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/">Setting up a custom domain with GitHub Pages</a></li>
+</ol>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

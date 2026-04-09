@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="机器学习, 有监督学习, 线性回归, logistic回归, 正则化, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="机器学习笔记4 正则化 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-02-17/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-02-17"/>
+<meta property="article:modified_time" content="2015-02-17"/>
+
+
+
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="有监督学习">
+<meta property="article:tag" content="线性回归">
+<meta property="article:tag" content="logistic回归">
+<meta property="article:tag" content="正则化">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> 机器学习笔记4 正则化 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-02-17/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >机器学习笔记4 正则化</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Tue Feb 17, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0">有监督学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92">线性回归</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/logistic%E5%9B%9E%E5%BD%92">logistic回归</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%AD%A3%E5%88%99%E5%8C%96">正则化</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="51">
+<meta itemprop="datePublished" content="2015-02-17">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-02-17/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>Andrew Ng cs229 Machine Learning 笔记</p>
+<h1 id="正则化-regularization">正则化 Regularization</h1>
+<p>为了和正规方程(normal equation)里&quot;正规&quot;区分开来，这里Regularization都译作“正则化”，有些地方也用的是“正规化”。以下内容来自<a href="http://en.wikipedia.org/w/index.php?title=Regularization_(mathematics)">wikipedia</a>：</p>
+<p>正则化是指通过引入额外新信息来解决机器学习中过拟合问题的一种方法。这种额外信息通常的形式是模型复杂性带来的惩罚度。正则化的一种理论解释是它试图引入<a href="http://en.wikipedia.org/wiki/Occam%27s_razor">奥卡姆剃刀原则</a>。而从贝叶斯的观点来看，正则化则是在模型参数上引入了某种先验的分布。</p>
+<p>机器学习中最常见的正则化是$L_1$和$L_2$正则化。正则化是在学习算法的损失(成本)函数$E(X,Y)$的基础上在加上一项正则化参数项：$E(X,Y)+\alpha|w|$，其中$w$是参数向量，$\alpha$是正则项的参数值，需要在实际训练中调整。正则化在许多模型中都适用，对于线性回归模型来说，采用$L_1$正则化的模型叫作lasso回归，采用$L_2$的叫作ridge回归。对于logistic回归，神经网络，支持向量机，随机条件场和一些矩阵分解方法，正则化也适用。在神经网络中，$L_2$正则化又叫作“权重衰减”(weight decay)。$L_1$正则化能产生稀疏模型，因此在特征选择中很有用，但是$L_1$范式不可微，所以需要在学习算法中修改，特别是基于梯度下降的算法。</p>
+<h1 id="过拟合问题">过拟合问题</h1>
+<p>欠拟合(也叫做高偏差(high bias))是指不能很好地拟合数据，一般是因为模型函数太简单或者特征较少。过拟合问题是指过于完美拟合了训练集数据，而对新的样本失去了一般性，不能有效预测新样本，这个问题也叫做高方差(high variances)。造成过拟合的原因可能是特征量太多或者模型函数过于复杂。线性回归和logistic回归都存在欠拟合和过拟合的问题。</p>
+<p>要解决过拟合的问题，通常有两种方法：</p>
+<ol>
+<li>
+<p>减少特征数量</p>
+<ul>
+<li>手动筛选特征</li>
+<li>采用特征筛选算法</li>
+</ul>
+</li>
+<li>
+<p>正则化</p>
+<ul>
+<li>保留所有的特征，但尽可能使参数$\theta_j$尽量小。</li>
+</ul>
+</li>
+</ol>
+<p>正则化在很多特征变量对目标值只有很小影响的情况下非常有用。</p>
+<h1 id="成本函数">成本函数</h1>
+<p>在原有的成本函数的基础上加上使参数$\theta_j$正则化的项：</p>
+<!-- raw HTML omitted -->
+<p>其中$\lambda$叫做正则化参数，决定了参数正则化项的影响大小。引入正则化参数项，可以避免模型过拟合的问题。如果$\lambda$的值设置过大，可能会使模型函数出现欠拟合的问题。</p>
+<h1 id="正则化线性回归">正则化线性回归</h1>
+<h2 id="梯度下降法">梯度下降法</h2>
+<p>常数项$\theta_0$不用正则化，因此更新策略为：</p>
+<!-- raw HTML omitted -->
+<p>上面的式子可以写成：</p>
+<!-- raw HTML omitted -->
+<p>注意到$(1 - \alpha \frac{\lambda}m) &lt; 1$，直观上可以理解为将式子中第一项$\theta_j$值减小了一点，第二项还是和无正则化的更新策略的第二项一致。</p>
+<h2 id="正规方程">正规方程</h2>
+<p>正则化正规方程求解$\theta$为：</p>
+<!-- raw HTML omitted -->
+<p>$L$是(n+1)*(n+1)的矩阵，除了右上角的值为0外，对角线上其他值都为1。直观上理解，不包括右上角$X_0$项，$L$是一个单位矩阵。</p>
+<p>当$m\leq n$时，$X^TX$不可逆，但加入$\lambda L$后，$X^TX$也变得可逆了。</p>
+<h1 id="正则化logistic回归">正则化logistic回归</h1>
+<h2 id="成本函数-1">成本函数</h2>
+<p>加上正则化参数$\theta$项：</p>
+<!-- raw HTML omitted -->
+<p>注意$\sum_{j=1}^n \theta_j^2$中参数的下标时从1到n，没有包括常数项$\theta_0$</p>
+<h2 id="梯度下降">梯度下降</h2>
+<p>和线性回归一样，$\theta_0$和其他参数要分开更新：</p>
+<!-- raw HTML omitted -->
+<p>这和正则化线性回归的更新策略是一样的。</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

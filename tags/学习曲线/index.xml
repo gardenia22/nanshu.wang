@@ -1,0 +1,242 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>学习曲线 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Sun, 17 May 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记7 高偏差/低偏差，学习曲线，模型选择</title>
+      <link>https://nanshu.wang/post/2015-05-17/</link>
+      <pubDate>Sun, 17 May 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-05-17/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;p&gt;原文：https://share.coursera.org/wiki/index.php/ML:Advice_for_Applying_Machine_Learning&lt;/p&gt;
+&lt;p&gt;面对一个机器学习问题，我们提取好特征，挑选好训练集，选择一种机器学习算法，然后学习预测得到了第一步结果。然而我们不幸地发现，在测试集上的准确率低得离谱，误差高得吓人，要提高准确率、减少误差的话，下一步该做些什么呢？&lt;/p&gt;
+&lt;p&gt;可以采用以下的方法来减少预测的误差：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获得更多的训练样本&lt;/li&gt;
+&lt;li&gt;减少特征的数量&lt;/li&gt;
+&lt;li&gt;增加特征的数量&lt;/li&gt;
+&lt;li&gt;使用多项式特征&lt;/li&gt;
+&lt;li&gt;增大或减小正则化参数$\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但不要盲目在这些可行的方法里随便选一种来提升模型，需要用一些诊断模型的技术来帮助我们选择使用哪种策略。&lt;/p&gt;
+&lt;h1 id=&#34;1评估假设&#34;&gt;1.评估假设&lt;/h1&gt;
+&lt;p&gt;即使模型假设对于训练集的误差很低，若存在过拟合，模型的预测也同样会不准确。&lt;/p&gt;
+&lt;p&gt;给定一份训练集，我们可以将数据分成两部分：训练集和测试集。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用训练集最小化$J(\Theta)$得到$\Theta$参数&lt;/li&gt;
+&lt;li&gt;计算测试集的误差：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;3.计算分类错误率（即0/1分类错误率）&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;测试集的平均误差为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是测试集上分类错误的样本的比例。&lt;/p&gt;
+&lt;h1 id=&#34;2模型选择与训练验证测试集&#34;&gt;2.模型选择与训练/验证/测试集&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;学习算法若仅仅对训练集拟合较好，并不能说明其假设也是好的。&lt;/li&gt;
+&lt;li&gt;训练集上的假设误差通常要比其他数据集上得到的误差要小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了在假设上选择模型，可以测试模型的多项式的次数来观察误差结果。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;无验证集&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。&lt;/li&gt;
+&lt;li&gt;找到在预测集上误差最小的模型的多项式次数$d$。&lt;/li&gt;
+&lt;li&gt;使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在这个例子中，我们用测试集训练得到的一个变量，即多项式次数$d$，但这样做会使其他数据集的误差更大。&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我们引入了第三种数据集，即交叉验证集(Cross Validation Set)，来作为选择$d$的中间数据集。这样，测试集会给出一个准确，非乐观估计的误差结果。&lt;/p&gt;
+&lt;p&gt;例如，将数据集分成三份：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;训练集：60%&lt;/li&gt;
+&lt;li&gt;交叉验证集：20%&lt;/li&gt;
+&lt;li&gt;测试集：20%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于这三个数据集我们可以计算三个不同误差值：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;有验证集&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。&lt;/li&gt;
+&lt;li&gt;找到在验证集上误差最小的模型的多项式次数$d$。&lt;/li&gt;
+&lt;li&gt;使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;使用验证集则避免了使用测试集来确定多项式次数$d$。&lt;/p&gt;
+&lt;h1 id=&#34;3诊断偏差-vs-方差&#34;&gt;3.诊断偏差 vs. 方差&lt;/h1&gt;
+&lt;p&gt;我们来讨论一下多项式次数$d$和过拟合以及欠拟合之间的关系。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们需要区分导致预测结果差的原因是偏差还是方差。&lt;/li&gt;
+&lt;li&gt;高偏差也就是欠拟合，高方差也就是过拟合。我们需要在这两者之间找到一个黄金分割。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;随着多项式次数$d$的增加，训练集的误差会&lt;strong&gt;减少&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;同时，交叉验证集的误差会随着$d$的增加而&lt;strong&gt;减少&lt;/strong&gt;，但在$d$增加到某一点之后，会随着$d$的增加而&lt;strong&gt;增加&lt;/strong&gt;，形成一个凸曲线&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高偏差（欠拟合）：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。&lt;/li&gt;
+&lt;li&gt;高方差（过拟合）：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$比$J_{train}(\Theta)$高得多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以用下图来表示：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/300px-Features-and-polynom-degree.png&amp;quot; alt=&amp;quot;Features-and-polynom-degree&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;4正则化和偏差方差&#34;&gt;4.正则化和偏差/方差&lt;/h1&gt;
+&lt;p&gt;下面来分析正则化参数$\lambda$。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$较大：高偏差（欠拟合）&lt;/li&gt;
+&lt;li&gt;$\lambda$不大不小：正好&lt;/li&gt;
+&lt;li&gt;$\lambda$较小：高方差（过拟合）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;较大的$\lambda$参数会惩罚$\Theta$参数，即简单化结果函数的曲线，造成欠拟合。&lt;/p&gt;
+&lt;p&gt;$\lambda$和训练集以及验证集的关系如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$较小：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$较高（高方差/过拟合）。&lt;/li&gt;
+&lt;li&gt;$\lambda$不大不小：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较低，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。&lt;/li&gt;
+&lt;li&gt;$\lambda$较大：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高（高偏差/欠拟合）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下图说明了$\lambda$值和假设之间的关系：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/300px-Features-and-lambda.png&amp;quot; alt=&amp;quot;Features-and-lambda&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;为了选择模型和正则化参数$lambda$，我们需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;列出$\lambda$测试的值，比如 $\lambda \in \lbrace0, 0.01, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56, 5.12, 10.24\rbrace$；&lt;/li&gt;
+&lt;li&gt;选择一个$\lambda$的值进行计算；&lt;/li&gt;
+&lt;li&gt;创建模型集，比如按照多项式次数或其他指标来创建；&lt;/li&gt;
+&lt;li&gt;选择一个模型来学习$\Theta$值；&lt;/li&gt;
+&lt;li&gt;用所选的模型学习得到$\Theta$值，使用选择的$\lambda$值计算$J_{train}(\Theta)$（为下一步学习参数$\Theta$）；&lt;/li&gt;
+&lt;li&gt;使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的训练误差$J_{train}(\Theta)$；&lt;/li&gt;
+&lt;li&gt;使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的交叉验证误差$J_{CV}(\Theta)$；&lt;/li&gt;
+&lt;li&gt;对模型集合所有$\lambda$取值重复上述步骤，选择使交叉验证集误差最小的组合；&lt;/li&gt;
+&lt;li&gt;如果需要使用图形化结果来帮助决策的话，可以绘制$\lambda$和$J_{train}(\Theta)$的图像，以及$\lambda$和$J_{CV}(\Theta)$的图像；&lt;/li&gt;
+&lt;li&gt;使用最好的$\Theta$和$\lambda$组合，在测试集上进行预测计算$J_{test}(\Theta)$的值来验证模型对问题是否有好的泛化能力。&lt;/li&gt;
+&lt;li&gt;为了帮助选择最好的多项式次数和$\lambda$的值，可以采用学习曲线来诊断。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;5学习曲线&#34;&gt;5.学习曲线&lt;/h1&gt;
+&lt;p&gt;训练3个样本很容易得到0误差，因为我们永远可以找到一条二次曲线完全经过3个点。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当训练集越来越大时，二次函数的误差也会增加。&lt;/li&gt;
+&lt;li&gt;误差值会在训练集大小m增加到一定程度后慢慢平缓。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;高偏差的情况&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;小训练集&lt;/strong&gt;：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大训练集&lt;/strong&gt;：$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果学习算法有高偏差的问题，那么获取更多的训练数据并不会有很多改进。&lt;/p&gt;
+&lt;p&gt;对于高方差的问题，对于训练集大小有如下关系：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;高方差的情况&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;小训练集&lt;/strong&gt;：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大训练集&lt;/strong&gt;：$J_{train}(\Theta)$会略微增加，$J_{CV}(\Theta)会略微降低，并且$J_{train}(\Theta) &amp;lt; J_{CV}(\Theta)$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果学习算法有高方差的问题，那么获取更多的训练数据是有用的。&lt;/p&gt;
+&lt;p&gt;下图展示了训练集大小和高偏差/高方差问题之间的关系。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/500px-High-variance-high-bias.png&amp;quot; alt=&amp;quot;High-variance-high-bias&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;6再次考虑如何选择提升模型的下一步&#34;&gt;6.再次考虑如何选择提升模型的下一步&lt;/h1&gt;
+&lt;p&gt;决策过程可以分解成以下几点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获得更多的训练样本
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;减少特征的数量
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加特征的数量
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用多项式特征
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加正则参数$\lambda$
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;减少正则参数$\lambda$
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;7诊断神经网络&#34;&gt;7.诊断神经网络&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;参数较少的神经网络很容易欠拟合，但同时计算也较容易。&lt;/li&gt;
+&lt;li&gt;参数较多的大型神经网络更容易过拟合，但同时计算量较大。在这种情况下可以使用正则化（增加$\lambda$）来避免过拟合问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用单个隐藏层是一个较好地开始默认设置。你可以使用验证集在多个隐藏层上训练神经网络。&lt;/p&gt;
+&lt;h1 id=&#34;8模型选择总结&#34;&gt;8.模型选择总结&lt;/h1&gt;
+&lt;p&gt;以下是机器学习诊断的一些总结&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选择多项式次数M&lt;/li&gt;
+&lt;li&gt;如何选择模型中得参数$\Theta$（即模型选择）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有3种方式解决：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;获取更多数据（非常困难）&lt;/li&gt;
+&lt;li&gt;选择拟合数据最好且没有过拟合的模型（非常困难）&lt;/li&gt;
+&lt;li&gt;通过正则化来减少过拟合的机会&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;偏差：近似误差（预测值和期望值之间的差值）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高偏差 = 欠拟合（BU）&lt;/li&gt;
+&lt;li&gt;$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;方差：有限数据集之间的估计误差值&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高方差 = 过拟合（VO）&lt;/li&gt;
+&lt;li&gt;$J_{train}(\Theta)$较低，并且$J_{train}(\Theta) &amp;laquo; J_{CV}(\Theta)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;偏差-方差权衡的直觉&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;复杂模型=&amp;gt;数据敏感=&amp;gt;受训练集X变化的影响=&amp;gt;高方差，低偏差&lt;/li&gt;
+&lt;li&gt;简单模型=&amp;gt;更死板=&amp;gt;不受训练集X变化的影响=&amp;gt;低方差，高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;机器学习的最重要的目标之一：找到一个模型在偏差-方差的权衡之间刚刚好。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正则化影响&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$值较小（过拟合）使模型容易受噪声影响，导致高方差。&lt;/li&gt;
+&lt;li&gt;$\lambda$值较大（欠拟合）会将参数值接近于0，导致高偏差。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;模型复杂度影响&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;多项式次数较低的模型（模型复杂度低）有高偏差和低方差。在这种情况下，模型拟合总是很差。&lt;/li&gt;
+&lt;li&gt;多项式次数较高的模型（模型复杂度高）拟合训练集极好，拟合测试集极差。导致训练集上低偏差，但高方差。&lt;/li&gt;
+&lt;li&gt;在现实中，我们想要选择一个模型在以上两种情况之间，既然可以很好地拟合数据，也有很好地泛化能力。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用诊断时的一些典型经验法则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获取更多地训练样本可以解决高方差问题，不能解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;减少特征数量可以解决高方差问题，不能解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;增加特征数量可以解决高偏差问题，不能解决高方差问题。&lt;/li&gt;
+&lt;li&gt;增加多项式特征和交互特征（特征和特征交互）解决高偏差问题，不能解决高方差问题。&lt;/li&gt;
+&lt;li&gt;当使用梯度下降时，减少正则化参数$\lambda$值可以解决高方差问题，增加$\lambda$值可以解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;当使用神经网络时，小型神经网络更容易欠拟合，大型神经网络更容易过拟合。交叉验证是选择神经网络大小的一种方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://class.coursera.org/ml/lecture/index&#34;&gt;https://class.coursera.org/ml/lecture/index&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf&#34;&gt;http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning&#34;&gt;http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf&#34;&gt;http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

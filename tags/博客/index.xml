@@ -1,0 +1,252 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>博客 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E5%8D%9A%E5%AE%A2/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Sat, 31 Jan 2015 00:30:03 &#43;0800</updated>
+    
+    <item>
+      <title>Hugo静态网站生成器中文教程</title>
+      <link>https://nanshu.wang/post/2015-01-31/</link>
+      <pubDate>Sat, 31 Jan 2015 00:30:03 &#43;0800</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-01-31/</guid>
+      <description>&lt;h1 id=&#34;前言&#34;&gt;前言&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;http://gohugo.io&#34;&gt;Hugo&lt;/a&gt;是什么？官方文档是这样介绍它的：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Hugo is a general-purpose website framework. Technically speaking, Hugo is a static site generator.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Hugo是一种通用的网站框架。严格来说，Hugo应该被称作静态网站生成器。&lt;/p&gt;
+&lt;p&gt;静态网站生成器从字面上来理解，就是将你的内容生成静态网站。所谓“静态”的含义其实反映在网站页面的生成的时间。一般的web服务器（WordPress, Ghost, Drupal等等）在收到页面请求时，需要调用数据库生成页面（也就是HTML代码），再返回给用户请求。而静态网站则不需要在收到请求后生成页面，而是在整个网站建立起之前就将所有的页面全部生成完成，页面一经生成便称为静态文件，访问时直接返回现成的静态页面，不需要数据库的参与。&lt;/p&gt;
+&lt;p&gt;采用静态网站的维护也相当简单，实际上你根本不需要什么维护，完全不用考虑复杂的运行时间，依赖和数据库的问题。再有也不用担心安全性的问题，没有数据库，网站注入什么的也无从下手。&lt;/p&gt;
+&lt;p&gt;静态网站最大好处就是访问快速，不用每次重新生成页面。当然，一旦网站有任何更改，静态网站生成器需要重新生成所有的与更改相关的页面。然而对于小型的个人网站，项目主页等等，网站规模很小，重新生成整个网站也是非常快的。Hugo在速度方面做得非常好，Dan Hersam在他这个&lt;a href=&#34;https://www.udemy.com/build-static-sites-in-seconds-with-hugo/&#34;&gt;Hugo教程&lt;/a&gt;里提到，5000篇文章的博客，Hugo生成整个网站只花了6秒，而很多其他的静态网站生成器则需要几分钟的时间。我的博客目前文章只有几十篇，用Hugo生成整个网站只需要0.1秒。官方文档提供的数据是每篇页面的生成时间不到1ms。&lt;/p&gt;
+&lt;p&gt;我认为对于个人博客来说，应该将时间花在内容上而不是各种折腾网站。Hugo会将Markdown格式的内容和设置好模版一起，生成漂亮干净的页面。挑选折腾好一个喜爱的模版，在Sublime Text里用Markdown写博客，再敲一行命令生成同步到服务器就OK了。整个体验是不是非常优雅简单还有点geek的味道呢？&lt;/p&gt;
+&lt;p&gt;Hugo是用&lt;a href=&#34;http://golang.org/&#34;&gt;Go语言&lt;/a&gt;写的，为什么使用Go，作者&lt;a href=&#34;http://spf13.com&#34;&gt;Steve Francia&lt;/a&gt;的原话是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I looked at existing static site generators like Jekyll, Middleman and nanoc. All had complicated dependencies to install and took far longer to render my blog with hundreds of posts than I felt was acceptable. I wanted a framework to be able to get rapid feedback while making changes to the templates, and the 5+-minute render times was just too slow. In general, they were also very blog minded and didn’t have the ability to have different content types and flexible URLs.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I wanted to develop a fast and full-featured website framework without dependencies. The Go language seemed to have all of the features I needed in a language. I began developing Hugo in Go and fell in love with the language. I hope you will enjoy using (and contributing to) Hugo as much as I have writing it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;总结他的一下大意：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;吐槽脸：Jekyll以及那一堆静态网站生成器安装麻烦（依赖多），速度又慢，内容类型单一，url死板&lt;/li&gt;
+&lt;li&gt;挽袖子状：Go挺萌的符合我对语言的一切幻想，就用它重写一个吧&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我为啥用Hugo？除了以上提到的原因，很重要的一点是&lt;a href=&#34;http://gohugo.io&#34;&gt;Hugo主页&lt;/a&gt;很漂亮，看了一圈静态网站生成器的主页，一眼就被Hugo的美到了，首页的照片里的那个格子小本子应该是&lt;a href=&#34;http://www.paperthinks.com&#34;&gt;Paperthinks&lt;/a&gt;，我正好也在用，有种刚好看到自己桌面的感觉。&lt;/p&gt;
+&lt;h1 id=&#34;安装&#34;&gt;安装&lt;/h1&gt;
+&lt;p&gt;如果说速度快是Hugo的第一大优点，那么安装简单应该就是Hugo的第二大优点。对于Mac用户，没有brew的话先安装brew，在命令行里敲：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ruby -e &amp;#34;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后再敲一行安装Hugo:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ brew new Hugo
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当然你也可以在&lt;a href=&#34;https://github.com/spf13/hugo/releases&#34;&gt;这里&lt;/a&gt;直接下载对应系统的binary文件，解压就行了。&lt;/p&gt;
+&lt;h1 id=&#34;了解hugo&#34;&gt;了解Hugo&lt;/h1&gt;
+&lt;p&gt;首先建立自己的网站，mysite是网站的路径&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo new site mysite
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后进入该路径&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ cd mysite
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在该目录下你可以看到以下几个目录和&lt;code&gt;config.toml&lt;/code&gt;文件&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt; ▸ archetypes/ 
+ ▸ content/
+ ▸ layouts/
+ ▸ static/
+   config.toml
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;config.toml&lt;/code&gt;是网站的配置文件，包括&lt;code&gt;baseurl&lt;/code&gt;, &lt;code&gt;title&lt;/code&gt;, &lt;code&gt;copyright&lt;/code&gt;等等网站参数。&lt;/p&gt;
+&lt;p&gt;这几个文件夹的作用分别是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;archetypes：包括内容类型，在创建新内容时自动生成内容的配置&lt;/li&gt;
+&lt;li&gt;content：包括网站内容，全部使用markdown格式&lt;/li&gt;
+&lt;li&gt;layouts：包括了网站的模版，决定内容如何呈现&lt;/li&gt;
+&lt;li&gt;static：包括了css, js, fonts, media等，决定网站的外观&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Hugo提供了一些完整的主题可以使用，下载这些主题：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ git clone --recursive https://github.com/spf13/hugoThemes themes
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;此时现成的主题存放在&lt;code&gt;themes/&lt;/code&gt;文件夹中。&lt;/p&gt;
+&lt;p&gt;现在我们先熟悉一下Hugo，创建新页面：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo new about.md
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;进入&lt;code&gt;content/&lt;/code&gt;文件夹可以看到，此时多了一个markdown格式的文件&lt;code&gt;about.md&lt;/code&gt;，打开文件可以看到时间和文件名等信息已经自动加到文件开头，包括创建时间，页面名，是否为草稿等。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;---
++++
+date = &amp;#34;2015-02-01T18:19:54+08:00&amp;#34;
+draft = true
+title = &amp;#34;about&amp;#34;
+
++++
+
+# 关于我
+- 2010  HR@RUC
+- 2014  CS@ICT, CAS
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我在页面中加入了一些内容，然后运行Hugo:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo server -t hyde --buildDrafts
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;-t&lt;/code&gt;参数的意思是使用hyde主题渲染我们的页面，注意到&lt;code&gt;about.md&lt;/code&gt;目前是作为草稿，即&lt;code&gt;draft&lt;/code&gt;参数设置为&lt;code&gt;true&lt;/code&gt;，运行Hugo时要加上&lt;code&gt;--buildDrafts&lt;/code&gt;参数才会生成被标记为草稿的页面。
+在浏览器输入localhost:1313，就可以看到我们刚刚创建的页面。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/hugo-server-1.png&amp;quot; alt=&amp;quot;hugo-server-1&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意观察当前目录下多了一个文件夹&lt;code&gt;public/&lt;/code&gt;，这里面是Hugo生成的整个静态网站，如果使用Github pages来作为博客的Host，你只需要将&lt;code&gt;public/&lt;/code&gt;里的文件上传就可以，这相当于是Hugo的输出。&lt;/p&gt;
+&lt;h1 id=&#34;主题选择&#34;&gt;主题选择&lt;/h1&gt;
+&lt;p&gt;进入&lt;code&gt;themes/hyde&lt;/code&gt;文件夹，可以看到熟悉的文件夹名，和主题相关的文件主要是在&lt;code&gt;layouts/&lt;/code&gt;和&lt;code&gt;static/&lt;/code&gt;这两个文件内，选择好一个主题后，可以将&lt;code&gt;themes/&lt;/code&gt;中的文件夹直接复制到&lt;code&gt;mysite/&lt;/code&gt;目录下，覆盖原来的&lt;code&gt;layouts/&lt;/code&gt;, &lt;code&gt;static/&lt;/code&gt;文件夹，此时直接使用$Hugo server就可以看到主题效果，修改主题也可以直接修改其中的css, js, html等文件。&lt;/p&gt;
+&lt;p&gt;我的博客模版是在Hugo作者spf13的&lt;a href=&#34;http://spf13.com&#34;&gt;博客&lt;/a&gt;基础上修改的。第一步，先去他的博客网站源码&lt;a href=&#34;https://github.com/spf13/spf13.com&#34;&gt;主页&lt;/a&gt;把整个项目clone下来&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ git clone git@github.com:spf13/spf13.com.git
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;把项目中的&lt;code&gt;static/&lt;/code&gt;和&lt;code&gt;layouts/&lt;/code&gt;文件复制到自己网站的目录下替换原来的文件夹。再次运行Hugo:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ hugo server --buildDrafts -w
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这次没有选择主题，如果选择了主题会将当前的主题覆盖掉。参数&lt;code&gt;-w&lt;/code&gt;意味监视watch，此时如果修改了网站内的信息，会直接显示在浏览器的页面上，不需要重新运行$hugo server，方便我们进行修改。这是采用了spf13主题的页面：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/hugo-server-2.png&amp;quot; alt=&amp;quot;hugo-server-2&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;我们尝试在他的主题基础上修改，找到&lt;code&gt;/layouts/partials/subheader.html&lt;/code&gt;文件:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;header&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;header&amp;#34;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;figure&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;border&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;logolink&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;icon-spf13-3&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;logo&amp;#34;&lt;/span&gt;&amp;gt; &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;figure&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;byline&amp;#34;&lt;/span&gt;&amp;gt;by Steve Francia&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;nav&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;nav&amp;#34;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    {{ partial &amp;#34;nav.html&amp;#34; . }}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    {{ partial &amp;#34;social.html&amp;#34; . }}
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;nav&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;header&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;将by Steve Francia换成by myname，再次回到浏览器，可以看到左边侧栏已经发生变化了，你可以根据自己的需要修改对应的文件，当然得懂一点css, html。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/hugo-server-change.png&amp;quot; alt=&amp;quot;hugo-server-change&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;评论功能&#34;&gt;评论功能&lt;/h1&gt;
+&lt;p&gt;个人博客当然不能没有评论，Hugo默认支持&lt;a href=&#34;https://disqus.com/&#34;&gt;Disqus&lt;/a&gt;的评论，需要在模版中添加以下代码：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{{ template &amp;#34;_internal/disqus.html&amp;#34; . }}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;spf13在&lt;code&gt;/layouts/partials/disqus.html&lt;/code&gt;中已经添加好了。&lt;/p&gt;
+&lt;p&gt;只需要去Disqus注册一个账号，然后在&lt;code&gt;config.toml&lt;/code&gt;里加上：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;disqusShortname = &amp;#34;yourdisqusShortname&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意&lt;code&gt;-w&lt;/code&gt;参数是不能监测&lt;code&gt;config.toml&lt;/code&gt;里参数变化的，因此需要重新运行Hugo，进入localhost:1313/about，可以看到评论功能。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/comments.png&amp;quot; alt=&amp;quot;comments&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;代码高亮&#34;&gt;代码高亮&lt;/h1&gt;
+&lt;p&gt;作为码农，代码高亮对于写博客来说当然必不可少。有两种方法：第一种是在生成页面时就生成好代码高亮过的页面；第二种是使用js，用户加载页面时浏览器再进行渲染。&lt;/p&gt;
+&lt;p&gt;第一种方法需要使用&lt;a href=&#34;http://pygments.org/&#34;&gt;Pygments&lt;/a&gt;，一个python写的工具。&lt;/p&gt;
+&lt;p&gt;安装Pygments：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ pip install Pygments
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;没有pip的先下载 &lt;a href=&#34;https://bootstrap.pypa.io/get-pip.py&#34;&gt;https://bootstrap.pypa.io/get-pip.py&lt;/a&gt; ，然后安装pip：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ python get-pip.py
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Pygments的调用采用shortcodes实现，spf13里也写好了，在&lt;code&gt;/layouts/shortcode/highlight.html&lt;/code&gt;里&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{{ $lang := index .Params 0 }}
+{{ highlight .Inner $lang }}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;要使代码高亮，在你的代码外面加上：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{{ % highlight python %}}
+your code here.
+{{ % /highlight %}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里为了避免以上两行被识别为代码高亮的标识，在&lt;code&gt;{{&lt;/code&gt;和&lt;code&gt;%&lt;/code&gt;之间多加了一个空格，实际使用的时候需要把空格去掉。&lt;/p&gt;
+&lt;p&gt;第二种方法比较简单，在&lt;code&gt;layouts/partials/header_includes.html&lt;/code&gt;中加上：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;lt;script src=&amp;#34;https://yandex.st/highlightjs/8.0/highlight.min.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;link rel=&amp;#34;stylesheet&amp;#34; href=&amp;#34;https://yandex.st/highlightjs/8.0/styles/default.min.css&amp;#34;&amp;gt;
+&amp;lt;script&amp;gt;hljs.initHighlightingOnLoad();&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这里使用了&lt;a href=&#34;http://yandex.ru/&#34;&gt;Yandex&lt;/a&gt;的&lt;a href=&#34;http://highlightjs.org/&#34;&gt;Highlight.js&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;其他的可以实现代码高亮的js库还有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://highlightjs.org/&#34;&gt;Highlight.js&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://craig.is/making/rainbows&#34;&gt;Rainbow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://alexgorbatchev.com/SyntaxHighlighter/&#34;&gt;Syntax Highlighter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/google-code-prettify/&#34;&gt;Google Prettify&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;插入图片&#34;&gt;插入图片&lt;/h1&gt;
+&lt;p&gt;图片文件放在&lt;code&gt;static/media&lt;/code&gt;文件中，插入图片：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;{{ % img src=&amp;#34;/media/example.jpg&amp;#34; alt=&amp;#34;example&amp;#34; %}}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意这里的&lt;code&gt;{{&lt;/code&gt;和&lt;code&gt;%&lt;/code&gt;之间也加上了空格，避免这行代码起作用，实际使用也需要把空格去掉。&lt;/p&gt;
+&lt;h1 id=&#34;使用mathjax&#34;&gt;使用Mathjax&lt;/h1&gt;
+&lt;p&gt;在需要渲染公式的页面加入以下代码，比如&lt;code&gt;layouts/_default/single.html&lt;/code&gt;文件，这个文件是对于所有post进行页面生成的模版，如果你希望所有页面都对公式渲染的话，可以加入&lt;code&gt;layouts/partials/footer.html&lt;/code&gt;文件里，保证所有生成的页面都有这几行代码。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;text/javascript&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;#34;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Mathjax和Markdown会有冲突问题，&lt;a href=&#34;http://doswa.com/2011/07/20/mathjax-in-markdown.html&#34;&gt;这里&lt;/a&gt;提供了解决方案。&lt;/p&gt;
+&lt;h1 id=&#34;用github-pages作为网站的host&#34;&gt;用github pages作为网站的Host&lt;/h1&gt;
+&lt;p&gt;Github pages分为两种：一种是项目主页，每个项目都可以有一个；另一种是用户主页，一个用户只能有一个。&lt;/p&gt;
+&lt;p&gt;因为用户主页只能有一个，所以建议使用项目主页托管，不过我这里采用了用户主页，反正我也只用一个博客，使用个人主页作为Host也相对更简单一点。&lt;/p&gt;
+&lt;p&gt;我们需要创建两个单独的repo，一个用于放Hugo的输入文件，即除了&lt;code&gt;public/&lt;/code&gt;文件夹之外的所有文件，另一个放我们生成的静态网站，也就是&lt;code&gt;public/&lt;/code&gt;的内容。&lt;/p&gt;
+&lt;p&gt;步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在Github上创建repo &lt;code&gt;&amp;lt;your-project&amp;gt;-hugo&lt;/code&gt;，托管Hugo的输入文件。&lt;/li&gt;
+&lt;li&gt;创建repo &lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt;，用于托管&lt;code&gt;public/&lt;/code&gt;文件夹，注意这里的repo名字一定要用自己的用户名，才会被当作是个人主页。&lt;/li&gt;
+&lt;li&gt;clone your-project&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ git clone &amp;lt;&amp;lt;your-project&amp;gt;-hugo-url&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;进入your-project 目录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ cd &amp;lt;your-project&amp;gt;-hugo
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;删掉public目录（这个目录每次运行Hugo都会再次生成，不用担心）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ rm -rf public
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;把public/目录添加为submodule 与&lt;!-- raw HTML omitted --&gt;.github.io同步&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ git submodule add git@github.com:&amp;lt;username&amp;gt;/&amp;lt;username&amp;gt;.github.io.git public
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;7&#34;&gt;
+&lt;li&gt;添加.gitignore文件，文件中写&lt;code&gt;public/&lt;/code&gt;，在同步&lt;code&gt;&amp;lt;your-project&amp;gt;-hugo&lt;/code&gt;时会忽略public文件夹&lt;/li&gt;
+&lt;li&gt;下面是写好的一个script &lt;code&gt;deploy.sh&lt;/code&gt;，拷贝过去直接就能用，记得chmod +x deploy.sh加上运行权限。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;echo -e &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;\033[0;32mDeploying updates to GitHub...\033[0m&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rebuilding site `date`&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt; $# -eq &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt; msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$1&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Push Hugo content &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git add -A
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git commit -m &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$msg&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Build the project. &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hugo &lt;span style=&#34;color:#75715e&#34;&gt;# if using a theme, replace by `hugo -t &amp;lt;yourtheme&amp;gt;`&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Go To Public folder&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd public
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Add changes to git.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git add -A
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Commit changes.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git commit -m &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;$msg&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Push source and build repos.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git push origin master
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Come Back&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ..
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;等一小会儿（10分钟左右），你就能在http://username.github.io/ 这个页面看到你的网站了！每次更新网站或者写了新文章，只需要运行./deploy.sh 发布就搞定了，简单吧？&lt;/p&gt;
+&lt;p&gt;Github pages还支持域名绑定，三个步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在&lt;code&gt;&amp;lt;username&amp;gt;.github.io&lt;/code&gt; repo的跟目录下添加&lt;code&gt;CNAME&lt;/code&gt;文件，文件里写上你的域名，不用加http://的开头。&lt;/li&gt;
+&lt;li&gt;记下http://username.github.io/ 的ip地址。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;$ ping username.github.io
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;在你的域名管理中加上两条A记录，分别是www和@，记录指向http://username.github.io/ 的ip地址，也需要等一小会儿生效。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;更改字体服务商&#34;&gt;更改字体服务商&lt;/h1&gt;
+&lt;p&gt;我的博客模版里用的字体是从googleapis里获取的，国内访问会下载失败，把字体库改成360的。
+找到&lt;code&gt;layouts/partials/head_includes.html&lt;/code&gt;文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;link&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://fonts.googleapis.com/css?family=Fjalla+One|Open+Sans:300&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rel&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;stylesheet&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;type&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;text/css&amp;#39;&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;将其中的googleapis替换为useso就行了。&lt;/p&gt;
+&lt;p&gt;教程会根据我的博客遇到的问题继续更新。&lt;/p&gt;
+&lt;h1 id=&#34;增加网站分析&#34;&gt;增加网站分析&lt;/h1&gt;
+&lt;p&gt;使用网站分析可以帮助我们更好地了解博客的读者和流量来源，我使用了&lt;a href=&#34;http://tongji.baidu.com&#34;&gt;百度统计&lt;/a&gt;和&lt;a href=&#34;http://www.google.cn/webmasters/&#34;&gt;谷歌统计&lt;/a&gt;，注册帐号后只需要按照提示在模板中加入相应的script代码就可以了。&lt;/p&gt;
+&lt;h1 id=&#34;参考&#34;&gt;参考&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;http://gohugo.io/overview/introduction/&#34;&gt;Hugo docs&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://ipn.li/kernelpanic/3/&#34;&gt;《内核恐慌》静态网站生成器&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.udemy.com/build-static-sites-in-seconds-with-hugo/&#34;&gt;Build Static Sites in Seconds with Hugo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/&#34;&gt;Setting up a custom domain with GitHub Pages&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

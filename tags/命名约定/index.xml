@@ -1,0 +1,130 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>命名约定 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E5%91%BD%E5%90%8D%E7%BA%A6%E5%AE%9A/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Mon, 31 Aug 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>Python代码风格指南（三）命名约定(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-09-14/</link>
+      <pubDate>Mon, 31 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-09-14/</guid>
+      <description>&lt;h1 id=&#34;命名约定naming-conventions&#34;&gt;命名约定（Naming Conventions）&lt;/h1&gt;
+&lt;p&gt;Python标准库的命名约定有一些混乱，因此我们永远都无法保持一致。但如今仍然存在一些推荐的命名标准。新的模块和包（包括第三方框架）应该采用这些标准，但若是已经存在的包有另一套风格的话，还是应当与原有的风格保持内部一致。&lt;/p&gt;
+&lt;h2 id=&#34;重写原则overriding-principle&#34;&gt;重写原则（Overriding Principle）&lt;/h2&gt;
+&lt;p&gt;对于用户可见的公共部分API，其命名应当表达出功能用途而不是其具体的实现细节。&lt;/p&gt;
+&lt;h2 id=&#34;描述性命名风格descriptive-naming-styles&#34;&gt;描述性：命名风格（Descriptive: Naming Styles）&lt;/h2&gt;
+&lt;p&gt;存在很多不同的命名风格，最好能够独立地从命名对象的用途认出采用了哪种命名风格。&lt;/p&gt;
+&lt;p&gt;以下是常用于区分的命名风格：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``b`` (单个小写字母)
+- ``B`` (单个大写字母)
+- ``lowercase``(小写)
+- ``lower_case_with_underscores``(带下划线小写)
+- ``UPPERCASE``(带下划线大写)
+- ``UPPER_CASE_WITH_UNDERSCORES``(带下划线大写)
+- ``CapitalizedWords`` (也叫做CapWords或者CamelCase -- 因为单词首字母大写看起来很像驼峰)。也被称作StudlyCaps。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意：当CapWords里包含缩写时，将缩写部分的字母都大写。HTTPServerError比HttpServerError要好。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``mixedCase`` (注意：和CapitalizedWords不同在于其首字母小写！)
+- ``Capitalized_Words_With_Underscores`` (这种风格超丑！)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也有风格使用简短唯一的前缀来表示一组相关的命名。这在Python中并不常见，但为了完整起见这里也捎带提一下。比如，&lt;code&gt;os.stat()&lt;/code&gt;函数返回一个tuple，其中的元素名原本为&lt;code&gt;st_mode&lt;/code&gt;,&lt;code&gt;st-size&lt;/code&gt;,&lt;code&gt;st_mtime&lt;/code&gt;等等。（这样做是为了强调和POSIX系统调用结构之间的关系，可以帮助程序员更好熟悉。）&lt;/p&gt;
+&lt;p&gt;X11库中的公共函数名都以X开头。在Python中这样的风格一般被认为是不必要的，因为属性和方法名之前已经有了对象名的前缀，而函数名前也有了模块名的前缀。&lt;/p&gt;
+&lt;p&gt;此外，要区别以下划线开始或结尾的特殊形式（可以和其它的规则结合起来）：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``_single_leading_underscore``: 以单个下划线开头是&amp;#34;内部使用&amp;#34;的弱标志。
+  E.g. ``from M import *``不会import下划线开头的对象。
+
+- ``single_trailing_underscore_``: 以单个下划线结尾用来避免和Python关键词产生冲突，例如:
+
+      Tkinter.Toplevel(master, class_=&amp;#39;ClassName&amp;#39;)
+
+- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示触发命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
+
+- ``__double_leading_and_trailing_underscore__``: 以双下划线开头和结尾的命名风格表示生存在用户控制的命名空间里“魔法”对象或属性。
+  E.g. ``__init__``, ``__import__`` 或 ``__file__``。请依照文档描述来使用这些命名，千万不要自己发明。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;规范性命名约定prescriptive-naming-conventions&#34;&gt;规范性：命名约定(Prescriptive: Naming Conventions)&lt;/h2&gt;
+&lt;h3 id=&#34;需要避免的命名names-to-avoid&#34;&gt;需要避免的命名(Names to Avoid)&lt;/h3&gt;
+&lt;p&gt;不要使用字符&amp;rsquo;l&amp;rsquo;（小写的字母el），&amp;lsquo;O&amp;rsquo;（大写的字母oh），或者&amp;rsquo;I&amp;rsquo;（大写的字母eye）来作为单个字符的变量名。&lt;/p&gt;
+&lt;p&gt;在一些字体中，这些字符和数字1和0无法区别开来。当想使用&amp;rsquo;l&amp;rsquo;时，使用&amp;rsquo;L&amp;rsquo;代替。&lt;/p&gt;
+&lt;h3 id=&#34;包和模块命名package-and-module-names&#34;&gt;包和模块命名(Package and Module Names)&lt;/h3&gt;
+&lt;p&gt;模块命名应短小，且为全小写。若下划线能提高可读性，也可以在模块名中使用。Python包命名也应该短小，且为全小写，但不应使用下划线。&lt;/p&gt;
+&lt;p&gt;模块名是对应到文件名的，一些文件系统会区分大小写并且会将长的文件名截断。因此模块名应该尽量短小，这个问题在Unix系统上是不存在的，但把代码移植到较旧的Mac，Windows版本或DOS系统上时，可能会出现问题。&lt;/p&gt;
+&lt;p&gt;当使用C或C++写的扩展模块有相应的Python模块提供更高级的接口时（e.g. 更加面向对象），C/C++模块名以下划线开头（e.g. &lt;code&gt;_sociket&lt;/code&gt;）。&lt;/p&gt;
+&lt;h3 id=&#34;类命名class-names&#34;&gt;类命名(Class Names)&lt;/h3&gt;
+&lt;p&gt;类命名应该使用单词字母大写（CapWords）的命名约定。&lt;/p&gt;
+&lt;p&gt;当接口已有文档说明且主要是被用作调用时，也可以使用函数的命名约定。&lt;/p&gt;
+&lt;p&gt;注意对于内建命名(builtin names)有一个特殊的约定：大部分内建名都是一个单词（或者两个一起使用的单词），单词首字母大写(CapWords)的约定只对异常命名和内建常量使用。&lt;/p&gt;
+&lt;h3 id=&#34;异常命名exception-names&#34;&gt;异常命名(Exception Names)&lt;/h3&gt;
+&lt;p&gt;由于异常实际上也是类，因此类命名约定也适用与异常。不同的是，如果异常实际上是抛出错误的话，异常名前应该加上&amp;quot;Error&amp;quot;的前缀。&lt;/p&gt;
+&lt;h3 id=&#34;全局变量命名global-variable-names&#34;&gt;全局变量命名(Global Variable Names)&lt;/h3&gt;
+&lt;p&gt;（在此之前，我们先假定这些变量都仅在同一个模块内使用。）这些约定同样也适用于函数命名。&lt;/p&gt;
+&lt;p&gt;对于引用方式设计为&lt;code&gt;from M import *&lt;/code&gt;的模块，应该使用&lt;code&gt;__all__&lt;/code&gt;机制来避免import全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块非公开的”。&lt;/p&gt;
+&lt;h3 id=&#34;函数命名function-names&#34;&gt;函数命名(Function Names)&lt;/h3&gt;
+&lt;p&gt;函数命名应该都是小写，必要时使用下划线来提高可读性。&lt;/p&gt;
+&lt;p&gt;只有当已有代码风格已经是混合大小写时（比如threading.py），为了保留向后兼容性才使用混合大小写。&lt;/p&gt;
+&lt;h3 id=&#34;函数和方法参数function-and-method-arguments&#34;&gt;函数和方法参数(Function and method arguments)&lt;/h3&gt;
+&lt;p&gt;实例方法的第一参数永远都是&lt;code&gt;self&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;类方法的第一个参数永远都是&lt;code&gt;cls&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;在函数参数名和保留关键字冲突时，相对于使用缩写或拼写简化，使用以下划线结尾的命名一般更好。比如，&lt;code&gt;class_&lt;/code&gt;比&lt;code&gt;clss&lt;/code&gt;更好。（或许使用同义词避免这样的冲突是更好的方式。）&lt;/p&gt;
+&lt;h3 id=&#34;方法命名和实例变量method-names-and-instance-variables&#34;&gt;方法命名和实例变量(Method Names and Instance Variables)&lt;/h3&gt;
+&lt;p&gt;使用函数命名的规则：小写单词，必要时使用下划线分开以提高可读性。&lt;/p&gt;
+&lt;p&gt;仅对于非公开方法和变量命名在开头使用一个下划线。&lt;/p&gt;
+&lt;p&gt;避免和子类的命名冲突，使用两个下划线开头来触发Python的命名修饰机制。&lt;/p&gt;
+&lt;p&gt;Python类名的命名修饰规则：如果类Foo有一个属性叫&lt;code&gt;__a&lt;/code&gt;，不能使用&lt;code&gt;Foo.__a&lt;/code&gt;的方式访问该变量。（有用户可能仍然坚持使用&lt;code&gt;Foo._Foo__a&lt;/code&gt;的方法访问。）一般来说，两个下划线开头的命名方法只应该用来避免设计为子类的属性中的命名冲突。&lt;/p&gt;
+&lt;p&gt;注意：关于__names的使用也有一些争论（见下）。&lt;/p&gt;
+&lt;h3 id=&#34;常量constants&#34;&gt;常量(Constants)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;MAX_OVERFLOW&lt;/code&gt; and &lt;code&gt;TOTAL&lt;/code&gt;.
+常量通常是在模块级别定义的，使用全部大写并用下划线将单词分开。例如：&lt;code&gt;MAX_OVERFLOW&lt;/code&gt;和&lt;code&gt;TOTAL&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;继承的设计designing-for-inheritance&#34;&gt;继承的设计(Designing for inheritance)&lt;/h3&gt;
+&lt;p&gt;记得永远区别类的方法和实例变量（属性）应该是公开的还是非公开的。如果有疑虑的话，请选择非公开的；因为之后将非公开属性变为公开属性要容易些。&lt;/p&gt;
+&lt;p&gt;公开属性是那些和你希望和你定义的类无关的客户来使用的，并且确保不会出现向后不兼容的问题。非公开属性是那些不希望被第三方使用的部分，你可以不用保证非公开属性不会变化或被移除。&lt;/p&gt;
+&lt;p&gt;我们在这里没有使用“私有（private）”这个词，因为在Python里没有什么属性是真正私有的（这样设计省略了大量不必要的工作）。&lt;/p&gt;
+&lt;p&gt;另一类属性属于子类API的一部分（在其他语言中经常被称为&amp;quot;protected&amp;quot;）。一些类是为继承设计的，要么扩展要么修改类行为的部分。当设计这样的类时，需要谨慎明确地决定哪些属性是公开的，哪些属于子类API，哪些真的只会被你的基类调用。&lt;/p&gt;
+&lt;p&gt;请记住以上几点，下面是Python风格的指南：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;公开属性不应该有开头下划线。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果公开属性的名字和保留关键字有冲突，在你的属性名尾部加上一个下划线。这比采用缩写和简写更好。（然而，和这条规则冲突的是，‘cls’对任何变量和参数来说都是一个更好地拼写，因为大家都知道这表示class，特别是在类方法的第一个参数里。）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：对于类方法，参考之前的参数命名建议。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;-对于简单的公共数据属性，最后仅公开属性名字，不要公开复杂的调用或设值方法。记住在Python中，提供了一条简单的路径来实现未来增强，你应该简单数据属性需要增加功能行为。这种情况下，使用properties将功能实现隐藏在简单数据属性访问语法之后。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：Properties仅仅对新风格类有用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：尽量保证功能行为没有副作用，尽管缓存这种副作用看上去并没有什么大问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 3: 对计算量大的运算避免试用properties；属性的注解会让调用者相信访问的运算量是相对较小的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果你的类是子类的话，你有一些属性并不想让子类访问，考虑将他们命名为两个下划线开头并且结尾处没有下划线。这样会触发Python命名修饰算法，类名会被修饰添加到属性名中。这样可以避免属性命名冲突，以免子类会不经意间包含相同的命名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：注意命名修饰仅仅是简单地将类名加入到修饰名中，所以如果子类有相同的类名合属性名，你可能仍然会遇到命名冲突问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：命名修饰可以有特定用途，比如在调试时，&lt;code&gt;__getattr__()&lt;/code&gt;比较不方便。然而命名修饰算法的可以很好地记录，并且容意手动执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意3：不是所有人都喜欢命名修饰。试着权衡避免偶然命名冲突的需求和试用高级调用者使用的潜在可能性。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;公开和内部接口public-and-internal-interfaces&#34;&gt;公开和内部接口(Public and internal interfaces)&lt;/h2&gt;
+&lt;p&gt;任何向后兼容性保证仅对公开接口适用。相应地，用户能够清楚分辨公开接口和内部接口是很重要的。&lt;/p&gt;
+&lt;p&gt;文档化的接口被认为是公开的，除非文档中明确申明了它们是临时的或者内部接口，不保证向后兼容性。所有文档中未提到的接口应该被认为是内部的。&lt;/p&gt;
+&lt;p&gt;为了更好审视公开接口和内部接口，模块应该在&lt;code&gt;__all&lt;/code&gt;属性中明确申明公开API是哪些。将&lt;code&gt;__all__&lt;/code&gt;设为空list表示该模块中没有公开API。&lt;/p&gt;
+&lt;p&gt;即使正确设置了&lt;code&gt;__all&lt;/code&gt;属性，内部接口（包，模块，类，函数，属性或其他命名）也应该以一个下划线开头。&lt;/p&gt;
+&lt;p&gt;如果接口的任一一个命名空间（包，模块或类）是内部的，那么该接口也应该是内部的。&lt;/p&gt;
+&lt;p&gt;导入的命名应该永远被认为是实现细节。其他模块不应当依赖这些非直接访问的导入命名，除非它们在文档中明确地被写为模块的API，例如&lt;code&gt;os.path&lt;/code&gt;或者包的&lt;code&gt;__init__&lt;/code&gt;模块，那些从子模块展现的功能。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

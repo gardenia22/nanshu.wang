@@ -1,0 +1,130 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>梯度检查 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E6%A2%AF%E5%BA%A6%E6%A3%80%E6%9F%A5/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Thu, 26 Mar 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记5 神经网络2 参数学习</title>
+      <link>https://nanshu.wang/post/2015-03-26/</link>
+      <pubDate>Thu, 26 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-26/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;成本函数cost-function&#34;&gt;成本函数(Cost Function)&lt;/h1&gt;
+&lt;p&gt;以下是我们会用到的一些变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L$表示神经网络的层数&lt;/li&gt;
+&lt;li&gt;$s_l$表示第$l$层的神经单元数(不包括偏差(bias)单元)&lt;/li&gt;
+&lt;li&gt;$K$表示输出单元数(分类数)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当有多个输出类别时，采用$h_\Theta(x)_k$表示第$k$个输出的假设结果。&lt;/p&gt;
+&lt;p&gt;神经网络的成本函数是logistic回归中的成本函数更普遍的一种形式。&lt;/p&gt;
+&lt;p&gt;logistic回归中的成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;神经网络的成本函数稍微复杂一点：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;和logistic回归相比，第一个方括号内多了一层累加求和，即对多类输出节点的成本函数进行累加，会遍历所有的输出节点。&lt;/p&gt;
+&lt;p&gt;正则化的部分则是将每一层的参数都考虑了进去(包括偏差单元相关的参数值)。和logistic回归一样，每一项都进行了平方。&lt;/p&gt;
+&lt;p&gt;注意:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;双层累加中对于输出层所有单元的logistic回归的成本函数进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中则是对于整个神经网络中单独的$\Theta$参数的平方进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中的$i$和训练集中的$i$并不一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;向后传播backpropagation算法&#34;&gt;向后传播(Backpropagation)算法&lt;/h1&gt;
+&lt;p&gt;向后传播是神经网络中表示最小化成本函数的术语，就像logistic回归和线性回归中的梯度下降(gradient descent)一样。&lt;/p&gt;
+&lt;p&gt;我们的目标是计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;即我们想最小化成本函数$J$，得到最优化参数$\Theta$。&lt;/p&gt;
+&lt;p&gt;观察我们用于计算$J(\Theta)$偏导的等式：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;在向后传播中我们需要对每个节点计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;回忆一下，$a_j^{(i)}$表示第$l$层的节点$j$的激活结果。对于最后一层，误差的计算为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$L$表示层数，$a^{(L)}$是最后一层激活单元的向量化表示。因此对于最后一层，误差的计算就是简单的真实结果和预测结果的差值。&lt;/p&gt;
+&lt;p&gt;为了得到除了最后一层以外其他层的误差值，我们采用以下等式从右往左地向后计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是用$\Theta$去乘后一层的误差值，再对每一个元素乘上$g&amp;rsquo;$，也就是激活函数$g$输入值为$z^{(l)}$时的导数。&lt;/p&gt;
+&lt;p&gt;$g&amp;rsquo;$也可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么，对于内部节点来说，完整的向后传播计算等式为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，证明比较复杂，不过实现向后传播的算法也不用知道证明的细节。&lt;/p&gt;
+&lt;p&gt;对于每个训练样本$t$，可以采用激活值和误差值来计算偏导项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上述式子忽略了正则项，后面会再详细说明。&lt;/p&gt;
+&lt;p&gt;注意，其中$\delta^{l+1}$和$a^{l+1}$都是有$s_{l+1}$个元素的向量。类似地，$a^{(l)}$是有$s_l$个元素的向量。这两个向量相乘会产生和$\Theta^{(l)}$同样维度的$s_{l+1} * s_l$的矩阵。这个计算过程也就是得到了$\Theta^{(l)}$中每个元素的梯度项。&lt;/p&gt;
+&lt;p&gt;现在，将以上过程串起来，我们得到整个向后传播算法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定训练集$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$&lt;/li&gt;
+&lt;li&gt;设$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace \forall (l,i,j)$&lt;/li&gt;
+&lt;li&gt;对于每个训练集 $\text{for } t = 1 \text{ to } m$:
+&lt;ul&gt;
+&lt;li&gt;$a^{(1)} := x^{(t)}$&lt;/li&gt;
+&lt;li&gt;采用向前传播算法计算$a^{(l)}, l = 2,3,&amp;hellip;,l$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L)} = a^{(L)} - y^{(t)}$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$s&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$D^{(l)}_{i,j}$即最后我们所求的偏导。&lt;/p&gt;
+&lt;h1 id=&#34;向后传播的直观理解&#34;&gt;向后传播的直观理解&lt;/h1&gt;
+&lt;p&gt;成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;如果我们只考虑一个训练样本$(t=1)$，并且忽略正则项，那么成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;直观上可以将以上的等式近似看作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\delta_j^{(l)}$是$a_j^{(l)}$的误差。&lt;/p&gt;
+&lt;p&gt;严格来说，$\delta$值实际上是成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意偏导是成本函数切线的斜率，斜率越陡峭越不准确。&lt;/p&gt;
+&lt;h1 id=&#34;梯度检查gradient-checking&#34;&gt;梯度检查(Gradient Checking)&lt;/h1&gt;
+&lt;p&gt;梯度检查能够保证我们的向后传播算法的正确性。&lt;/p&gt;
+&lt;p&gt;我们可以用以下方法近似地估算成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\Theta$是很多个矩阵构成，可以对$\Theta_j$的偏导进行以下估算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\epsilon$的取值必须较小，才能得到接近真实的值。但如果$\epsilon$的值太小，计算可能会有精度问题而无法得到正确值。Andrew给的经验值时$\epsilon = 10^{-4}$。&lt;/p&gt;
+&lt;p&gt;如果可以验证梯度近似值和$\delta$大致相等，那么向后传播算法是正确的。在真正计算中不需要计算梯度近似值，因为其计算非常慢。&lt;/p&gt;
+&lt;h1 id=&#34;随机初始化&#34;&gt;随机初始化&lt;/h1&gt;
+&lt;p&gt;在神经网络中，不能将$\theta$权重初始化为0，否则在向后传播时，所有的节点会重复更新一样的值。&lt;/p&gt;
+&lt;p&gt;因此需要随机初始化权重：&lt;/p&gt;
+&lt;p&gt;将$\Theta_{ij}^{(l)}$赋为$[-\epsilon,\epsilon]$范围内的一个随机数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$Loutput$和$Linput+1$是$\Theta$参数的维度。这里的$\epsilon$和梯度检查中的$\epsilon$没有关系。&lt;/p&gt;
+&lt;h1 id=&#34;神经网络总结&#34;&gt;神经网络总结&lt;/h1&gt;
+&lt;p&gt;首先，选择神经网络的结构，确定神经网络的层数和每层的隐藏单元的个数。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入层单元数等于特征$x^(i)$的维度&lt;/li&gt;
+&lt;li&gt;输出层的单元数等于分类个数&lt;/li&gt;
+&lt;li&gt;默认设置：1个隐藏层。如果有多于1个隐藏层，则隐藏层的单元个数都一样多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;训练神经网络&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;随机初始化权重&lt;/li&gt;
+&lt;li&gt;实现向前传播计算$h_{\theta}(x^{(i)})$&lt;/li&gt;
+&lt;li&gt;实现成本函数&lt;/li&gt;
+&lt;li&gt;实现向后传播计算偏导值&lt;/li&gt;
+&lt;li&gt;采用梯度检查来确认向后传播的正确性后，再取消梯度检查。&lt;/li&gt;
+&lt;li&gt;采用梯度下降或其他已有的最优化函数来最小化成本函数，得到$\theta$权重值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于每个训练样本都循环采用向前和向后传播算法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

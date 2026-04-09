@@ -1,0 +1,772 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>翻译 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E7%BF%BB%E8%AF%91/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Mon, 31 Aug 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>Python代码风格指南（三）命名约定(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-09-14/</link>
+      <pubDate>Mon, 31 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-09-14/</guid>
+      <description>&lt;h1 id=&#34;命名约定naming-conventions&#34;&gt;命名约定（Naming Conventions）&lt;/h1&gt;
+&lt;p&gt;Python标准库的命名约定有一些混乱，因此我们永远都无法保持一致。但如今仍然存在一些推荐的命名标准。新的模块和包（包括第三方框架）应该采用这些标准，但若是已经存在的包有另一套风格的话，还是应当与原有的风格保持内部一致。&lt;/p&gt;
+&lt;h2 id=&#34;重写原则overriding-principle&#34;&gt;重写原则（Overriding Principle）&lt;/h2&gt;
+&lt;p&gt;对于用户可见的公共部分API，其命名应当表达出功能用途而不是其具体的实现细节。&lt;/p&gt;
+&lt;h2 id=&#34;描述性命名风格descriptive-naming-styles&#34;&gt;描述性：命名风格（Descriptive: Naming Styles）&lt;/h2&gt;
+&lt;p&gt;存在很多不同的命名风格，最好能够独立地从命名对象的用途认出采用了哪种命名风格。&lt;/p&gt;
+&lt;p&gt;以下是常用于区分的命名风格：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``b`` (单个小写字母)
+- ``B`` (单个大写字母)
+- ``lowercase``(小写)
+- ``lower_case_with_underscores``(带下划线小写)
+- ``UPPERCASE``(带下划线大写)
+- ``UPPER_CASE_WITH_UNDERSCORES``(带下划线大写)
+- ``CapitalizedWords`` (也叫做CapWords或者CamelCase -- 因为单词首字母大写看起来很像驼峰)。也被称作StudlyCaps。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意：当CapWords里包含缩写时，将缩写部分的字母都大写。HTTPServerError比HttpServerError要好。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``mixedCase`` (注意：和CapitalizedWords不同在于其首字母小写！)
+- ``Capitalized_Words_With_Underscores`` (这种风格超丑！)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也有风格使用简短唯一的前缀来表示一组相关的命名。这在Python中并不常见，但为了完整起见这里也捎带提一下。比如，&lt;code&gt;os.stat()&lt;/code&gt;函数返回一个tuple，其中的元素名原本为&lt;code&gt;st_mode&lt;/code&gt;,&lt;code&gt;st-size&lt;/code&gt;,&lt;code&gt;st_mtime&lt;/code&gt;等等。（这样做是为了强调和POSIX系统调用结构之间的关系，可以帮助程序员更好熟悉。）&lt;/p&gt;
+&lt;p&gt;X11库中的公共函数名都以X开头。在Python中这样的风格一般被认为是不必要的，因为属性和方法名之前已经有了对象名的前缀，而函数名前也有了模块名的前缀。&lt;/p&gt;
+&lt;p&gt;此外，要区别以下划线开始或结尾的特殊形式（可以和其它的规则结合起来）：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``_single_leading_underscore``: 以单个下划线开头是&amp;#34;内部使用&amp;#34;的弱标志。
+  E.g. ``from M import *``不会import下划线开头的对象。
+
+- ``single_trailing_underscore_``: 以单个下划线结尾用来避免和Python关键词产生冲突，例如:
+
+      Tkinter.Toplevel(master, class_=&amp;#39;ClassName&amp;#39;)
+
+- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示触发命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
+
+- ``__double_leading_and_trailing_underscore__``: 以双下划线开头和结尾的命名风格表示生存在用户控制的命名空间里“魔法”对象或属性。
+  E.g. ``__init__``, ``__import__`` 或 ``__file__``。请依照文档描述来使用这些命名，千万不要自己发明。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;规范性命名约定prescriptive-naming-conventions&#34;&gt;规范性：命名约定(Prescriptive: Naming Conventions)&lt;/h2&gt;
+&lt;h3 id=&#34;需要避免的命名names-to-avoid&#34;&gt;需要避免的命名(Names to Avoid)&lt;/h3&gt;
+&lt;p&gt;不要使用字符&amp;rsquo;l&amp;rsquo;（小写的字母el），&amp;lsquo;O&amp;rsquo;（大写的字母oh），或者&amp;rsquo;I&amp;rsquo;（大写的字母eye）来作为单个字符的变量名。&lt;/p&gt;
+&lt;p&gt;在一些字体中，这些字符和数字1和0无法区别开来。当想使用&amp;rsquo;l&amp;rsquo;时，使用&amp;rsquo;L&amp;rsquo;代替。&lt;/p&gt;
+&lt;h3 id=&#34;包和模块命名package-and-module-names&#34;&gt;包和模块命名(Package and Module Names)&lt;/h3&gt;
+&lt;p&gt;模块命名应短小，且为全小写。若下划线能提高可读性，也可以在模块名中使用。Python包命名也应该短小，且为全小写，但不应使用下划线。&lt;/p&gt;
+&lt;p&gt;模块名是对应到文件名的，一些文件系统会区分大小写并且会将长的文件名截断。因此模块名应该尽量短小，这个问题在Unix系统上是不存在的，但把代码移植到较旧的Mac，Windows版本或DOS系统上时，可能会出现问题。&lt;/p&gt;
+&lt;p&gt;当使用C或C++写的扩展模块有相应的Python模块提供更高级的接口时（e.g. 更加面向对象），C/C++模块名以下划线开头（e.g. &lt;code&gt;_sociket&lt;/code&gt;）。&lt;/p&gt;
+&lt;h3 id=&#34;类命名class-names&#34;&gt;类命名(Class Names)&lt;/h3&gt;
+&lt;p&gt;类命名应该使用单词字母大写（CapWords）的命名约定。&lt;/p&gt;
+&lt;p&gt;当接口已有文档说明且主要是被用作调用时，也可以使用函数的命名约定。&lt;/p&gt;
+&lt;p&gt;注意对于内建命名(builtin names)有一个特殊的约定：大部分内建名都是一个单词（或者两个一起使用的单词），单词首字母大写(CapWords)的约定只对异常命名和内建常量使用。&lt;/p&gt;
+&lt;h3 id=&#34;异常命名exception-names&#34;&gt;异常命名(Exception Names)&lt;/h3&gt;
+&lt;p&gt;由于异常实际上也是类，因此类命名约定也适用与异常。不同的是，如果异常实际上是抛出错误的话，异常名前应该加上&amp;quot;Error&amp;quot;的前缀。&lt;/p&gt;
+&lt;h3 id=&#34;全局变量命名global-variable-names&#34;&gt;全局变量命名(Global Variable Names)&lt;/h3&gt;
+&lt;p&gt;（在此之前，我们先假定这些变量都仅在同一个模块内使用。）这些约定同样也适用于函数命名。&lt;/p&gt;
+&lt;p&gt;对于引用方式设计为&lt;code&gt;from M import *&lt;/code&gt;的模块，应该使用&lt;code&gt;__all__&lt;/code&gt;机制来避免import全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块非公开的”。&lt;/p&gt;
+&lt;h3 id=&#34;函数命名function-names&#34;&gt;函数命名(Function Names)&lt;/h3&gt;
+&lt;p&gt;函数命名应该都是小写，必要时使用下划线来提高可读性。&lt;/p&gt;
+&lt;p&gt;只有当已有代码风格已经是混合大小写时（比如threading.py），为了保留向后兼容性才使用混合大小写。&lt;/p&gt;
+&lt;h3 id=&#34;函数和方法参数function-and-method-arguments&#34;&gt;函数和方法参数(Function and method arguments)&lt;/h3&gt;
+&lt;p&gt;实例方法的第一参数永远都是&lt;code&gt;self&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;类方法的第一个参数永远都是&lt;code&gt;cls&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;在函数参数名和保留关键字冲突时，相对于使用缩写或拼写简化，使用以下划线结尾的命名一般更好。比如，&lt;code&gt;class_&lt;/code&gt;比&lt;code&gt;clss&lt;/code&gt;更好。（或许使用同义词避免这样的冲突是更好的方式。）&lt;/p&gt;
+&lt;h3 id=&#34;方法命名和实例变量method-names-and-instance-variables&#34;&gt;方法命名和实例变量(Method Names and Instance Variables)&lt;/h3&gt;
+&lt;p&gt;使用函数命名的规则：小写单词，必要时使用下划线分开以提高可读性。&lt;/p&gt;
+&lt;p&gt;仅对于非公开方法和变量命名在开头使用一个下划线。&lt;/p&gt;
+&lt;p&gt;避免和子类的命名冲突，使用两个下划线开头来触发Python的命名修饰机制。&lt;/p&gt;
+&lt;p&gt;Python类名的命名修饰规则：如果类Foo有一个属性叫&lt;code&gt;__a&lt;/code&gt;，不能使用&lt;code&gt;Foo.__a&lt;/code&gt;的方式访问该变量。（有用户可能仍然坚持使用&lt;code&gt;Foo._Foo__a&lt;/code&gt;的方法访问。）一般来说，两个下划线开头的命名方法只应该用来避免设计为子类的属性中的命名冲突。&lt;/p&gt;
+&lt;p&gt;注意：关于__names的使用也有一些争论（见下）。&lt;/p&gt;
+&lt;h3 id=&#34;常量constants&#34;&gt;常量(Constants)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;MAX_OVERFLOW&lt;/code&gt; and &lt;code&gt;TOTAL&lt;/code&gt;.
+常量通常是在模块级别定义的，使用全部大写并用下划线将单词分开。例如：&lt;code&gt;MAX_OVERFLOW&lt;/code&gt;和&lt;code&gt;TOTAL&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;继承的设计designing-for-inheritance&#34;&gt;继承的设计(Designing for inheritance)&lt;/h3&gt;
+&lt;p&gt;记得永远区别类的方法和实例变量（属性）应该是公开的还是非公开的。如果有疑虑的话，请选择非公开的；因为之后将非公开属性变为公开属性要容易些。&lt;/p&gt;
+&lt;p&gt;公开属性是那些和你希望和你定义的类无关的客户来使用的，并且确保不会出现向后不兼容的问题。非公开属性是那些不希望被第三方使用的部分，你可以不用保证非公开属性不会变化或被移除。&lt;/p&gt;
+&lt;p&gt;我们在这里没有使用“私有（private）”这个词，因为在Python里没有什么属性是真正私有的（这样设计省略了大量不必要的工作）。&lt;/p&gt;
+&lt;p&gt;另一类属性属于子类API的一部分（在其他语言中经常被称为&amp;quot;protected&amp;quot;）。一些类是为继承设计的，要么扩展要么修改类行为的部分。当设计这样的类时，需要谨慎明确地决定哪些属性是公开的，哪些属于子类API，哪些真的只会被你的基类调用。&lt;/p&gt;
+&lt;p&gt;请记住以上几点，下面是Python风格的指南：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;公开属性不应该有开头下划线。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果公开属性的名字和保留关键字有冲突，在你的属性名尾部加上一个下划线。这比采用缩写和简写更好。（然而，和这条规则冲突的是，‘cls’对任何变量和参数来说都是一个更好地拼写，因为大家都知道这表示class，特别是在类方法的第一个参数里。）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：对于类方法，参考之前的参数命名建议。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;-对于简单的公共数据属性，最后仅公开属性名字，不要公开复杂的调用或设值方法。记住在Python中，提供了一条简单的路径来实现未来增强，你应该简单数据属性需要增加功能行为。这种情况下，使用properties将功能实现隐藏在简单数据属性访问语法之后。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：Properties仅仅对新风格类有用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：尽量保证功能行为没有副作用，尽管缓存这种副作用看上去并没有什么大问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 3: 对计算量大的运算避免试用properties；属性的注解会让调用者相信访问的运算量是相对较小的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果你的类是子类的话，你有一些属性并不想让子类访问，考虑将他们命名为两个下划线开头并且结尾处没有下划线。这样会触发Python命名修饰算法，类名会被修饰添加到属性名中。这样可以避免属性命名冲突，以免子类会不经意间包含相同的命名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：注意命名修饰仅仅是简单地将类名加入到修饰名中，所以如果子类有相同的类名合属性名，你可能仍然会遇到命名冲突问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：命名修饰可以有特定用途，比如在调试时，&lt;code&gt;__getattr__()&lt;/code&gt;比较不方便。然而命名修饰算法的可以很好地记录，并且容意手动执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意3：不是所有人都喜欢命名修饰。试着权衡避免偶然命名冲突的需求和试用高级调用者使用的潜在可能性。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;公开和内部接口public-and-internal-interfaces&#34;&gt;公开和内部接口(Public and internal interfaces)&lt;/h2&gt;
+&lt;p&gt;任何向后兼容性保证仅对公开接口适用。相应地，用户能够清楚分辨公开接口和内部接口是很重要的。&lt;/p&gt;
+&lt;p&gt;文档化的接口被认为是公开的，除非文档中明确申明了它们是临时的或者内部接口，不保证向后兼容性。所有文档中未提到的接口应该被认为是内部的。&lt;/p&gt;
+&lt;p&gt;为了更好审视公开接口和内部接口，模块应该在&lt;code&gt;__all&lt;/code&gt;属性中明确申明公开API是哪些。将&lt;code&gt;__all__&lt;/code&gt;设为空list表示该模块中没有公开API。&lt;/p&gt;
+&lt;p&gt;即使正确设置了&lt;code&gt;__all&lt;/code&gt;属性，内部接口（包，模块，类，函数，属性或其他命名）也应该以一个下划线开头。&lt;/p&gt;
+&lt;p&gt;如果接口的任一一个命名空间（包，模块或类）是内部的，那么该接口也应该是内部的。&lt;/p&gt;
+&lt;p&gt;导入的命名应该永远被认为是实现细节。其他模块不应当依赖这些非直接访问的导入命名，除非它们在文档中明确地被写为模块的API，例如&lt;code&gt;os.path&lt;/code&gt;或者包的&lt;code&gt;__init__&lt;/code&gt;模块，那些从子模块展现的功能。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-08-30/</link>
+      <pubDate>Sun, 30 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-08-30/</guid>
+      <description>&lt;h1 id=&#34;字符串引用string-quotes&#34;&gt;字符串引用(String Quotes)&lt;/h1&gt;
+&lt;p&gt;在Python中表示字符串时，不管用单引号还是双引号都是一样的。但是不推荐将这两种方式看作一样并且混用。最好选择一种规则并坚持使用。当字符串中包含单引号时，采用双引号来表示字符串，反之也是一样，这样可以避免使用反斜杠，代码也更易读。&lt;/p&gt;
+&lt;p&gt;对于三引号表示的字符串，使用双引号字符来表示（译注：即用&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;而不是&lt;code&gt;&#39;&#39;&#39;&lt;/code&gt;），这样可以和PEP 257的文档字符串（docstring）规则保持一致。&lt;/p&gt;
+&lt;h1 id=&#34;表达式和语句中的空格whitespace-in-expressions-and-statements&#34;&gt;表达式和语句中的空格(Whitespace in Expressions and Statements)&lt;/h1&gt;
+&lt;h2 id=&#34;一些痛点pet-peeves&#34;&gt;一些痛点(Pet peeves)&lt;/h2&gt;
+&lt;p&gt;在下列情形中避免使用过多的空白：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;方括号，圆括号和花括号之后：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(ham[1], {eggs: 2})
+      No:  spam( ham[ 1 ], { eggs: 2 } )
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;逗号，分号或冒号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: if x == 4: print x, y; x, y = y, x
+      No:  if x == 4 : print x , y ; x , y = y , x
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;不过，在分片操作时，冒号和二元运算符是一样的，应该在其左右两边保留相同数量的空格（就像对待优先级最低的运算符一样）。在扩展的分片操作中，所有冒号的左右两边空格数都应该相等。不过也有例外，当切片操作中的参数被省略时，应该也忽略空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes:
+
+      ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+      ham[lower:upper], ham[lower:upper:], ham[lower::step]
+      ham[lower+offset : upper+offset]
+      ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+      ham[lower + offset : upper + offset]
+
+  No:
+
+      ham[lower + offset:upper + offset]
+      ham[1: 9], ham[1 :9], ham[1:9 :3]
+      ham[lower : : upper]
+      ham[ : upper]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在调用函数时传递参数list的括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(1)
+      No:  spam (1)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在索引和切片操作的左括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: dct[&amp;#39;key&amp;#39;] = lst[index]
+      No:  dct [&amp;#39;key&amp;#39;] = lst [index]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;赋值(或其他)运算符周围使用多个空格来和其他语句对齐：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      x = 1
+      y = 2
+      long_variable = 3
+
+  No::
+
+      x             = 1
+      y             = 2
+      long_variable = 3
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;其他建议&#34;&gt;其他建议&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在二元运算符的两边都使用一个空格：赋值运算符(&lt;code&gt;=&lt;/code&gt;)，增量赋值运算符(&lt;code&gt;+=&lt;/code&gt;, &lt;code&gt;-=&lt;/code&gt;
+etc.)，比较运算符(&lt;code&gt;==&lt;/code&gt;, &lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;&amp;gt;&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;, &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;=&lt;/code&gt;,
+&lt;code&gt;&amp;gt;=&lt;/code&gt;, &lt;code&gt;in&lt;/code&gt;, &lt;code&gt;not in&lt;/code&gt;, &lt;code&gt;is&lt;/code&gt;, &lt;code&gt;is not&lt;/code&gt;)，布尔运算符(&lt;code&gt;and&lt;/code&gt;,
+&lt;code&gt;or&lt;/code&gt;, &lt;code&gt;not&lt;/code&gt;)。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果使用了优先级不同的运算符，则在优先级较低的操作符周围增加空白。请你自行判断，不过永远不要用超过1个空格，永远保持二元运算符两侧的空白数量一样。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      i = i + 1
+      submitted += 1
+      x = x*2 - 1
+      hypot2 = x*x + y*y
+      c = (a+b) * (a-b)
+
+  No::
+
+      i=i+1
+      submitted +=1
+      x = x * 2 - 1
+      hypot2 = x * x + y * y
+      c = (a + b) * (a - b)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;=&lt;/code&gt;符号来表示关键字参数或默认参数值时，不要在其周围使用空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def complex(real, imag=0.0):
+          return magic(r=real, i=imag)
+
+  No::
+
+      def complex(real, imag = 0.0):
+          return magic(r = real, i = imag)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在带注释的函数定义中需要在&lt;code&gt;=&lt;/code&gt;符号周围加上空格。此外, 在&lt;code&gt;:&lt;/code&gt;后使用一个空格，在&lt;code&gt;-&amp;gt;&lt;/code&gt;表示带注释的返回值时，其两侧各使用一个空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def munge(input: AnyStr):
+      def munge(sep: AnyStr = None):
+      def munge() -&amp;gt; AnyStr:
+      def munge(input: AnyStr, sep: AnyStr = None, limit=1000):
+
+  No::
+
+      def munge(input: AnyStr=None):
+      def munge(input:AnyStr):
+      def munge(input: AnyStr)-&amp;gt;PosInt:
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;复合语句（即将多行语句写在一行）一般是不鼓励使用的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      if foo == &amp;#39;blah&amp;#39;:
+          do_blah_thing()
+      do_one()
+      do_two()
+      do_three()
+
+  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      do_one(); do_two(); do_three()
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;有时也可以将短小的if/for/while中的语句写在一行，但对于有多个分句的语句永远不要这样做。也要避免将多行都写在一起。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      for x in lst: total += x
+      while t &amp;lt; 10: t = delay()
+
+  Definitely not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      else: do_non_blah_thing()
+
+      try: something()
+      finally: cleanup()
+
+      do_one(); do_two(); do_three(long, argument,
+                                   list, like, this)
+
+      if foo == &amp;#39;blah&amp;#39;: one(); two(); three()
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;注释comments&#34;&gt;注释(Comments)&lt;/h1&gt;
+&lt;p&gt;和代码矛盾的注释还不如没有。当代码有改动时，一定要优先更改注释使其保持最新。&lt;/p&gt;
+&lt;p&gt;注释应该是完整的多个句子。如果注释是一个短语或一个句子，其首字母应该大写，除非开头是一个以小写字母开头的标识符（永远不要更改标识符的大小写）。&lt;/p&gt;
+&lt;p&gt;如果注释很短，结束的句号可以被忽略。块注释通常由一段或几段完整的句子组成，每个句子都应该以句号结束。&lt;/p&gt;
+&lt;p&gt;你应该在句尾的句号后再加上2个空格。&lt;/p&gt;
+&lt;p&gt;使用英文写作，参考Strunk和White的《The Elements of Style》&lt;/p&gt;
+&lt;p&gt;来自非英语国家的Python程序员们，请使用英文来写注释，除非你120%确定你的代码永远不会被不懂你所用语言的人阅读到。&lt;/p&gt;
+&lt;h2 id=&#34;块注释block-comments&#34;&gt;块注释（Block Comments）&lt;/h2&gt;
+&lt;p&gt;块注释一般写在对应代码之前，并且和对应代码有同样的缩进级别。块注释的每一行都应该以&lt;code&gt;#&lt;/code&gt;和一个空格开头（除非该文本是在注释内缩进对齐的）。&lt;/p&gt;
+&lt;p&gt;块注释中的段落应该用只含有单个&lt;code&gt;#&lt;/code&gt;的一行隔开。&lt;/p&gt;
+&lt;h2 id=&#34;行内注释inline-comments&#34;&gt;行内注释（Inline Comments）&lt;/h2&gt;
+&lt;p&gt;尽量少用行内注释。&lt;/p&gt;
+&lt;p&gt;行内注释是和代码语句写在一行内的注释。行内注释应该至少和代码语句之间有两个空格的间隔，并且以&lt;code&gt;#&lt;/code&gt;和一个空格开始。&lt;/p&gt;
+&lt;p&gt;行内注释通常不是必要的，在代码含义很明显时甚至会让人分心。请不要这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Increment x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;但这样做是有用的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Compensate for border
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;文档字符串documentation-strings&#34;&gt;文档字符串(Documentation Strings)&lt;/h2&gt;
+&lt;p&gt;要知道如何写出好的文档字符串（docstring），请参考PEP 257。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;所有的公共模块，函数，类和方法都应该有文档字符串。对于非公共方法，文档字符串不是必要的，但你应该留有注释说明该方法的功能，该注释应当出现在&lt;code&gt;def&lt;/code&gt;的下一行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PEP 257描述了好的文档字符应该遵循的规则。其中最重要的是，多行文档字符串以单行&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;结尾，不能有其他字符，例如：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      &amp;#34;&amp;#34;&amp;#34;Return a foobang
+
+      Optional plotz says to frobnicate the bizbaz first.
+      &amp;#34;&amp;#34;&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;对于仅有一行的文档字符串，结尾处的&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;应该也写在这一行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;版本注记version-bookkeeping&#34;&gt;版本注记(Version Bookkeeping)&lt;/h1&gt;
+&lt;p&gt;如果你必须在源代码中包含Subversion, CVS或RCS crud，请这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;__version__ = &amp;quot;$Revision$&amp;quot;
+# $Source$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上几行的内容应当在模块的文档字符串之后，在其他代码之前，并且在其开始和结束都使用一个空行隔开。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python代码风格指南（一）代码设计(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-07-04/</link>
+      <pubDate>Sat, 04 Jul 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-07-04/</guid>
+      <description>&lt;p&gt;翻译自：&lt;a href=&#34;https://www.python.org/dev/peps/pep-0008/&#34;&gt;PEP 8 - Style Guide for Python Code&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;介绍introduction&#34;&gt;介绍(Introduction)&lt;/h1&gt;
+&lt;p&gt;这篇文档说明了Python主要发行版中标准库代码所遵守的规范。请参考实现Python的C代码风格指南信息PEP。&lt;/p&gt;
+&lt;p&gt;这篇文档和PEP 257(Docstring Conventions)都改编自Guido(译注：Python之父)最早的Python风格指南文章，并加入了Barry风格指南里的内容。&lt;/p&gt;
+&lt;p&gt;语言自身在发生着改变，随着新的规范的出现和旧规范的过时，代码风格也会随着时间演变。&lt;/p&gt;
+&lt;p&gt;很多项目都有自己的一套风格指南。若和本指南有任何冲突，应该优先考虑其项目相关的那套指南。&lt;/p&gt;
+&lt;h1 id=&#34;保持盲目的一致是头脑简单的表现a-foolish-consistency-is-the-hobgoblin-of-little-minds&#34;&gt;保持盲目的一致是头脑简单的表现(A Foolish Consistency is the Hobgoblin of Little Minds)&lt;/h1&gt;
+&lt;p&gt;(注：标题语出自Ralph Waldo Emerson, Hobgolin意指民间故事中友好但常制造麻烦的动物角色。)&lt;/p&gt;
+&lt;p&gt;Guido的一个重要观点是代码被读的次数远多于被写的次数。这篇指南旨在提高代码的可读性，使浩瀚如烟的Python代码风格能保持一致。正如PEP 20那首《Zen of Python》的小诗里所说的：“可读性很重要(Readability counts)”。&lt;/p&gt;
+&lt;p&gt;这本风格指南是关于一致性的。同风格指南保持一致性是重要的，但是同项目保持一致性更加重要，同一个模块和一个函数保持一致性则最为重要。&lt;/p&gt;
+&lt;p&gt;然而最最重要的是：要知道何时去违反一致性，因为有时风格指南并不适用。当存有疑虑时，请自行做出最佳判断。请参考别的例子去做出最好的决定。并且不要犹豫，尽管提问。&lt;/p&gt;
+&lt;p&gt;特别的：千万不要为了遵守这篇PEP而破坏向后兼容性！&lt;/p&gt;
+&lt;p&gt;如果有以下借口，则可以忽略这份风格指南：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;当采用风格指南时会让代码更难读，甚至对于习惯阅读遵循这篇PEP的代码的人来说也是如此。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;需要和周围的代码保持一致性，但这些代码违反了指南中的风格（可是时历史原因造成的）——尽管这可能也是一个收拾别人烂摊子的机会（True in XP style?）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若是有问题的某段代码早于引入指南的时间，那么没有必要去修改这段代码。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码需要和更旧版本的Python保持兼容，而旧版本的Python不支持风格指南所推荐的特性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码设计code-lay-out&#34;&gt;代码设计(Code lay-out)&lt;/h1&gt;
+&lt;h2 id=&#34;缩进indentation&#34;&gt;缩进(Indentation)&lt;/h2&gt;
+&lt;p&gt;每个缩进级别采用4个空格。&lt;/p&gt;
+&lt;p&gt;连续行所包装的元素应该要么采用Python隐式续行，即垂直对齐于圆括号、方括号和花括号，要么采用&lt;em&gt;悬挂缩进(hanging indent)&lt;/em&gt;。采用悬挂缩进时需考虑以下两点：第一行不应该包括参数，并且在续行中需要再缩进一级以便清楚表示。&lt;/p&gt;
+&lt;p&gt;正确的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 同开始分界符(左括号)对齐
+foo = long_function_name(var_one, var_two,
+                         var_three, var_four)
+
+# 续行多缩进一级以同其他代码区别
+def long_function_name(
+        var_one, var_two, var_three,
+        var_four):
+    print(var_one)
+
+# 悬挂缩进需要多缩进一级
+foo = long_function_name(
+    var_one, var_two,
+    var_three, var_four)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;错误的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 采用垂直对齐时第一行不应该有参数
+foo = long_function_name(var_one, var_two,
+    var_three, var_four)
+
+# 续行并没有被区分开，因此需要再缩进一级
+def long_function_name(
+    var_one, var_two, var_three,
+    var_four):
+    print(var_one)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于续行来说，4空格的规则可以不遵守。&lt;/p&gt;
+&lt;p&gt;同样可行的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 悬挂缩进可以不采用4空格的缩进方法。
+foo = long_function_name(
+  var_one, var_two,
+  var_three, var_four)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;多行if语句&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果&lt;code&gt;if&lt;/code&gt;语句太长，需要用多行书写，2个字符(例如,&lt;code&gt;if&lt;/code&gt;)加上一个空格和一个左括号刚好是4空格的缩进，但这对多行条件语句的续行是没用的。因为这会和&lt;code&gt;if&lt;/code&gt;语句中嵌套的其他的缩进的语句产生视觉上的冲突。这份PEP中并没有做出明确的说明应该怎样来区分条件语句和&lt;code&gt;if&lt;/code&gt;语句中所嵌套的语句。以下几种方法都是可行的，但不仅仅只限于这几种方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 不采用额外缩进
+if (this_is_one_thing and
+    that_is_another_thing):
+    do_something()
+
+# 增加一行注释，在编辑器中显示时能有所区分
+# supporting syntax highlighting.
+if (this_is_one_thing and
+    that_is_another_thing):
+    # Since both conditions are true, we can frobnicate.
+    do_something()
+
+# 在条件语句的续行增加一级缩进
+if (this_is_one_thing
+        and that_is_another_thing):
+    do_something()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;多行结束右圆/方/花括号可以单独一行书写，和上一行的缩进对齐：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;my_list = [
+    1, 2, 3,
+    4, 5, 6,
+    ]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+    )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;也可以和多行开始的第一行的第一个字符对齐：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;my_list = [
+    1, 2, 3,
+    4, 5, 6,
+]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;tab还是空格tab-or-space&#34;&gt;Tab还是空格？(Tab or space?)&lt;/h2&gt;
+&lt;p&gt;推荐使用空格来进行缩进。&lt;/p&gt;
+&lt;p&gt;Tab应该只在现有代码已经使用tab进行缩进的情况下使用，以便和现有代码保持一致。&lt;/p&gt;
+&lt;p&gt;Python 3不允许tab和空格混合使用。&lt;/p&gt;
+&lt;p&gt;Python 2的代码若有tab和空格混合使用的情况，应该把tab全部转换为只有空格。&lt;/p&gt;
+&lt;p&gt;当使用命令行运行Python 2时，使用&lt;code&gt;-t&lt;/code&gt;选项，会出现非法混用tab和空格的警告。当使用&lt;code&gt;-tt&lt;/code&gt;选项时，这些警告会变成错误。强烈推荐使用这些选项！&lt;/p&gt;
+&lt;h2 id=&#34;每行最大长度maximum-line-length&#34;&gt;每行最大长度(Maximum Line Length)&lt;/h2&gt;
+&lt;p&gt;将所有行都限制在79个字符长度以内。&lt;/p&gt;
+&lt;p&gt;对于连续大段的文字（比如文档字符串(docstring)或注释），其结构上的限制更少，这些行应该被限制在72个字符长度内。&lt;/p&gt;
+&lt;p&gt;限制编辑器的窗口宽度能让好几个文件同时打开在屏幕上显示，在使用代码评审(code review)工具时在两个相邻窗口显示两个版本的代码效果很好。&lt;/p&gt;
+&lt;p&gt;很多工具的默认自动换行会破坏代码的结构，使代码更难以理解。在窗口大小设置为80个字符的编辑器中，即使在换行时编辑器可能会在最后一列放置一个记号，为避免自动换行也需要限制每行字符长度。一些基于web的工具可能根本没有自动换行的功能。&lt;/p&gt;
+&lt;p&gt;一些团队会强烈希望行长度比79个字符更长。当代码仅仅只由一个团队维护时，可以达成一致让行长度增加到80到100字符(实际上最大行长是99字符)，注释和文档字符串仍然是以72字符换行。&lt;/p&gt;
+&lt;p&gt;Python标准库比较传统，将行长限制在79个字符以内（文档字符串/注释为72个字符）。&lt;/p&gt;
+&lt;p&gt;一种推荐的换行方式是利用Python圆括号、方括号和花括号中的隐式续行。长行可以通过在括号内换行来分成多行。应该最好加上反斜杠来区别续行。&lt;/p&gt;
+&lt;p&gt;有时续行只能使用反斜杠才。例如，较长的多个&lt;code&gt;with&lt;/code&gt;语句不能采用隐式续行，只能接受反斜杠表示换行：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;with open(&#39;/path/to/some/file/you/want/to/read&#39;) as file_1, \
+     open(&#39;/path/to/some/file/being/written&#39;, &#39;w&#39;) as file_2:
+    file_2.write(file_1.read())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;（参照前面关于 &lt;code&gt;多行if语句&lt;/code&gt;的讨论来进一步考虑这里&lt;code&gt;with&lt;/code&gt;语句的缩进。）&lt;/p&gt;
+&lt;p&gt;另一个这样的例子是&lt;code&gt;assert&lt;/code&gt;语句。&lt;/p&gt;
+&lt;p&gt;要确保续行的缩进适当。逻辑运算符附近的换行处最好是在运算符&lt;strong&gt;之后&lt;/strong&gt;，而不是在其之前。来看一些例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Rectangle(Blob):
+
+    def __init__(self, width, height,
+                 color=&#39;black&#39;, emphasis=None, highlight=0):
+        if (width == 0 and height == 0 and
+                color == &#39;red&#39; and emphasis == &#39;strong&#39; or
+                highlight &amp;gt; 100):
+            raise ValueError(&amp;quot;sorry, you lose&amp;quot;)
+        if width == 0 and height == 0 and (color == &#39;red&#39; or
+                                           emphasis is None):
+            raise ValueError(&amp;quot;I don&#39;t think so -- values are %s, %s&amp;quot; %
+                             (width, height))
+        Blob.__init__(self, width, height,
+                      color, emphasis, highlight)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;空行blank-line&#34;&gt;空行(Blank line)&lt;/h2&gt;
+&lt;p&gt;使用2个空行来分隔最高级的函数(function)和类(class)定义。&lt;/p&gt;
+&lt;p&gt;使用1个空行来分隔类中的方法(method)定义。&lt;/p&gt;
+&lt;p&gt;（尽量少地）使用额外的空行来分隔一组相关的函数。在一系列相关的仅占一行的函数之间，空格也可以被省略，比如一组dummy实现。&lt;/p&gt;
+&lt;p&gt;在函数内（尽量少地）使用空行使代码逻辑更清晰。&lt;/p&gt;
+&lt;p&gt;Python支持control-L（如:^L）换页符作为空格；许多工具将这些符号作为分页符，因此你可以使用这些符号来分页或者区分文件中的相关区域。注意，一些编辑器和基于web的代码预览器可能不会将control-L识别为分页符，而是显示成其他符号。&lt;/p&gt;
+&lt;h2 id=&#34;源文件编码source-file-encoding&#34;&gt;源文件编码(Source File Encoding)&lt;/h2&gt;
+&lt;p&gt;Python核心发行版中的代码应该一直使用UTF-8（Python 2中使用ASCII）。&lt;/p&gt;
+&lt;p&gt;使用ASCII（Python 2）或者UTF-8（Python 3）的文件不应该添加编码声明。&lt;/p&gt;
+&lt;p&gt;在标准库中，只有用作测试目的，或者注释或文档字符串需要提及作者名字而不得不使用非ASCII字符时，才能使用非默认的编码。否则，在字符串文字中包括非ASCII数据时，推荐使用&lt;code&gt;\x&lt;/code&gt;, &lt;code&gt;\u&lt;/code&gt;, &lt;code&gt;\U&lt;/code&gt;或&lt;code&gt;\N&lt;/code&gt;等转义符。&lt;/p&gt;
+&lt;p&gt;对于Python 3.0及其以后的版本中，标准库遵循以下原则（参见PEP 3131）：Python标准库中的所有标识符都&lt;strong&gt;必须&lt;/strong&gt;只采用ASCII编码的标识符，在可行的条件下也&lt;strong&gt;应当&lt;/strong&gt;使用英文词（很多情况下，使用的缩写和技术术语词都不是英文）。此外，字符串文字和注释应该只包括ASCII编码。只有两种例外：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(a) 测试情况下为了测试非ASCII编码的特性&lt;/li&gt;
+&lt;li&gt;(b) 作者名字。作者名字不是由拉丁字母组成的也&lt;strong&gt;必须&lt;/strong&gt;提供一个拉丁音译名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;鼓励面向全世界的开源项目都采用类似的原则。&lt;/p&gt;
+&lt;h2 id=&#34;imports&#34;&gt;Imports&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Imports应该分行写，而不是都写在一行，例如：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 分开写
+import os
+import sys
+# 不要像下面一样写在一行
+import sys, os
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样写也是可以的：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from subprocess import Popen, PIPE
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Imports应该写在代码文件的开头，位于模块(module)注释和文档字符串之后，模块全局变量(globals)和常量(constants)声明之前。&lt;/p&gt;
+&lt;p&gt;Imports应该按照下面的顺序分组来写：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;标准库imports&lt;/li&gt;
+&lt;li&gt;相关第三方imports&lt;/li&gt;
+&lt;li&gt;本地应用/库的特定imports&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不同组的imports之前用空格隔开。&lt;/p&gt;
+&lt;p&gt;将任何相关的&lt;code&gt;__all__&lt;/code&gt;说明(specification)放在imports之后。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;推荐使用绝对(absolute)imports，因为这样通常更易读，在import系统没有正确配置（比如中的路径以&lt;code&gt;sys.path&lt;/code&gt;结束）的情况下，也会有更好的表现（或者至少会给出错误信息）：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import mypkg.sibling
+from mypkg import sibling
+from mypkg.sibling import example
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然而，除了绝对imports，显式的相对imports也是一种可以接受的替代方式。特别是当处理复杂的包布局(package layouts)时，采用绝对imports会显得啰嗦。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from . import sibling
+from .sibling import example
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Standard library code should avoid complex package layouts and always
+use absolute imports.
+标准库代码应当一直使用绝对imports，避免复杂的包布局。&lt;/p&gt;
+&lt;p&gt;隐式的相对imports应该&lt;strong&gt;永不&lt;/strong&gt;使用，并且Python 3中已经被去掉了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当从一个包括类的模块中import一个类时，通常可以这样写：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from myclass import MyClass
+from foo.bar.yourclass import YourClass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果和本地命名的拼写产生了冲突，应当直接import模块：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import myclass
+import foo.bar.yourclass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后使用&amp;quot;myclass.MyClass&amp;quot;和&amp;quot;foo.bar.yourclass.YourClass&amp;quot;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;避免使用通配符imports(&lt;code&gt;from &amp;lt;module&amp;gt; import *&lt;/code&gt;)，因为会造成在当前命名空间出现的命名含义不清晰，给读者和许多自动化工具造成困扰。有一个可以正当使用通配符import的情形，即将一个内部接口重新发布成公共API的一部分（比如，使用备选的加速模块中的定义去覆盖纯Python实现的接口，被覆盖的定义恰好在不能提前知晓）。&lt;/p&gt;
+&lt;p&gt;当使用这种方式重新发布命名时，指南后面关于公共和内部接口的部分仍然适用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>经过省察的人生The examined life</title>
+      <link>https://nanshu.wang/post/2015-03-03-1/</link>
+      <pubDate>Tue, 03 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-03-1/</guid>
+      <description>&lt;p&gt;译自&lt;a href=&#34;http://books.google.lt/books?id=WwpZVuylPgYC&amp;amp;pg=PA228&amp;amp;hl=zh-CN&amp;amp;source=gbs_toc_r&amp;amp;cad=3#v=onepage&amp;amp;q&amp;amp;f=false&#34;&gt;《A companion to Socrates》第14章&lt;/a&gt;，作者Richard Kraut&lt;/p&gt;
+&lt;h1 id=&#34;经过省察的人生&#34;&gt;经过省察的人生&lt;/h1&gt;
+&lt;p&gt;“未经省察过的人生是不值得过的人生”（《申辩》38a5-6）。这句苏格拉底耳熟能详的名言，也许是有史以来一个哲学家嘴中最肆无忌惮的话。苏格拉底的哲学思想和他的生活方式的本质也蕴含在这句话中。苏格拉底把自己的人生作为——或者更确切地说，柏拉图把他的人生作为——真正经过了省察的人生。要了解我们如何才能达到这种人生的要求，必须从柏拉图的作品出发，来好好学习苏格拉底给我们树立起来的好榜样。&lt;/p&gt;
+&lt;p&gt;这种人生的要求或许能激励我们或许不能使我们信服，因为准确地说，这是苏格拉底对他同时代人产生的影响。苏格拉底的魅力和崇高的理想可能会被削弱。因为他说过，未经省察过的人生正是许多人的生活方式，是只有当我们有强烈倾向时才做出的选择。同时，如果遵循苏格拉底的坚持，所有人都按他的方式生活，这种人生的要求则会显得荒诞不经，甚至可以说是异乎寻常的苛刻。在任何社会中，最多只有几个人可以像苏格拉底那样，把所有的日子都用来讨论道德伦理。所有其他的人都过着毫无价值的生活吗？苏格拉底有什么好的理由来批评绝大多数人类的行为生活吗？如果只有少数人像苏格拉底那样奉献自己，他对同时代人的生活几乎没有影响，那么在更一般的情况下，经过省察的人生又有什么价值？对于这个问题，确切得说，应该是对于一个能选择这样生活的人来说，经过省察的人生到底有什么好的？即使我们都可以掌控这种生活，我们又为什么要做出尝试呢？&lt;/p&gt;
+&lt;p&gt;如果还有道德哲学家的话，在当今的学术界恐怕也没谁赞同苏格拉底的名言。他们会说，我们被要求不用过分的方式（谋杀，袭击，盗窃）去伤害他人；我们要在一定程度上（这个程度多少也是一个争议的话题）至少造福一些其他人；我们要诚实，公正，善良，宽容；我们应该做的事，在道德意义上必须是正确的，因为道德本身就是正确的，而不是为达到某种非道德目的的方式。他们会说，那种苏格拉底与他的跟随者们从事的伦理讨论是值得追求的（毕竟这和这些哲学家的生活有点像）；但他们会补充说，没有必要甚至也不希望每个人都从事那种让苏格拉底着迷的抽象伦理探究。当然，他们还会说，这不是判断一个好人的人生是否经受住了审察的必要特点。在他们认为，成为一个好人明显到任何拥有常识的人都能看出来：在幼时拥有良好的教导，能分辨道德意义上的对错，并且坚持做对的事。人们需要变得善于使用这样的词语如“应该”，“正确”，“善”，“正义”，“诚实”。但要做到这一点，我们需要的不是像苏格拉底认为的那样，进入抽象和困难的道德哲学领域的，询问自己和他人诸如这样的问题：“什么是勇气？”，“ 什么是正义？”，“什么成为朋友？“相反，我们需要的是获得社会和情感技能，使我们认识到什么在道德意义上是对的，并且带着良心去做道德意义上对的事。苏格拉底根据这种思维方式，简单误以为成为一个好人，全部或部分地包括了成为一个好的道德哲学家。&lt;/p&gt;
+&lt;p&gt;然而，并非所有人都同意，苏格拉底对经过省察的人生的呼吁可以这样容易就被否定掉。在现代很大一部分时期中，他对经过省察的人生的呼吁为他赢得了一个接近基督和其他宗教领袖的地位，被视为人类历史上一个伟大的道德模范。本杰明·乔伊特（ Benjamin Jowett），十九世纪后期一个柏拉图作品的重要译者，告诉他的学生：“在牛津大学，基督和苏格拉底的人物传记是我们最浓厚的兴趣所在（虽然程度不一）。”1这样的比较在二十世纪也有，苏格拉底被一位存在主义作家卡尔·雅斯贝尔斯（ Karl Jaspers，1962）视为一个“个人模范”（继佛陀，孔子，基督之后）。但在二十一世纪的最初几年，道德哲学的学术界并没有苦苦抓住苏格拉底不放，而更像是避开了他（因为还有亚里士多德，休谟，康德，尼采， 西奇威克）。&lt;/p&gt;
+&lt;p&gt;苏格拉关于未经省察过的人生不值得过的人生的理论，我想既不能被接受也不能被拒绝。刚刚也描绘了若被拒绝的情况。&lt;strong&gt;在下文中，我将解释这样的人生有什么意义以及为什么苏格拉底认为我们必须这样做。&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&#34;柏拉图的申辩&#34;&gt;柏拉图的《申辩》&lt;/h1&gt;
+&lt;p&gt;展开这种探讨时苏格拉底本人在场——或者更确切地说，在柏拉图的《申辩》中，苏格拉底被描述成为我们在演讲，说出了这句“未经省察过的人生是不值得过的人生。”苏格拉底这句话时，陪审团已经判他有罪，而且将决​​定实施什么样的刑法。Meletus是其中一个控告者，提出将他判处死刑，在这时提出另一种惩罚是苏格拉底的权利。他问：他应当被请求流放到其他的城市，并且放弃他实践哲学的方式吗？他的回答是他不愿放弃哲学，因为这违背了他的神的意愿。然后他补充说：“如果我说，一个人最大的好处是每天都在讨论德性和其他你们听我同别人交谈和省察的东西，未经省察过的人生不值得过的人生，你会更容易被我的话说服的。“（38a1-6）。苏格拉底提出了把罚款作为处罚，但陪审团决定他应该被处死。&lt;/p&gt;
+&lt;p&gt;但是，为什么要每个人都要过一种省察过的人生呢？&lt;strong&gt;苏格拉底没有试图在这里回答这个问题，在任何辩护的其他地方也没有。&lt;/strong&gt; 他把经过省察的人生与进一步讨论德性就是好的联系起来，但是，这在柏拉图的《申辩》中同样没有做出解释。对于苏格拉底对这些说法没有给出论据，我们不应该感到惊讶。毕竟，他没有在做一个关于哲学的演讲，而是在针对指控为自己辩护，表明他的生活方式存在好的动机且没有不良影响。他的听众并不关心否可以证明是最好的生活是经过省察的生活；而想知道怎样对待持这种想法的人。&lt;/p&gt;
+&lt;p&gt;假设我们假定智慧是一个人可以拥有的最好的东西。并且假定我们接受苏格拉底比其他所有的人都更能通过伦理讨论来接近智慧。这些前提将会确保苏格拉底式的诘问法也有很大的价值的结论，但将其作为结论则会受到挑战。我们为什么要认为智慧是最好的东西呢？并且为什么要假设这种德性是凭借或部分凭借苏格拉底进行的那种抽象的道德探究组成的呢？似乎这样说也合情合理，尽管有许多不同形式的智慧，但通过诡辩习得复杂的道德哲学也许是其中之一，可以假定它比所有其他形式的智慧更加有价值。苏格拉底式的诘问法可以提高个人的哲学技能——但能说它使人变得更好了吗？它提高了人做好事的能力吗？柏拉图的《申辩》不 能回答这些问题，并没有打算回答。&lt;/p&gt;
+&lt;h1 id=&#34;不值得过的人生&#34;&gt;不值得过的人生&lt;/h1&gt;
+&lt;p&gt;因此，我们将不得不转向柏拉图的其他作品，来找到对苏格拉底所这句“未经省察过的人生是不值得过的人生的更好诠释”。但在我们抛开《申辩》之前，我们应该先停下来想一想，以确保我们真正懂得苏格拉底的这句话是什么意思。&lt;/p&gt;
+&lt;p&gt;其中的这个词——anexetastos（“unexamined未经省察的”）——的构成没有什么问题。Exetazein的意思是 “ 检查，探究，审察，测试，证明”。它和它的同源词 ，exetasis，经常被苏格拉底用来描述当在他与他人的谈话时在做的事。用同源形容词anexetastos形容的人生， 是一个没有受到苏格拉底式伦理道德省察的人生。&lt;/p&gt;
+&lt;p&gt;但其他苏格拉底这句话中的另一个词——biotos ——需要仔细理解。译成短语“值得过的，”从乔伊特（Jowett）起一直是一种标准翻译。当我们说某人的人生在某时是不值得过的，我们的意思应该是他没有比死更好的活法。在理想的情况下，人生不值得过的时候正好是死亡来临的时候。同样，如果一个人的人生从来没有在任何时候值得一过，那么任何时候在他的人生里，死都是好的。&lt;/p&gt;
+&lt;p&gt;如果我们理解苏格拉底的意思是应把所有的未经省察的人生都归入这个类别，那么我们则默认他对城邦的公民采取了其恶劣的态度。如果苏格拉底把他们从危难之中拯救出来（他在战场上杀敌），他则会认为这对他们没有什么好处。人们便会存有疑惑：为什么他认为他要为救他们动一根手指头？&lt;/p&gt;
+&lt;p&gt;是不值得过的人生不单单是坏人生：这种人生太缺少价值以至于对一个人来说去死反而是最好的选择。我们没有理由将未经省察的人生里深深的痛苦归于苏格拉底的观点。因为 biotos 并不一定意味着“值得过的”，也可译为“应该过的”。这样，苏格拉底的这句话应该理解为：“未经省察的人生不是应该过的人生。”这并不意味着人生应该被终止，相反，它可以被理解为人们不应该过那样的人生。如果一个人的人生是那样，那他必须做出改变——不是死亡会更好，而是可能有一个更好的人生。&lt;/p&gt;
+&lt;p&gt;这是苏格拉底的使命，去说服城邦的其他公民未经省察过的人生错过了最好的东西，因此他们必须改变他们的人生。苏格拉底的使命里没有哪部分是在说服他们人生不值得过最好去死。（试图证明这一点的意义又是什么呢？）因此，我建议我们放弃这个标准翻译，采用柏拉图希腊文版《申辩》38a5-6 的意思：“人们不应该过未经省察的人生。”我们不用害怕，以这种方式解释苏格拉底，才能把他的哲学思想变成一条不温不火的建议。每个人应该进行苏格拉底式探寻的观点是哲学家做出的最大胆的宣称之一。一旦一个人对这种观点笃信不疑，讨论对于过着这样人生的人是否去死更好，既没有哲学意义也没有现实意义。&lt;/p&gt;
+&lt;p&gt;另外，关于苏格拉底说这话的含义，还有一点要强调：他认为探究伦理道德是一个过程，一个人应该因此花掉一生的时间，而不仅仅只是暂时的。一个人要达到他的要求，则要花了大半年去询问他问过的问题，然后转向其他事情，并不再关切这类问题。对于经过省察的人生的呼吁，和一下观点也有联系：一个人最大的好处是“每天都讨论德行”等伦理问题（《申辩》38a3）。 我们应该认识到这是多么大胆的话。我们只有期待苏格拉底可以给我们足够的理由来接受它。&lt;/p&gt;
+&lt;h1 id=&#34;苏格拉底对话&#34;&gt;苏格拉底对话&lt;/h1&gt;
+&lt;p&gt;我们从哪里能找到他的论据呢？几乎所有的柏拉图对话集中都有一个对话者——通常他占有主导地位——他就是苏格拉底。但也有学者认为，这些对话的某些内容里，这些谈话给了我们一个名叫“苏格拉底”的历史人物大概的形象；而在另一些国家，“苏格拉底”却成为了柏拉图哲学的代言人，他的哲学虽然在历史上受苏格拉底极大影响，但也有显著不同.2 这正是在这篇文章中应遵循的方法。&amp;ldquo;人们不应该过未经省察的人生这种观点是很可能是苏格拉底哲学的核心，但它却不是柏拉图本人赞同的——或者可以说他在哲学生涯中只是之中都没有赞同过。为了说明这一点，我们只需要举出《理想国》中所描述的个等级的划分：哲学家，士兵和工人。只有哲学家可以说过上经过省察的人生：他们是那些专门被培训成提出和回答各种各样的苏格拉底式问题的人。与此相反，士兵和工人，过了不假思索的人生，只是接受法律和统治者的决定。统治者不同于任何其他人，他的工作是对实际问题有智慧。因此，《理想国》中的苏格拉底拒绝了这种观点，即每个人都可以过上经过考察的人生。&lt;/p&gt;
+&lt;p&gt;关于《申辩》和《理想国》中的冲突应当作何解释呢？&lt;strong&gt;一个令人难以置信的假设是，这里的差异实际上反映了柏拉图自己思想的转变。&lt;/strong&gt; 其实我个人比较相信这个假设。根据这种解释，柏拉图让苏格拉底在《申辩》中说一个人应该过经过省察的人生这样的话，实际上他是将自己的哲学思想放进了苏格拉底的演讲中。但是，这样来看待苏格拉底和柏拉图的关系不是一种可信的方式。我们没有理由怀疑，历史上的苏格拉底的确与许多和他同时代的人一起讨论德性，而他这样做引起了很大的敌意，但他却还是坚持认为这种探寻有很大的价值。无论是历史上的苏格拉底是否逐字逐句地依照我们今天读到的希腊文本谈论了关于未经省察的人生，这都不重要。不能轻易否认，经过省察的巨大人生价值是对历史上的苏格拉底的生平和思想的中心的假定。正如我们看到的那样，这种主导观念被《理想国》的主要对话者修正了。我认为，这种差异最合理的解释是柏拉图表达了他老师的中心思想，于是得出的结论是苏格拉底没有意识到其中的局限性。柏拉图说，是啊，经过省察的人生的确是人类能过上的最好的人生；但大家都去尝试便不是什么好事了。让小部分人过上那样的人生，去引导其他的人。&lt;/p&gt;
+&lt;p&gt;我们认识到，柏拉图受到了苏格拉底的启发，但却超越他。在研究柏拉图对话时，要把他俩区别开来：第一，围绕主题的对话内容使用的可能是历史上苏格拉底的真实想法；第二，那些有更占主导地位的更充分的思想，有可能是柏拉图做出修改甚至不同于苏格拉底的。毫无疑问柏拉图以某种方式在所有作品里注入了他自己的思想；不可能一个哲学家的才华和独创性不被放入对别人语录的被动记载中。即便如此，基于其他的互相不同类型和不同之处，把其中的组成进行分类，也是有帮助的。&lt;strong&gt;其中那些被称为“苏格拉底式”的内容比较少，几乎完全是以道德、探索为中心，结构上也比较简单。&lt;/strong&gt; 这些内容主要关于对坏想法的抨击或证明对话者的局限；其中也包含积极的想法，但不多，也从没有与形而上学和认识论的整合到一起。这样的描述发生在苏格拉底与Laches, Charmides, Euthyphro, Crito, Protagoras, Hippias Minor, Hippias Major, Lysis 以及 Gorgias的对话中。在这些对话中，柏拉图的思想或多或少都在他老师搭建的范围内展开。正如柏拉图在《申辩》中提到的那样，苏格拉底不关心任何除了提高人生以外的话题。至少在成年后，&lt;strong&gt;苏格拉底是一个道德哲学家，不是一个形而上学者、不是一个认识论者，更不是科学家。&lt;/strong&gt; 亚里士多德也证实了这一假定：他说，苏格拉底只关注道德，不研究自然世界。（《形而上学》 I.6 987b1-2）&lt;/p&gt;
+&lt;p&gt;许多其他对话都有一个相当不同的角色。这些对话篇幅更长，他们提出或审查的观点会经过更充分地阐述，涉及到的道德内容是与形而上学和认识论交织在一起的。 斐多篇“，”克拉底鲁篇“，理想国，菲德洛斯，巴门尼德，泰阿泰德篇，智者，政治家，和蒂迈欧篇” 都是如此 。对柏拉图的作品划分类别，不是说每篇作品都只属于一个类别。诸如美诺、尤西弗伦这样的作品既包括了苏格拉底式的对话特点，也有第二类作品的特点。&lt;/p&gt;
+&lt;p&gt;大多数的苏格拉底式对话是柏拉图早期作品，那时苏格拉底的影响力是最强的；但也有可能他在同一时期也在创作冗长的涉及形而上学、认识论和道德的作品。他意识到对于他复杂的作品来说，苏格拉底式对话是为读者准备的一个绝好的铺垫。这可以解释为什么像Lysis 和 Charmides中，含有更长和更复杂的对话里的暗示。&lt;/p&gt;
+&lt;p&gt;现在回到我们的主题上来。&lt;strong&gt;这句“人们不应该过未经省察的人生”属于历史上的苏格拉底，但不属于柏拉图笔下的苏格拉底。&lt;/strong&gt; 我们想知道苏格拉底到底对这个观点给出了什么论据，当然《申辩》中论据没有给出。那从哪里看起呢？最好就是从我们现在看的苏格拉底式对话出发，因为在这些内容中，柏拉图的哲思更贴近苏格拉底的特征，即与其他的哲学话题相比，伦理问题占有主导地位。&lt;/p&gt;
+&lt;p&gt;我们将看到，这样来做是值得的：通过这些对话，能更加深入理解苏格拉底对于最重要的道德伦理的讨论所给出的理由。这些苏格拉底式的作品能够读出来，若是没有用足够的耐心和智慧来省察人生，究竟会出什么错。&lt;/p&gt;
+&lt;h1 id=&#34;关于未经省察的人生的调查&#34;&gt;关于未经省察的人生的调查&lt;/h1&gt;
+&lt;p&gt;尤西弗罗认为 自己是对于宗教事务的专家。在以他的名字命名的对话中，他对自己的父亲提起诉讼，因为他需要为一个家里死去的奴隶负责。在那个时代，起诉自己的父亲被认为是一个非常极端的行为。但尤西弗罗 仍然认为宗教义务让他必须这样做。也许在这一点上他是对的——但他在做出这个决定是他处于什么位置呢？他是否有任何根据来回答这样一个问题：那种行为是有关宗教职责的？&lt;/p&gt;
+&lt;p&gt;在苏格拉底和尤西弗伦对话的过程中，他发现尤西弗伦没有认真考虑这件事，也没有思考虔诚的本质这个问题。尤西弗罗 是过着未经省察的人生的一个明显的例子（即使他认为自己是对于虔诚这个问题的专家），一篇以他名字命名的对话揭示了忽视哲学问题会产生多么严重的后果。除非他花大力气对的宗教职责做出准确的推测，否则他的宗教人生会变得很糟糕。似乎可以这样说，在这个例子中，他指控自己的父亲谋杀他人似乎是不虔诚的，他犯下了一个可怕的错误，便是没有意识到自己在做什么。&lt;/p&gt;
+&lt;p&gt;从这个对话中得出的一个简单的教训是缺乏对道德哲学问题的重视将对人生价值产生灾难性的后果。尤西弗罗 将会犯下一个最严重的错误，不是因为他是自私，贪图权力，贪婪，而是因为他是蒙昧，愚笨，肤浅。&lt;strong&gt;因为他没有求知欲，没有兴趣探寻哲学的伦理问题，他缺乏同时也永远不会理解他所称的道德的系统和一般性含义，甚至是其中的皮毛也不会理解。&lt;/strong&gt; 毫无疑问，他是从他的父母学习到如何使用这个词 hosiotEs （“虔诚”），也学到了其他的规范灌输的词。但一个人的童年接受的教育至今只有一次，自己不能想好，去决定应该学习哪些规范词语。&lt;/p&gt;
+&lt;p&gt;苏格拉底式的对话里有另一个人的显示出道德模糊的例子：克里托，在以其名字命名的对话里，他建议苏格拉底通过贿赂他的狱吏来越狱。克里托帮助苏格拉底逃脱的其中一个原因是他害怕周围的人耻笑他：在这种情况下很多人认为苏格拉底的朋友应该使用他们能力帮助他逃脱，如果他们没有这样做，则看起来像懦夫的行为（45E-46A）。值得注意的是，虽然克里托跟随在苏格拉底身边多年，但苏格拉底却一直没能使他从别人看法的奴役中解放出来。苏格拉底向克里托提过多次，他始终坚持一点：在做任何决定前必须首先多次考虑的是自己做的是否正义，而不是别人会怎样看。这个对话给我们的一个教导是，政治决策——如是否该接受处罚，即使处罚是不公正的——必须基于一个公民应该如何对待他的城市的一般理论。直到一个人抛开民意的影响，为公民责任的理论努力，一个人才不会误入政治事务的歧途。幸运的是， 克里托碰巧受到了苏格拉底的影响；若只凭借他自己，他将会为了男子气概的外表，成为欲望的奴隶。相比之下，尤西弗罗虽不在乎他的公众形象，但除了对于宗教事务有莫名的无知并且不加思索的自信外，也没有可以指引苏格拉底的地方。&lt;strong&gt;他们各自拥有各自的未经省察的人生。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果参考民众的意见确实能提出关于对与错，好和坏，正义和非正义等深思的问题，那对于认真思考关于道德问题的普遍意见是没有异议的。（克里托 47B）但是，假设发现有人进行这样的研究——并有人声称他们已经苦苦思考很久关于艰难的道德问题，并已成为这方面的专家。这正是柏拉图的《普罗塔哥拉》开篇描述的情况：与这部作品同名的著名智者来到雅典，希波克拉底要苏格拉底陪他去拜访这个著名智者和并成为他的学生。苏格拉底警告他：不要轻易委托出像灵魂这样珍贵的东西，特别是一个人不是他所宣称的专家（313A-C）。希波克拉底感到迫切需要道德教育，这种教育要超越孩童时期父母对自己的教育，他认为这样做是正确的。他渴望道德知识，但为了获得它，他必须了解自称有知识的人是否真的能教导自己。苏格拉底与希波克拉底的对话意味着，一个人永远不能放弃自己最重要的智慧，不能把自己的教育完全放在别人的手中。每个人都应该检验那些自称有道德知识的人，但成功且可靠地做到这一点，必须先教育自己，先决定要接受那种道德观点。这也有可能，有些人真的是道德专家，他们与他人讨论道德问题，能为他人作出最好的解答。这种可能性没有排除我们所有人都要过上经过省察的人生的需求除；除非我们这样做，否则我们给了别人极大伤害我们的机会。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;即使是那些钦佩并与苏格拉底在结交的人也不能避免误入歧途。&lt;/strong&gt; Charmides 和 Critias在苏格拉底被审判时都在场，明显没有从与苏格拉底的对话中受益 (他们是404 到403BC期间统治雅典的三十僭主之一)。 阿尔西比亚得也没有受益，他在后来的伯罗奔尼撒战争中背叛了雅典。（在以阿尔西比亚得名字命名的对话中，虽然这篇对话的作者不是柏拉图，但也值得仔细研究，柏拉图《会饮》中他的形象也同样如此 212C-223D）。阿尔西比亚得正如在柏拉图《会饮》中被描绘的那样，当着苏格拉底的面承认他对他的方式生活感到羞处（216B-ĉ）。但即使是这样，他也没能使自己严肃对待哲学。Charmides, Critias和 Alcibiades为未经省察的人生的困难提供了进一步例子，当我们不进行道德探寻时，我们也能发现这些困难。如果 像克里托和尤西弗罗 这样的人没有像Critias, Charmides, 和 Alcibiades一样成为违法犯罪者，那可真是走运。&lt;/p&gt;
+&lt;p&gt;柏拉图《Ion》中，与作品同名对话者提供了一个明显的例子：他屈服于理性思考的能力，容纳别人的思想和情感。Ion是一个rhapsode——专业的荷马史诗朗诵和解说者。但他承认，他并不懂得荷马史诗的主题；甚至，他说，荷马史诗的思想浸入了他的灵魂，并通过他再浸入听众的灵魂。苏格拉底认为，灵感的传递开始与激发了诗人创作的的缪斯女神：创作诗句的作家为了接受来自神的影响抛开自己的智慧，反过来rhapsode的灵感来自于他读的诗，和听众听到了来自rhapsode的吟诵，也放弃了他们本身的思想，被听到的溢美之词所掌控（533d-35A）。在一定程度上，诗歌爱好者生活在诗歌的影响下，没有仔细省察其中的含义，他们是把自己的生活交由别人来掌握（如希波克拉底）。如果他们走运，激发他们的诗句的观点是真实的，那么他们就把自己交给了一个好的指引者。但这并不是过自己人生的方式。&lt;/p&gt;
+&lt;p&gt;柏拉图的《高尔吉亚篇》探讨另一种模式：任由一个人的灵魂不加批判地受到别人的影响。雅典政治生活的成功需要一个人做任何吸引民众的事（502E，513B-C）：一个必须获得公众赞同的人，一个能用演讲取悦大众的人。一个人必须像糕点师一样，根据味蕾单独选择配料，而不考虑食用者的健康。Callicles是最后一个也是最大胆的的一个苏格拉底的对话者，他批评前两次对话者高尔吉亚和波卢什回答苏格拉底的方式，总是表现出他们不愿意说的感到羞愧的一面：他们自己不相信自己所说，并且按照设计好的方式在回答（482C-E）。&lt;/p&gt;
+&lt;p&gt;人们在公共场合表现出表面的忠诚，实际上是在日常社会生活交往中表现的虚假的自我——在理想国第二章也有提到，&lt;strong&gt;当格劳孔提到，绝大多数人在隐身的状态下（戴着盖斯的戒指），都会去尝试做坏事，即使他们自己在公众面前会谴责这种不正当行为。&lt;/strong&gt; 在与他人的日常交往中，他们躲在一个虚假的自我之后，为了达到目的他们戴着面具。他们不但不知道自己应该拥有什么，什么值得拥有，还给他人留下自己缺乏且渴望之物的虚假印象。他们没有真正的自我——一个自己设计的自我，经过剖析的自我——所以他们的社会面具后隐藏的除了对别人的被动模仿外，什么都不是。柏拉图介于苏格拉底式人生与未经省察的人生之间的思考，是对普通人的毫不偏颇的刻画的来源。&lt;/p&gt;
+&lt;p&gt;然而，在苏格拉底式对话中有一段，属于对普通人决定如何行动的标准，完全符合普通人的欲望。在柏拉图的《普罗塔哥拉》中，苏格拉底认为大多数人只凭借未来的快乐和痛苦来做决定（352B-56C）。他们认为快乐和痛苦是人类生活中的两个最强大的力量，他们把快乐作为唯一好的东西，痛苦是唯一不好的东西。因此，当他们拒绝追求快乐，或愿意接受痛苦，那只是因为他们进行了理性的计算，以便在今后获得最大的快乐，或者最少的痛苦。苏格拉底没有攻击《普罗塔哥拉》中提到的决策标准；在这篇对话中，他只是努力在证明一个这样做决定的人，懂得未来的快乐和痛苦是人生的关键因素，并且我们不能够和我们可以做到最好的行为产生对立。但令人惊讶的是，这里苏格拉底把普通人赋予了他对话者本没有的特点：一个人做采纳的决定表现出了他们想要的事物。&lt;/p&gt;
+&lt;p&gt;然而，不能作出这样疯狂的假设，即仅仅因为有了真正的决策标准，人生就会变好。标准必须是正确的，因此一个人必须找到原因，为什么这些快乐和痛苦在人生中这样重要。这不是一个大多数人都想知道的问题。苏格拉底描述的他们的视野是情绪化的：&lt;strong&gt;他们认为，与欲望，恐惧，爱，快乐，和痛苦比较起来，知识是对人生的影响不那么重要。&lt;/strong&gt; 这种态度使他们不能思考真正的人生目标。即使这种知识是能够获取的，他们认为这对自己的行为也不会有什么影响。因此，他们向他们追求快乐的欲望投降，尽力避免痛苦。他们认为唯一值得他们付诸行动的是如何得到这些好东西的最佳组合。然而他们却不会想知道，是否有更好的方法去作出决定，这些好的东西是否有坏处，不会对将来的快乐和痛苦产生影响。因此，像大多与苏格拉底对话的人一样，他们冒着巨大的风险：一个人经历的属于自己的快乐和痛苦不是正确的决策知道——如果有其他一类事物也是有好有坏——那么大多数人的处境会很糟糕。&lt;/p&gt;
+&lt;h1 id=&#34;-大多数人都是其他人&#34;&gt;“ 大多数人都是其他人”&lt;/h1&gt;
+&lt;p&gt;奥斯卡·王尔德的《深渊书简》写道：“大多数人都是其他人，他们的想法是别人的意见，他们的生活是在模仿，他们的激情都是虚假的。”，这和经过省察的人生有了类似的表达情感，也是一种接受苏格拉底式人生要求的方法。有人可能会对王尔德提出反对：那为什么我的观点不会也是别人的观点呢？如果我的想法就是别人的想法会不会非常可怖呢？我相信这个命题成立，那还存在什么异议——仅仅是因为别人认同我，我就应该停止这样做？&lt;/p&gt;
+&lt;p&gt;王尔德抓住了要点，但如果我们拿他说，永远不会形成和抛弃智慧的标准（即衡量看法的能力）是致命的缺点，不假思索地接受其他人的话语、行为和感受。想要变得像另外一个人是很严重的错误，如果这仅仅是一个模仿他人的不假思索的行为，而不思考这是否值得模仿。如果我爱一幅画，它应该是因为我感受到了我自己的眼睛看到到的感情，并且从内心出发认为这值得欣赏。别人喜欢一幅画，能够使我趋向认为这幅画有某些地方值得欣赏的；但是如果我并没发现这幅画好在哪里，并且没有如实得表达出来，那么我并没有得到他们的真实看法（当然假定别人的看法是真实的没有误导性的）。同样的观点不仅适用于画作，同时也适用于对好坏的评价。如果我们只是模仿他人的思想和行为，但却不加以评判思想的质量，那么我们则是不是用自己的心灵在面对世界。&lt;strong&gt;我们成为了其他人，失去了自我。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;阿尔西比亚得这样描述苏格拉底：再以没有人能像他一样。（会饮 221C）。但是，尽管苏格拉底未经省察的人生不存在未经思索的模仿，但这没有要求我们为了不寻常而变得不寻常。苏格拉底也没有这种动机，认为真实的自我只有通过评价决定这个单独标准来评判——虽然正如我们看见的那样，他没有批评那些有羞耻心的人或是害怕别人异样的眼神的人。&lt;strong&gt;经过省察的人生值得度过，因为对于正确行为的标准我们知之甚少；所以出于我们的无知，我们的人生没有那么好。必须通过自己的努力、凭借自己的看法去发现正确的标准。但一旦我们发现了那些标准，我们都会变得相似。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;告诫我们不要过未经省察的人生的意思是&lt;strong&gt;通过自身努力才能发现真理&lt;/strong&gt;。相反，它最好被看成是基于人类发展和人类本性：人类天生就被渴望快乐憎恨痛苦。他们追求权力和地位，因为财富，权力，地位能带来快乐。这是成为雅典重要的价值观并不是偶然。（申辩 29d-e）；这是全人类社会的共同的重要价值。虽然每一个孩子都会接受的道德教育，学会如何与他人沟通，学会如“好”，“正义”和“可耻”这些共同的道德规范。教育会留下在道德认识上留下巨大空白，这个空白能够被进一步的求索来填补；因为童年形成的对正义和善良的概念依然是初步的。他们接受的有限教育和强大的心理力量做着产生了冲突，心理想要快乐，权力和地位，并且引导这行为。那些感到理所当然需要进一步的教育的人常常不知道如何满足这种需要：他们通过美丽的诗句和名誉权利，把自己的想法表达给喜欢用华丽肤浅方式的人。或者，他们干脆放弃屈服于心理因素，不再思考，并把其对渴望快乐和憎恨厌恶痛苦的强烈欲望作为正确行为的唯一标准。&lt;/p&gt;
+&lt;p&gt;经过省察的人生的巨大价值在于，有一种可信的方式来找出我们头脑中的错误和教育里的缺陷，来填补关于好、正义、善良的概念空白。苏格拉底把它作为一个永远不会结束的过程。无论一个人在的道德认识上取得了多大的进步，学习依然是无止尽的，永远需要对于德性和其他道德规范的讨论。科学的思考方式已经普及。正如我们现在认识到的，科学永远从一个问题跳到另一个问题，每个解决方案的都会产生新的研究领域。我们可以说，苏格拉底在寻求一个道德的科学。这不是通过一次性回答所有的问题来终结所有的道德规范的讨论。无论我们学习了多少，学习都是无休止的，甚至可以温故而知新。那些在这个不断后退的目标方面取得进展的人，扩展了知识深度避免了在生活中范严重的错误。&lt;/p&gt;
+&lt;h1 id=&#34;德性知识和良好的意愿&#34;&gt;德性，知识，和良好的意愿&lt;/h1&gt;
+&lt;p&gt;这就是为什么我们应该过经过省察的人生。但这不是苏格拉底唯一坚持的观点。他说，我们也应该努力成为优秀的人，成为公正，勇敢 sophron（“克制”，“自制”，“稳健”，“节制”）的人，拥有所有的德性。这些劝诫互相有关系吗，或他们相互独立？——甚至可能互相之间有干扰？在《普罗塔哥拉》中，苏格拉底认为，它们是一个统一体；它们都有各自单独的一面，在正确的理解下是不会产生冲突的。&lt;strong&gt;德性的统一性所揭示的事实是，在寻求知识和智慧的不同道路上，它们之间相关联系。&lt;/strong&gt; 为了获得某种德性，一个人在人生的某一面必须做到足够好：例如，要变得勇敢，就要面对恐惧，并以正确的方式来处理恐惧。但要做到这一点，必须问自己人生和境况的哪些方面会有恐惧。是死亡吗？我们真的害怕它的到来吗？这不是我们的童年本身的道德修养能够让我们有能力来回答的一个问题。可以这样回答，省察自己的人生，找到真正有害的事情，这才是值得害怕的。这种方式反过来是不能被成功应用的，除非你了解对人来说，什么是好的；知道什么是好的，和知道什么是坏的是两个独立的问题。所以真正的勇气（不是愿意承担风险的愚蠢行为）不能从苏格拉底那种从事哲学探究的人身上拿走。&lt;/p&gt;
+&lt;p&gt;**同样的道理也适用于德性的品质：它是一个人拥有的好品格，并且它的好只能通过伦理探寻来发现。**在生命的初期，我们对真正的人生目标没有理解的时候，德性不要求被拥有；但很久之后，当我们知道了我们的人生目标是什么以及怎样去实现的时候，就不一样了。这就是苏格拉底在《普罗塔哥拉》中提出的，德性是智慧和知识的形式。&lt;strong&gt;这并不能得出这样的结论，即拥有德性的人没有感情。一个勇敢的人会害怕应该害怕的东西，有节制的人能通过恰当的方式体验快乐。&lt;/strong&gt; 但这些情绪反应将随着不同场合的改变流露。每个人都有幼稚情绪，这种情绪不只在童年才有，也终会被正义的情感所消灭和取代。&lt;/p&gt;
+&lt;p&gt;在“美诺篇”中 ，苏格拉底认为，在以下几个方面，德性是知识的一种。考虑一个通常被认为是好的东西，德性除外：例如健康、美丽或强壮。这些优点从长远和总体的角度来看的确是好的，但肯定存在健康、美丽或强壮也有不利的方面的情况。例如，一个强大和健康的人会高估自己的力量和体能，承担可能致命的任务。男孩英俊的面孔会导致别人采用损害他智力发展的方式对待他。这些看起来好的东西是否真的好取决于它们怎样被运用，然后如何运用这些好的东西并没有与其相辅相成。要知道如何使用这些天资才能使一个人真正受益，是需要一定的检验和实践的问题。对于只能算作一般的资质的智力水平也是一样，在不同情况下都有利有弊。根据苏格拉底的说法，好坏的差异在于一个人对智慧的运用——对于如何利用好的食物的知识。（类似的论证请参见 Euthydemus 278d-82A）。&lt;/p&gt;
+&lt;p&gt;他的理由和康德的《道德形而上学的基本原理》开篇十分类似。康德在开篇中写道：“除了善意，世界上在也没有一种能被称得上经过认证的好可以被构想出来，甚至在世界之外也没有”。他举出了很多例子：心灵品质如聪慧，和勇气，不同情形下的好“能够产生害处，“如果使用这些好的意愿不好的话”对于其他的幸运——权力，财富，名誉，健康，满足——也是如此。&lt;/p&gt;
+&lt;p&gt;他们将变成“傲慢与自大，如果在心中没有一个良好的意愿的话。”康德的结论是，没有什么比但良好的意愿更具备“内在的无条件的价值”。3没有什么情况下良好的意愿会导致不好和损害。&lt;/p&gt;
+&lt;p&gt;但康德在开篇提出的与苏格拉底的“美诺篇”中的观点类似， 但却没有得出一个好人应当进行道德探寻的结论——每天都像苏格拉底一样同别人探讨德性是什么。康德认为，普通的道德代理人不需要靠哲学帮忙来将规范概念应用到特定情况中，他们只需要防范规范刺激下动机的恶化。一个心智健全的成年人知道道义之路在哪。需要倍加努力的不是知道如何行事，而是有一个恰当的动机去行事，**因为一个人的意愿可以强大到驱使一个人单纯的动机，并且克服所有强烈的动机。**对康德来说，完善一个人的灵魂是一个 净化心灵的过程，而不是哲学训练的过程。像苏格拉底一样，他得到了灵魂深处核心的价值的东西——但这些东西并不包含复杂抽象的哲学思考。只有在灵魂之外的堕落这一点上，两个哲学家的观点是一致的。&lt;/p&gt;
+&lt;p&gt;跟随康德的引导，二十世纪最有影响力的道德哲学家之一WD罗斯认为任何受过教育有道德观念的人能够列出一个完整的职责表和一个完整的包括好坏事物的表。4 需要哲学技能和观察的是理解什么是一件事成为责任、成为好的。但是这样的职业与教导普通成年人应该如何度过人生没有关系。他认为，现实事物中的困难在于，当责任有冲突时知道该怎么做或者好坏发生冲突，没有哪方能胜过谁时。在这种情况下，做什么取决于每种情况下的细节，&lt;strong&gt;抽象的道德理论可以说不能引导普通民众的道德意识。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;在一个方面，功利主义——唯一的职责是利益最大化—— - 比康德哲学更接近苏格拉底哲学。因为功利主义采取了修正的态度来对待道德常识框架，即孩子们从他们的父母和社区来学习。 孩子们通常没有被教育要尽可能多做善事。他们 之前设定的目标 是更加温和，而且往往他们学习的道德由各种各样的规则组成：不打架，不撒谎，不拿别人的东西、爱护兄弟姐妹，尊重长老。功利主义的主要思想——个人应该关注全世界的幸福，个人不能作恶无论这是否导致了更大的善——是大多数功利主义只有在阅读哲学和与教师，学生，朋友谈话时才话能发现。为了成为一个功利主义的人，必须先经过一段时间的自我反省：我们必须要通过做一些伤害，来讯问一个人是否真的认为最大的好的政策是附着在更广泛接受的规则的复杂的网络的进步。一个人也必须问自己最重要的问题：什么是真的好？但在另一个方面，功利主义完全不赞同苏格拉底被省察的人生的要求。因为，正如我们所看到的，苏格拉底的禁令是基于“每天都在探讨德性”或者可以给人类带来最大利益的话题。苏格拉底认为，道德谈话的主要内容是永远不会枯竭的；道德生活的主要问题永远不能得到一次性解决，因为每一个新的理解会带来新的问题。这是 功利主义强烈反对 的想法 。他们认为功利主义者的程式永远不能加以改进。他们 认为， 一旦人们了解到什么是好的， 就没有必要继续思考了：一个人应该仅仅尽可能产生多的，并且这不是一个需要进行的哲学探究的做法。我们需要互相探讨我们的行为会产生什么影响；但是我们不需要谈论道德。古代伦理学的苏格拉底式角色&lt;/p&gt;
+&lt;p&gt;古代主要道德哲学家​站在苏格拉底的立场的至少有：他们认为如果哲学观念基于系统和抽象的思考，并进一步超越了我们童年时期学习的共同道德观，就很在某种程度上，影响一个人的思想，过上糟糕的人生，给别人造成巨大损害。他们认为，最重要的是我们必须达成一个共同理解，超过小孩子所认为的好。这是 的希腊伦理学的主要概念，苏格拉底式的对话展示了没有理解什么是好快是不可能理解德性，并且奠定了其核心基础。(Laches and Charmides 在其中所扮演的角色十分重要.) 柏拉图在《理想国》中的观点是，最高的智慧是对好的形式的认识——需要多年的科学训练来获得。亚里士多德说，学习道德的学生要从努力成为一个更好的人开始，为了做到这一点，他一定要了解人生首要的好。就像一个射手瞄准目标，他将能够切中要害——以他应该的方式生活及做决定——通过哲学论证，来发现对他重要的是什么。伊壁鸠鲁认为好就是明显且是被普遍接受的快乐；但他们认为的快乐在种类和价值上有极大不同，**唯有哲学思考能确定哪些是最适合我们去追求的。**斯多葛学派认为，**只有接受目的论的宇宙结构可以帮助我们摆脱破坏我们的幸福的幼稚情绪。**Pyrrhonian怀疑是唯一苏格拉底式的：他们自豪自己是唯一的哲学学校，&lt;strong&gt;继续从事苏格拉底后对智慧的探寻，避开一切定论的意见。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;对于所有的这些古代的思想家和学者，只有系统和抽象的思考才能揭示我们的生活中恰当行为的核心。如果我们只根据现成的第一手资料来做决定，不假思索，我们则会会误入歧途，对所有的成年人都是这样。这些苏格拉底的跟随者认为，我们必须采纳这两种看法中的一种：（柏拉图说）我们必须把让少数专家来完善和系统化我们的规范用词，并按照他们的理论制定方法，把道德意识渗入普通人的心中；或（苏格拉底说）我们每个人必须竭尽所能靠自己经历这个过程。无论哪种方式，我们在日常行为决策中都会用错道德规范的概念，除非这些概念是通过恰当使用的过程——即通过哲学理论——中形成的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Scikit-Learn机器学习介绍（中文翻译）</title>
+      <link>https://nanshu.wang/post/2014-12-02/</link>
+      <pubDate>Tue, 02 Dec 2014 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2014-12-02/</guid>
+      <description>&lt;p&gt;翻译自：http://scikit-learn.org/stable/tutorial/basic/tutorial.html&lt;/p&gt;
+&lt;p&gt;以后可能会根据自己的学习慢慢翻译其他的章节，水平有限，不足之处请指正。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本章内容
+在本章中，我们会介绍在使用scikit-learn中遇到的&lt;a href=&#34;http://en.wikipedia.org/wiki/Machine_learning&#34;&gt;机器学习&lt;/a&gt;(machine learning)术语，以及一个简单的机器学习例子。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;机器学习问题设定&#34;&gt;机器学习：问题设定&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;一般来说，机器学习问题可以这样来理解：我们有n个&lt;a href=&#34;http://en.wikipedia.org/wiki/Sample_(statistics)&#34;&gt;样本&lt;/a&gt;(sample)的数据集，想要预测未知数据的属性。&lt;/p&gt;
+&lt;p&gt;如果描述每个样本的数字不只一个，比如一个多维的条目（也叫做&lt;a href=&#34;http://en.wikipedia.org/wiki/Multivariate_random_variable&#34;&gt;多变量数据&lt;/a&gt;(multivariate data)），那么这个样本就有多个属性或者&lt;strong&gt;特征&lt;/strong&gt;。
+我们可以将学习问题分为以下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Supervised_learning&#34;&gt;有监督学习&lt;/a&gt;(supervised learning)是指数据中包括了我们想预测的属性，有监督学习问题有以下两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Classification_in_machine_learning&#34;&gt;分类&lt;/a&gt;（classification）:样本属于两个或多个类别，我们希望通过从已标记类别的数据学习，来预测未标记数据的分类。例如，识别手写数字就是一个分类问题，其目标是将每个输入向量对应到有穷的数字类别。从另一种角度来思考，分类是一种有监督学习的离散（相对于连续）形式，对于n个样本，一方有对应的有限个类别数量，另一方则试图标记样本并分配到正确的类别。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Regression_analysis&#34;&gt;回归&lt;/a&gt;(regression):如果希望的输出是一个或多个连续的变量，那么这项任务被称作&lt;em&gt;回归&lt;/em&gt;，比如用年龄和体重的函数来预测三文鱼的长度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://en.wikipedia.org/wiki/Unsupervised_learning&#34;&gt;无监督学习&lt;/a&gt;(unsupervised learning)的训练数据包括了输入向量X的集合，但没有相对应的目标变量。这类问题的目标可以是发掘数据中相似样本的分组，被称作&lt;a href=&#34;http://en.wikipedia.org/wiki/Cluster_analysis&#34;&gt;聚类&lt;/a&gt;(Clustering)；也可以是确定输入样本空间中的数据分布，被称作&lt;a href=&#34;http://en.wikipedia.org/wiki/Density_estimation&#34;&gt;密度估计&lt;/a&gt;（density estimation）;还可以是将数据从高维空间投射到两维或三维空间，以便进行数据可视化。&lt;a href=&#34;http://scikit-learn.org/stable/unsupervised_learning.html#unsupervised-learning&#34;&gt;这里&lt;/a&gt;是Scikit-Learn的无监督学习主页。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;训练集和测试集
+机器学习是关于如何从数据学习到一些属性并且用于新的数据集。这也是为什么机器学习中评估算法的一个习惯做法是将手头已有的数据集分成两部分：一部分我们称作&lt;strong&gt;训练集&lt;/strong&gt;（training set），用来学习数据的属性；另一部分叫做&lt;strong&gt;测试集&lt;/strong&gt;（testing set），用来测试这些属性。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;加载样例数据集&#34;&gt;加载样例数据集&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;scikit-learn有一些标准数据集，比如用于分类的&lt;a href=&#34;http://en.wikipedia.org/wiki/Iris_flower_data_set&#34;&gt;iris&lt;/a&gt;和&lt;a href=&#34;http://archive.ics.uci.edu/ml/datasets/Pen-Based+Recognition+of+Handwritten+Digits&#34;&gt;digits&lt;/a&gt;数据集，和用于回归的&lt;a href=&#34;http://archive.ics.uci.edu/ml/datasets/Housing&#34;&gt;波士顿房价&lt;/a&gt;(boston house prices)数据集。
+下面，我们会用shell里的Python解释器来加载&lt;code&gt;iris&lt;/code&gt;和&lt;code&gt;digits&lt;/code&gt;数据集。&lt;code&gt;$&lt;/code&gt;表示shell提示符，&lt;code&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/code&gt;表示Python解释器提示符：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  $ python
+  &amp;gt;&amp;gt;&amp;gt; from sklearn import datasets
+  &amp;gt;&amp;gt;&amp;gt; iris = datasets.load_iris()
+  &amp;gt;&amp;gt;&amp;gt; digits = datasets.load_digits()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;数据集类似字典对象，包括了所有的数据和关于数据的元数据（metadata）。数据被存储在&lt;code&gt;.data&lt;/code&gt;成员内，是一个&lt;code&gt;n_samples*n_features&lt;/code&gt;的数组。在有监督问题的情形下，一个或多个因变量（response variables）被储存在&lt;code&gt;.target&lt;/code&gt;成员中。有关不同数据集的更多细节可以在&lt;a href=&#34;http://scikit-learn.org/stable/datasets/index.html#datasets&#34;&gt;这里&lt;/a&gt;被找到。
+例如，在digits数据集中，&lt;code&gt;digits.data&lt;/code&gt;是可以用来分类数字样本的特征：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; print(digits.data)  # doctest: +NORMALIZE_WHITESPACE
+  [[  0.   0.   5. ...,   0.   0.   0.]
+   [  0.   0.   0. ...,  10.   0.   0.]
+   [  0.   0.   0. ...,  16.   9.   0.]
+   ...,
+   [  0.   0.   1. ...,   6.   0.   0.]
+   [  0.   0.   2. ...,  12.   0.   0.]
+   [  0.   0.  10. ...,  12.   1.   0.]]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;digits.target&lt;/code&gt;给出了digits数据集的真实值，即每个数字图案对应的我们想预测的真实数字：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; digits.target
+  array([0, 1, 2, ..., 8, 9, 8])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;数据数组的形式
+数据是一个2维&lt;code&gt;n_samples*n_features&lt;/code&gt;的数组，尽管原始数据集可能会有不同的形式。在digits数据集中，每个原始样本是一个8*8的数组，可以用以下方式访问：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;gt;&amp;gt;&amp;gt; digits.images[0]
+    array([[  0.,   0.,   5.,  13.,   9.,   1.,   0.,   0.],
+         [  0.,   0.,  13.,  15.,  10.,  15.,   5.,   0.],
+         [  0.,   3.,  15.,   2.,   0.,  11.,   8.,   0.],
+         [  0.,   4.,  12.,   0.,   0.,   8.,   8.,   0.],
+         [  0.,   5.,   8.,   0.,   0.,   9.,   8.,   0.],
+         [  0.,   4.,  11.,   0.,   1.,  12.,   7.,   0.],
+         [  0.,   2.,  14.,   5.,  10.,  12.,   0.,   0.],
+         [  0.,   0.,   6.,  13.,  10.,   0.,   0.,   0.]])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&#34;http://scikit-learn.org/stable/auto_examples/plot_digits_classification.html#example-plot-digits-classification-py&#34;&gt;这个简单的例子&lt;/a&gt;说明了如何从原始问题里将数据形式化，以便scikit-learn使用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;学习和预测&#34;&gt;学习和预测&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;在digits数据集中，我们的任务是给定一个图案，预测其表示的数字是什么。我们的样本有10个可能的分类（数字0到9)，我们将拟合一个&lt;a href=&#34;http://en.wikipedia.org/wiki/Estimator&#34;&gt;预测器&lt;/a&gt;(estimator)来&lt;strong&gt;预测&lt;/strong&gt;(predict)未知样本所属的分类。
+在scikit-learn中，分类的预测器是一个Python对象，来实现&lt;code&gt;fit(X, y)&lt;/code&gt;和 &lt;code&gt;predict(T)&lt;/code&gt;方法。
+下面这个预测器的例子是class&lt;code&gt;sklearn.svm.SVC&lt;/code&gt;，实现了&lt;a href=&#34;http://en.wikipedia.org/wiki/Support_vector_machine&#34;&gt;支持向量机分类&lt;/a&gt;。创建分类器需要模型参数，但现在，我们暂时先将预测器看作是一个黑盒：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; from sklearn import svm
+  &amp;gt;&amp;gt;&amp;gt; clf = svm.SVC(gamma=0.001, C=100.)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;选择模型参数
+在这个例子里我们手动设置了&lt;code&gt;gamma&lt;/code&gt;值。可以通过这些工具例如&lt;a href=&#34;http://scikit-learn.org/stable/modules/grid_search.html#grid-search&#34;&gt;网格搜索&lt;/a&gt;（grid search）和&lt;a href=&#34;http://scikit-learn.org/stable/modules/cross_validation.html#cross-validation&#34;&gt;交叉验证&lt;/a&gt;（cross validation）来自动找到参数的最佳取值。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;给预测器取个名字叫做&lt;code&gt;clf&lt;/code&gt;（claasifier）。现在预测器必须来&lt;strong&gt;拟合&lt;/strong&gt;（fit）模型，也就是说，它必须从模型中&lt;strong&gt;学习&lt;/strong&gt;（learn）。这个过程是通过将训练集传递给&lt;code&gt;fit&lt;/code&gt;方法来实现的。我们将除了最后一个样本的数据全部作为训练集。通过Python语法&lt;code&gt;[:-1]&lt;/code&gt;来选择训练集，这会生成一个新的数组，包含了除最后一个条目的&lt;code&gt;digits.data&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; clf.fit(digits.data[:-1], digits.target[:-1])  # doctest: +NORMALIZE_WHITESPACE
+  SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0, degree=3,
+    gamma=0.001, kernel=&#39;rbf&#39;, max_iter=-1, probability=False,
+    random_state=None, shrinking=True, tol=0.001, verbose=False)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;现在你可以预测新值了，具体来说，我们可以询问分类器，&lt;code&gt;digits&lt;/code&gt;数据集里最后一个图案所代表的数字是什么，我们并没有用最后一个数据来训练分类器。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; clf.predict(digits.data[-1])
+  array([8])
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;最一个图案如下：
+&lt;img src=&#34;http://scikit-learn.org/stable/_images/plot_digits_last_image_0011.png&#34; alt=&#34;此处输入图片的描述&#34;&gt;&lt;/p&gt;
+&lt;p&gt;如你所见，这项任务很具有挑战性：这个图案的分辨率很差。你能和分类器得到一致结果吗？
+一个更复杂的分类问题的例子在这里:&lt;a href=&#34;http://scikit-learn.org/stable/auto_examples/plot_digits_classification.html#example-plot-digits-classification-py&#34;&gt;识别手写数字&lt;/a&gt;（Recognizing hand-written digits），供学习参考。&lt;/p&gt;
+&lt;h2 id=&#34;模型持久性model-persistence&#34;&gt;模型持久性（Model persistence）&lt;/h2&gt;
+&lt;hr&gt;
+&lt;p&gt;可以采用Python内建的持久性模型&lt;a href=&#34;http://docs.python.org/library/pickle.html&#34;&gt;pickle&lt;/a&gt;来保存scikit的模型:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; from sklearn import svm
+  &amp;gt;&amp;gt;&amp;gt; from sklearn import datasets
+  &amp;gt;&amp;gt;&amp;gt; clf = svm.SVC()
+  &amp;gt;&amp;gt;&amp;gt; iris = datasets.load_iris()
+  &amp;gt;&amp;gt;&amp;gt; X, y = iris.data, iris.target
+  &amp;gt;&amp;gt;&amp;gt; clf.fit(X, y)  # doctest: +NORMALIZE_WHITESPACE
+  SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0, degree=3, gamma=0.0,
+    kernel=&#39;rbf&#39;, max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)
+
+  &amp;gt;&amp;gt;&amp;gt; import pickle
+  &amp;gt;&amp;gt;&amp;gt; s = pickle.dumps(clf)
+  &amp;gt;&amp;gt;&amp;gt; clf2 = pickle.loads(s)
+  &amp;gt;&amp;gt;&amp;gt; clf2.predict(X[0])
+  array([0])
+  &amp;gt;&amp;gt;&amp;gt; y[0]
+  0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在scikit的特定情形下，用joblib&amp;rsquo;s来代替pickle（&lt;code&gt;joblib.dump&lt;/code&gt; &amp;amp; &lt;code&gt;joblib.load&lt;/code&gt;）会更吸引人，在大数据下效率更高，但只能pickle到磁盘而不是字符串：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; from sklearn.externals import joblib
+  &amp;gt;&amp;gt;&amp;gt; joblib.dump(clf, &#39;filename.pkl&#39;) # doctest: +SKIP
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;你可以在之后重新加载pickled模型（可以在另一个Python程序里）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  &amp;gt;&amp;gt;&amp;gt; clf = joblib.load(&#39;filename.pkl&#39;) # doctest:+SKIP
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意：
+joblib.dump返回一个文件名列表。每个包含在&lt;code&gt;clf&lt;/code&gt;对象中独立的numpy数组是在文件系统中是按顺序排列的一个独立文件。当用joblib.load重新加载模型时，所有文件必须在同一个目录下。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;注意pickle有一些安全性和维护性问题。请参考&lt;a href=&#34;http://scikit-learn.org/stable/modules/model_persistence.html#model-persistence&#34;&gt;模型持久性&lt;/a&gt;章节获得更多关于scikit-learn模型持久性的信息。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>软件自定义网络Software-Definded Networking</title>
+      <link>https://nanshu.wang/post/2013-10-22/</link>
+      <pubDate>Tue, 22 Oct 2013 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2013-10-22/</guid>
+      <description>&lt;p&gt;译自：https://en.wikipedia.org/wiki/Software-defined_networking&lt;/p&gt;
+&lt;p&gt;软件定义网络（Software-Definded Networking, SDN）最初来源于2008年左右在加州大学伯克利分校和斯坦福大学的研究工作，而后演化成为一种新型的计算机网络。&lt;a href=&#34;https://en.wikipedia.org/wiki/Software-defined_networking#cite_note-1&#34;&gt;1&lt;/a&gt; SDN允许网络管理员通过对低层功能的抽象来管理网络服务。具体实现是通过将决定流量从如何发送的系统（控制平面）从底层转发流量到指定目的的系统（数据平面）分离开来。这项技术的发明者们和系统的供应商们认为SDN可以达到简化网络的目的。&lt;a href=&#34;https://en.wikipedia.org/wiki/Software-defined_networking#cite_note-white-2&#34;&gt;2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;SDN需要引入一些方法来实现控制平面与数据平面的通信。OpenFlow的作为其中的一种实现机制 ，经常被人误解为等同于SDN，实际上其他机制也可以实现SDN的概念。开放网络基金会的创立促进了SDN和OpenFlow市场的发展，云计算这一概念也开始流行。&lt;/p&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景：&lt;/h2&gt;
+&lt;p&gt;控制器充当的物理网络和SDN层的之间的界面基于互联网协议 （IP）的网络最初是建立在自治系统 （Autonomous Systems, AS）的概念基础上的。这一概念允许网络进行扩展和延伸，连接节点知道部分必须的路由信息，根据这些信息找到合理的下一跳，并转发数据包到下一跳。这种网络连接方法是简单的，并已被证明是有弹性的和可扩展的。考虑到报文递交的服务，AS的原则不允许指定转发目的在不改变自己标识的情况下移动。转发目的之间的拓扑位置正是它们所连接的网络接口，即它们的标识。此外，只使用基本的AS是很难得到其他标识的质量，比如逻辑分组，访问控制， 服务质量 ，中间的网络处理，也难以确定涉及到成为网络流或网络对话的数据包序列方面的内容。&lt;/p&gt;
+&lt;p&gt;互联网工程任务组 (Internet Engineering Task Force,IETF)实行了许多补充标准来扩大标识特定化的需求，如虚拟局域网和虚拟专用网络。这些增加的标准提高了网络元件规格和网络供应商配置接口的复杂度。&lt;/p&gt;
+&lt;p&gt;随着弹性的云架构和动态资源分配的发展，以及移动电脑操作系统和虚拟机使用的增长，软件定义网络（SDN）这一额外的分层需求出现了。这一额外分层允许网络运营商指定网络服务，而不用去耦合网络接口的规格。这使得实体之间可以在不改变标识也不违反规格的情况下移动。它也可以简化网络操作，因为每个标识的全局定义不必与每一个接口位置相匹配。这样一层也可以通过将标识和流量特征控制逻辑从基本的基于拓扑转发、桥接及路由中分离出来，从而重建网络元素内部的复杂设计。&lt;/p&gt;
+&lt;p&gt;全局软件定义控制还会基于源和目标识别来跟踪特定内容的流量。关于驱动网络硬件的一种机制已经被网络设备制造商采纳，目的是共享在软件定义边缘和供应商特定的桥接及路由之间运行的边缘。OpenFlow协议定义了一组关于转发的开放命令。OpenFlow协议运用全球感知软件控制器（集中式或分布式）来驱动网络边缘硬件，以便创造一个易编程的、基于标识的、覆盖在传统的IP核心上的网络。&lt;a href=&#34;https://en.wikipedia.org/wiki/Software-defined_networking#cite_note-white-2&#34;&gt;2&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;SDN是实现可编程化 主动互联网进程中的一步。SDN允许网络管理员通过控制器来实现对网络流量的可编程中央控制，而不需要访问物理层的网络交换机 。&lt;a href=&#34;https://en.wikipedia.org/wiki/Software-defined_networking#cite_note-3&#34;&gt;3&lt;/a&gt;,&lt;a href=&#34;https://en.wikipedia.org/wiki/Software-defined_networking#cite_note-4&#34;&gt;4&lt;/a&gt; SDN的配置可以创建起一个逻辑网络控制平面，其中硬件与数据转发平台硬件在物理上是分离的，即网络交换机可以转发数据包并且一个单独的服务器可以这个运行网络控制平面。 这种分离允许控制平面与数据平面在实现中使用不同的分布模型。控制平面的开发和运行环境的任务可以在不同的平台上运行（而不是硬件交换机和路由器上的低功率管理处理器）。&lt;/p&gt;
+&lt;p&gt;##SDN部署模型&lt;/p&gt;
+&lt;p&gt;###对称与非对称&lt;/p&gt;
+&lt;p&gt;在非对称模型中，SDN全局信息尽可能地集中化，边缘驱动时尽可能地分布化。这样做背后的考虑是清晰的，集中化使得全局整合轻松了许多，和分布化降低了SDN流量汇聚-封装的压力。然而，针对不同类型的SDN元素之间的确切关系，这种模型又产生了一系列问题，包括一致性，向外扩展的简化，多位置的高可用性，而在传统的基于AS的网络模型中，这些问题是不存在的。在对称分布的SDN模式中，需要增加全球的信息发布能力，提高SDN汇聚性能，使SDN元素基本上是一种类型的组件。只要在任意元素的子集中网络是可达的，在这样一组元素就可以在之上形成一个SDN覆盖网络。&lt;/p&gt;
+&lt;p&gt;###非泛洪与泛洪&lt;/p&gt;
+&lt;p&gt;在泛洪模型中，全局信息共享的相当一部分是通过广播和组播机制实现。这可以帮助SDN模型更加对称，它利用现有的透明桥接动态封装的原则，以实现全局意识和标识学习。这种方法的缺点之一是，随着越来越多的位置的加入，每个位置相应负载增加，从而降低了可扩展性。在非泛洪模型中，所有的转发是基于对全局的精确匹配，这通常采用分布式哈希和分布式缓存SDN查找表来实现。&lt;/p&gt;
+&lt;p&gt;###基于主机与网络中心化&lt;/p&gt;
+&lt;p&gt;在基于主机的模型中，关于SDN的数据中心中，假设很多的虚拟机通过可以移动来便增加弹性。在这个假设下，主机的虚拟机监视器代表本地虚拟机完成SDN封装。这种设计减少了SDN边缘的流量压力，并且根据每个主机上的空闲核心能力来“自由”处理。在网络中心化的设计中，一个更清晰的划分是在网络边缘和终端之间。这种SDN边缘与机柜设备顶端(TopOfRack)接口相连，并在主机端点之外。这是一种更传统的方法，网络互联并不依靠终端去执行任何路由的功能。&lt;/p&gt;
+&lt;p&gt;这些设计模型之间的界限划分并不明确。例如，在数据中心使用具有很多CPU“大型”主机计算结构有很多的CPU插件同样执行一些TopOfRack的接入功能，并可以代替一个机箱中所有的CPU插件，集中SDN边缘功能。这既是基于主机的设计，也是网络中心化的设计。也有可能是这些设计变量之间存在依赖关系，例如基于主机的实现通常会委托一个非对称集中查找或业务流程服务来协助组织庞大的分布。对称和非泛洪的模型通常会委托网络SDN汇聚来实现合理边缘点数量的查找分布。这样的集中度依赖于本地的OpenFlow的接口，以维持流量封装压力。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

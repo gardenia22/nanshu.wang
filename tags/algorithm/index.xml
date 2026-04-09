@@ -1,0 +1,115 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>Algorithm on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/algorithm/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Mon, 25 Jan 2016 00:00:00 UTC</updated>
+    
+    <item>
+      <title>How to write shortest code with Python</title>
+      <link>https://nanshu.wang/post/2016-01-25/</link>
+      <pubDate>Mon, 25 Jan 2016 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2016-01-25/</guid>
+      <description>&lt;p&gt;I was so enthralled by the &lt;a href=&#34;https://codefights.com&#34;&gt;Codefights&lt;/a&gt; Challenges of writing shortest code last weekend. After several attempts, I finally managed to rank #1 in this &lt;a href=&#34;https://codefights.com/challenge/vjxo2WFyex6a85BrH&#34;&gt;MatchingParentheses&lt;/a&gt; problem with one-line solution of only 77 chars(excludes whitespace).&lt;/p&gt;
+&lt;p&gt;Curtailing chars of solution is fun with little tricks. In the following I will show the tricks I used in this problem.&lt;/p&gt;
+&lt;h2 id=&#34;problem-description&#34;&gt;Problem Description:&lt;/h2&gt;
+&lt;p&gt;Given a string para, consisting of symbols &lt;code&gt;&#39;(&#39;&lt;/code&gt;, &lt;code&gt;&#39;[&#39;&lt;/code&gt;, &lt;code&gt;&#39;{&#39;&lt;/code&gt;, &lt;code&gt;&#39;)&#39;&lt;/code&gt;, &lt;code&gt;&#39;]&#39;&lt;/code&gt;, &lt;code&gt;&#39;}&#39;&lt;/code&gt; and &lt;code&gt;&#39; &#39;&lt;/code&gt;, find out if it is a correct bracket sequence (CBS in short) with occasional whitespace &lt;code&gt;(&#39; &#39;)&lt;/code&gt; characters. A CBS can be defined as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;- empty string (&amp;quot;&amp;quot;) is a CBS;
+- if S is a CBS, then (S), \[S\], {S} are CBSs;
+- if S1, S2 are CBS, then S1S2 is a CBS.
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;example&#34;&gt;Example:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;MatchingParentheses(&amp;quot;( )(( )){([( )])}&amp;quot;) = true
+MatchingParentheses(&amp;quot;)(&amp;quot;) = false
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;input-string-para&#34;&gt;input: string para&lt;/h3&gt;
+&lt;p&gt;A string of symbols  &lt;code&gt;&#39;(&#39;&lt;/code&gt;, &lt;code&gt;&#39;[&#39;&lt;/code&gt;, &lt;code&gt;&#39;{&#39;&lt;/code&gt;, &lt;code&gt;&#39;)&#39;&lt;/code&gt;, &lt;code&gt;&#39;]&#39;&lt;/code&gt;, &lt;code&gt;&#39;}&#39;&lt;/code&gt; and &lt;code&gt;&#39; &#39;&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;output-boolean&#34;&gt;output: boolean&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;true&lt;/code&gt; if the given string is CBS, &lt;code&gt;false&lt;/code&gt; otherwise.&lt;/p&gt;
+&lt;p&gt;Let me put my solution here. It is short and hard to understand. I will explain step by step how I get there.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MatchingParentheses = f = lambda p,d=1:d and f(*re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)) or not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First of my thought, stack would be a perfect way to solve this problem: push the element when left bracket appears and pop last element when matching right bracket appears. If the stack is empty at last, return True, otherwise False.&lt;/p&gt;
+&lt;p&gt;Before translating this procedure into code, think twice if there is simpler way. The answer is YES.&lt;/p&gt;
+&lt;p&gt;Instead of pushing and popping the element, can we directly delete adjacent matching parentheses? We delete repeatedly until the string is empty or we can&amp;rsquo;t find parentheses to delete anymore. This way is quite straightforward:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    def d(p):
+        return re.sub(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)
+    while p and p!=d(p):
+        p = d(p)
+    if p==&#39;&#39;:
+        return True
+    else:
+        return False
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This solution is easy to understand with 125 chars. Then let&amp;rsquo;s start to cut down the chars.&lt;/p&gt;
+&lt;h2 id=&#34;lessen-the-return-statement&#34;&gt;Lessen the return statement&lt;/h2&gt;
+&lt;p&gt;We can absolutely lose the if-else statement and write just:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;return p==&#39;&#39;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In Python, empty string has False value in bool type. This works too:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;return not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;use-subn-instead-of-sub&#34;&gt;Use subn() instead of sub()&lt;/h2&gt;
+&lt;p&gt;subn() return 2 arguments: first one is the modified string and second one is the times of modification. Then this solution becomes:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    def d(p):
+        return re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)
+    n = 1
+    while n:
+        p,n= d(p)
+    return not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Since we only use d function once, there is no need to define it separately.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    n = 1
+    while n:
+        p,n= re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)
+    return not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have reduced this solution to 79 chars, but we still have rooms to go even further.&lt;/p&gt;
+&lt;h2 id=&#34;lambda-function&#34;&gt;Lambda function&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s translate the whole function into lambda expression. Because lambda can only have one-line, we need to use recursion as an alternative to while loop.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MatchingParentheses = lambda p,n=1:MatchingParentheses(re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)) if n else not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We write MatchingParentheses twice, and that&amp;rsquo;s a lot of chars! There is a little trick to save chars:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MatchingParentheses = f = lambda p,n=1:f(*re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)) if n else not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now we have 78 chars, with only 1 char reduced after this big transformation&amp;hellip;(So we really shouldn&amp;rsquo;t write code like this if we are not in this shortest code competition.)&lt;/p&gt;
+&lt;p&gt;And can we reduce even more chars?&lt;/p&gt;
+&lt;p&gt;Answer is still YES!&lt;/p&gt;
+&lt;h2 id=&#34;ternary-in-python&#34;&gt;Ternary in Python&lt;/h2&gt;
+&lt;p&gt;There is no ternary expression in Python, instead we have one-line if else. But there is a &lt;em&gt;&lt;strong&gt;dangerous&lt;/strong&gt;&lt;/em&gt; way to use bool operation as a substitute of ternary expression.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(condition)? v1:v2 #ternary expression
+v1 if condition else v2 #one-line if else
+condition and v1 or v2 #dangerous bool expression
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is dangerous because this substitute is actually &lt;em&gt;&lt;strong&gt;wrong&lt;/strong&gt;&lt;/em&gt; when v1 has possible 0 value. The right bool expression is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(condition and [v1] or [v2])[0]. 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In this problem,&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;v1 = f(*re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p))
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;v1 is a tuple of 2 values, so there is no chance v1 equals to 0. So we take a risk here and get our &lt;em&gt;&lt;strong&gt;final solution&lt;/strong&gt;&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;MatchingParentheses = f = lambda p,n=1:n and f(*re.subn(&#39;\(\)|{}|\[\]| &#39;,&#39;&#39;,p)) or not p
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Fortunately, this trick saves one more char for us. The final solution has 77 chars in total.&lt;/p&gt;
+&lt;h2 id=&#34;some-takeaway&#34;&gt;Some takeaway&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Never pursue writing shortest code in real practice.&lt;/li&gt;
+&lt;li&gt;Never overuse tricks.&lt;/li&gt;
+&lt;li&gt;Keep code readable and simple.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If you can write even shorter solution for this problem, welcome to leave a comment here. :)&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

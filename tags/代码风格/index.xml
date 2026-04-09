@@ -1,0 +1,544 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>代码风格 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Mon, 31 Aug 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>Python代码风格指南（三）命名约定(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-09-14/</link>
+      <pubDate>Mon, 31 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-09-14/</guid>
+      <description>&lt;h1 id=&#34;命名约定naming-conventions&#34;&gt;命名约定（Naming Conventions）&lt;/h1&gt;
+&lt;p&gt;Python标准库的命名约定有一些混乱，因此我们永远都无法保持一致。但如今仍然存在一些推荐的命名标准。新的模块和包（包括第三方框架）应该采用这些标准，但若是已经存在的包有另一套风格的话，还是应当与原有的风格保持内部一致。&lt;/p&gt;
+&lt;h2 id=&#34;重写原则overriding-principle&#34;&gt;重写原则（Overriding Principle）&lt;/h2&gt;
+&lt;p&gt;对于用户可见的公共部分API，其命名应当表达出功能用途而不是其具体的实现细节。&lt;/p&gt;
+&lt;h2 id=&#34;描述性命名风格descriptive-naming-styles&#34;&gt;描述性：命名风格（Descriptive: Naming Styles）&lt;/h2&gt;
+&lt;p&gt;存在很多不同的命名风格，最好能够独立地从命名对象的用途认出采用了哪种命名风格。&lt;/p&gt;
+&lt;p&gt;以下是常用于区分的命名风格：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``b`` (单个小写字母)
+- ``B`` (单个大写字母)
+- ``lowercase``(小写)
+- ``lower_case_with_underscores``(带下划线小写)
+- ``UPPERCASE``(带下划线大写)
+- ``UPPER_CASE_WITH_UNDERSCORES``(带下划线大写)
+- ``CapitalizedWords`` (也叫做CapWords或者CamelCase -- 因为单词首字母大写看起来很像驼峰)。也被称作StudlyCaps。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;注意：当CapWords里包含缩写时，将缩写部分的字母都大写。HTTPServerError比HttpServerError要好。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``mixedCase`` (注意：和CapitalizedWords不同在于其首字母小写！)
+- ``Capitalized_Words_With_Underscores`` (这种风格超丑！)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;也有风格使用简短唯一的前缀来表示一组相关的命名。这在Python中并不常见，但为了完整起见这里也捎带提一下。比如，&lt;code&gt;os.stat()&lt;/code&gt;函数返回一个tuple，其中的元素名原本为&lt;code&gt;st_mode&lt;/code&gt;,&lt;code&gt;st-size&lt;/code&gt;,&lt;code&gt;st_mtime&lt;/code&gt;等等。（这样做是为了强调和POSIX系统调用结构之间的关系，可以帮助程序员更好熟悉。）&lt;/p&gt;
+&lt;p&gt;X11库中的公共函数名都以X开头。在Python中这样的风格一般被认为是不必要的，因为属性和方法名之前已经有了对象名的前缀，而函数名前也有了模块名的前缀。&lt;/p&gt;
+&lt;p&gt;此外，要区别以下划线开始或结尾的特殊形式（可以和其它的规则结合起来）：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;- ``_single_leading_underscore``: 以单个下划线开头是&amp;#34;内部使用&amp;#34;的弱标志。
+  E.g. ``from M import *``不会import下划线开头的对象。
+
+- ``single_trailing_underscore_``: 以单个下划线结尾用来避免和Python关键词产生冲突，例如:
+
+      Tkinter.Toplevel(master, class_=&amp;#39;ClassName&amp;#39;)
+
+- ``__double_leading_underscore``: 以双下划线开头的风格命名类属性表示触发命名修饰（在FooBar类中，``__boo``命名会被修饰成``_FooBar__boo``; 见下）。
+
+- ``__double_leading_and_trailing_underscore__``: 以双下划线开头和结尾的命名风格表示生存在用户控制的命名空间里“魔法”对象或属性。
+  E.g. ``__init__``, ``__import__`` 或 ``__file__``。请依照文档描述来使用这些命名，千万不要自己发明。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;规范性命名约定prescriptive-naming-conventions&#34;&gt;规范性：命名约定(Prescriptive: Naming Conventions)&lt;/h2&gt;
+&lt;h3 id=&#34;需要避免的命名names-to-avoid&#34;&gt;需要避免的命名(Names to Avoid)&lt;/h3&gt;
+&lt;p&gt;不要使用字符&amp;rsquo;l&amp;rsquo;（小写的字母el），&amp;lsquo;O&amp;rsquo;（大写的字母oh），或者&amp;rsquo;I&amp;rsquo;（大写的字母eye）来作为单个字符的变量名。&lt;/p&gt;
+&lt;p&gt;在一些字体中，这些字符和数字1和0无法区别开来。当想使用&amp;rsquo;l&amp;rsquo;时，使用&amp;rsquo;L&amp;rsquo;代替。&lt;/p&gt;
+&lt;h3 id=&#34;包和模块命名package-and-module-names&#34;&gt;包和模块命名(Package and Module Names)&lt;/h3&gt;
+&lt;p&gt;模块命名应短小，且为全小写。若下划线能提高可读性，也可以在模块名中使用。Python包命名也应该短小，且为全小写，但不应使用下划线。&lt;/p&gt;
+&lt;p&gt;模块名是对应到文件名的，一些文件系统会区分大小写并且会将长的文件名截断。因此模块名应该尽量短小，这个问题在Unix系统上是不存在的，但把代码移植到较旧的Mac，Windows版本或DOS系统上时，可能会出现问题。&lt;/p&gt;
+&lt;p&gt;当使用C或C++写的扩展模块有相应的Python模块提供更高级的接口时（e.g. 更加面向对象），C/C++模块名以下划线开头（e.g. &lt;code&gt;_sociket&lt;/code&gt;）。&lt;/p&gt;
+&lt;h3 id=&#34;类命名class-names&#34;&gt;类命名(Class Names)&lt;/h3&gt;
+&lt;p&gt;类命名应该使用单词字母大写（CapWords）的命名约定。&lt;/p&gt;
+&lt;p&gt;当接口已有文档说明且主要是被用作调用时，也可以使用函数的命名约定。&lt;/p&gt;
+&lt;p&gt;注意对于内建命名(builtin names)有一个特殊的约定：大部分内建名都是一个单词（或者两个一起使用的单词），单词首字母大写(CapWords)的约定只对异常命名和内建常量使用。&lt;/p&gt;
+&lt;h3 id=&#34;异常命名exception-names&#34;&gt;异常命名(Exception Names)&lt;/h3&gt;
+&lt;p&gt;由于异常实际上也是类，因此类命名约定也适用与异常。不同的是，如果异常实际上是抛出错误的话，异常名前应该加上&amp;quot;Error&amp;quot;的前缀。&lt;/p&gt;
+&lt;h3 id=&#34;全局变量命名global-variable-names&#34;&gt;全局变量命名(Global Variable Names)&lt;/h3&gt;
+&lt;p&gt;（在此之前，我们先假定这些变量都仅在同一个模块内使用。）这些约定同样也适用于函数命名。&lt;/p&gt;
+&lt;p&gt;对于引用方式设计为&lt;code&gt;from M import *&lt;/code&gt;的模块，应该使用&lt;code&gt;__all__&lt;/code&gt;机制来避免import全局变量，或者采用下划线前缀的旧约定来命名全局变量，从而表明这些变量是“模块非公开的”。&lt;/p&gt;
+&lt;h3 id=&#34;函数命名function-names&#34;&gt;函数命名(Function Names)&lt;/h3&gt;
+&lt;p&gt;函数命名应该都是小写，必要时使用下划线来提高可读性。&lt;/p&gt;
+&lt;p&gt;只有当已有代码风格已经是混合大小写时（比如threading.py），为了保留向后兼容性才使用混合大小写。&lt;/p&gt;
+&lt;h3 id=&#34;函数和方法参数function-and-method-arguments&#34;&gt;函数和方法参数(Function and method arguments)&lt;/h3&gt;
+&lt;p&gt;实例方法的第一参数永远都是&lt;code&gt;self&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;类方法的第一个参数永远都是&lt;code&gt;cls&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;在函数参数名和保留关键字冲突时，相对于使用缩写或拼写简化，使用以下划线结尾的命名一般更好。比如，&lt;code&gt;class_&lt;/code&gt;比&lt;code&gt;clss&lt;/code&gt;更好。（或许使用同义词避免这样的冲突是更好的方式。）&lt;/p&gt;
+&lt;h3 id=&#34;方法命名和实例变量method-names-and-instance-variables&#34;&gt;方法命名和实例变量(Method Names and Instance Variables)&lt;/h3&gt;
+&lt;p&gt;使用函数命名的规则：小写单词，必要时使用下划线分开以提高可读性。&lt;/p&gt;
+&lt;p&gt;仅对于非公开方法和变量命名在开头使用一个下划线。&lt;/p&gt;
+&lt;p&gt;避免和子类的命名冲突，使用两个下划线开头来触发Python的命名修饰机制。&lt;/p&gt;
+&lt;p&gt;Python类名的命名修饰规则：如果类Foo有一个属性叫&lt;code&gt;__a&lt;/code&gt;，不能使用&lt;code&gt;Foo.__a&lt;/code&gt;的方式访问该变量。（有用户可能仍然坚持使用&lt;code&gt;Foo._Foo__a&lt;/code&gt;的方法访问。）一般来说，两个下划线开头的命名方法只应该用来避免设计为子类的属性中的命名冲突。&lt;/p&gt;
+&lt;p&gt;注意：关于__names的使用也有一些争论（见下）。&lt;/p&gt;
+&lt;h3 id=&#34;常量constants&#34;&gt;常量(Constants)&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;MAX_OVERFLOW&lt;/code&gt; and &lt;code&gt;TOTAL&lt;/code&gt;.
+常量通常是在模块级别定义的，使用全部大写并用下划线将单词分开。例如：&lt;code&gt;MAX_OVERFLOW&lt;/code&gt;和&lt;code&gt;TOTAL&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;继承的设计designing-for-inheritance&#34;&gt;继承的设计(Designing for inheritance)&lt;/h3&gt;
+&lt;p&gt;记得永远区别类的方法和实例变量（属性）应该是公开的还是非公开的。如果有疑虑的话，请选择非公开的；因为之后将非公开属性变为公开属性要容易些。&lt;/p&gt;
+&lt;p&gt;公开属性是那些和你希望和你定义的类无关的客户来使用的，并且确保不会出现向后不兼容的问题。非公开属性是那些不希望被第三方使用的部分，你可以不用保证非公开属性不会变化或被移除。&lt;/p&gt;
+&lt;p&gt;我们在这里没有使用“私有（private）”这个词，因为在Python里没有什么属性是真正私有的（这样设计省略了大量不必要的工作）。&lt;/p&gt;
+&lt;p&gt;另一类属性属于子类API的一部分（在其他语言中经常被称为&amp;quot;protected&amp;quot;）。一些类是为继承设计的，要么扩展要么修改类行为的部分。当设计这样的类时，需要谨慎明确地决定哪些属性是公开的，哪些属于子类API，哪些真的只会被你的基类调用。&lt;/p&gt;
+&lt;p&gt;请记住以上几点，下面是Python风格的指南：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;公开属性不应该有开头下划线。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果公开属性的名字和保留关键字有冲突，在你的属性名尾部加上一个下划线。这比采用缩写和简写更好。（然而，和这条规则冲突的是，‘cls’对任何变量和参数来说都是一个更好地拼写，因为大家都知道这表示class，特别是在类方法的第一个参数里。）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：对于类方法，参考之前的参数命名建议。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;-对于简单的公共数据属性，最后仅公开属性名字，不要公开复杂的调用或设值方法。记住在Python中，提供了一条简单的路径来实现未来增强，你应该简单数据属性需要增加功能行为。这种情况下，使用properties将功能实现隐藏在简单数据属性访问语法之后。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：Properties仅仅对新风格类有用。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：尽量保证功能行为没有副作用，尽管缓存这种副作用看上去并没有什么大问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 3: 对计算量大的运算避免试用properties；属性的注解会让调用者相信访问的运算量是相对较小的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;如果你的类是子类的话，你有一些属性并不想让子类访问，考虑将他们命名为两个下划线开头并且结尾处没有下划线。这样会触发Python命名修饰算法，类名会被修饰添加到属性名中。这样可以避免属性命名冲突，以免子类会不经意间包含相同的命名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 1：注意命名修饰仅仅是简单地将类名加入到修饰名中，所以如果子类有相同的类名合属性名，你可能仍然会遇到命名冲突问题。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意 2：命名修饰可以有特定用途，比如在调试时，&lt;code&gt;__getattr__()&lt;/code&gt;比较不方便。然而命名修饰算法的可以很好地记录，并且容意手动执行。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;注意3：不是所有人都喜欢命名修饰。试着权衡避免偶然命名冲突的需求和试用高级调用者使用的潜在可能性。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;公开和内部接口public-and-internal-interfaces&#34;&gt;公开和内部接口(Public and internal interfaces)&lt;/h2&gt;
+&lt;p&gt;任何向后兼容性保证仅对公开接口适用。相应地，用户能够清楚分辨公开接口和内部接口是很重要的。&lt;/p&gt;
+&lt;p&gt;文档化的接口被认为是公开的，除非文档中明确申明了它们是临时的或者内部接口，不保证向后兼容性。所有文档中未提到的接口应该被认为是内部的。&lt;/p&gt;
+&lt;p&gt;为了更好审视公开接口和内部接口，模块应该在&lt;code&gt;__all&lt;/code&gt;属性中明确申明公开API是哪些。将&lt;code&gt;__all__&lt;/code&gt;设为空list表示该模块中没有公开API。&lt;/p&gt;
+&lt;p&gt;即使正确设置了&lt;code&gt;__all&lt;/code&gt;属性，内部接口（包，模块，类，函数，属性或其他命名）也应该以一个下划线开头。&lt;/p&gt;
+&lt;p&gt;如果接口的任一一个命名空间（包，模块或类）是内部的，那么该接口也应该是内部的。&lt;/p&gt;
+&lt;p&gt;导入的命名应该永远被认为是实现细节。其他模块不应当依赖这些非直接访问的导入命名，除非它们在文档中明确地被写为模块的API，例如&lt;code&gt;os.path&lt;/code&gt;或者包的&lt;code&gt;__init__&lt;/code&gt;模块，那些从子模块展现的功能。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-08-30/</link>
+      <pubDate>Sun, 30 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-08-30/</guid>
+      <description>&lt;h1 id=&#34;字符串引用string-quotes&#34;&gt;字符串引用(String Quotes)&lt;/h1&gt;
+&lt;p&gt;在Python中表示字符串时，不管用单引号还是双引号都是一样的。但是不推荐将这两种方式看作一样并且混用。最好选择一种规则并坚持使用。当字符串中包含单引号时，采用双引号来表示字符串，反之也是一样，这样可以避免使用反斜杠，代码也更易读。&lt;/p&gt;
+&lt;p&gt;对于三引号表示的字符串，使用双引号字符来表示（译注：即用&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;而不是&lt;code&gt;&#39;&#39;&#39;&lt;/code&gt;），这样可以和PEP 257的文档字符串（docstring）规则保持一致。&lt;/p&gt;
+&lt;h1 id=&#34;表达式和语句中的空格whitespace-in-expressions-and-statements&#34;&gt;表达式和语句中的空格(Whitespace in Expressions and Statements)&lt;/h1&gt;
+&lt;h2 id=&#34;一些痛点pet-peeves&#34;&gt;一些痛点(Pet peeves)&lt;/h2&gt;
+&lt;p&gt;在下列情形中避免使用过多的空白：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;方括号，圆括号和花括号之后：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(ham[1], {eggs: 2})
+      No:  spam( ham[ 1 ], { eggs: 2 } )
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;逗号，分号或冒号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: if x == 4: print x, y; x, y = y, x
+      No:  if x == 4 : print x , y ; x , y = y , x
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;不过，在分片操作时，冒号和二元运算符是一样的，应该在其左右两边保留相同数量的空格（就像对待优先级最低的运算符一样）。在扩展的分片操作中，所有冒号的左右两边空格数都应该相等。不过也有例外，当切片操作中的参数被省略时，应该也忽略空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes:
+
+      ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+      ham[lower:upper], ham[lower:upper:], ham[lower::step]
+      ham[lower+offset : upper+offset]
+      ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+      ham[lower + offset : upper + offset]
+
+  No:
+
+      ham[lower + offset:upper + offset]
+      ham[1: 9], ham[1 :9], ham[1:9 :3]
+      ham[lower : : upper]
+      ham[ : upper]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在调用函数时传递参数list的括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(1)
+      No:  spam (1)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在索引和切片操作的左括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: dct[&amp;#39;key&amp;#39;] = lst[index]
+      No:  dct [&amp;#39;key&amp;#39;] = lst [index]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;赋值(或其他)运算符周围使用多个空格来和其他语句对齐：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      x = 1
+      y = 2
+      long_variable = 3
+
+  No::
+
+      x             = 1
+      y             = 2
+      long_variable = 3
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;其他建议&#34;&gt;其他建议&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在二元运算符的两边都使用一个空格：赋值运算符(&lt;code&gt;=&lt;/code&gt;)，增量赋值运算符(&lt;code&gt;+=&lt;/code&gt;, &lt;code&gt;-=&lt;/code&gt;
+etc.)，比较运算符(&lt;code&gt;==&lt;/code&gt;, &lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;&amp;gt;&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;, &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;=&lt;/code&gt;,
+&lt;code&gt;&amp;gt;=&lt;/code&gt;, &lt;code&gt;in&lt;/code&gt;, &lt;code&gt;not in&lt;/code&gt;, &lt;code&gt;is&lt;/code&gt;, &lt;code&gt;is not&lt;/code&gt;)，布尔运算符(&lt;code&gt;and&lt;/code&gt;,
+&lt;code&gt;or&lt;/code&gt;, &lt;code&gt;not&lt;/code&gt;)。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果使用了优先级不同的运算符，则在优先级较低的操作符周围增加空白。请你自行判断，不过永远不要用超过1个空格，永远保持二元运算符两侧的空白数量一样。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      i = i + 1
+      submitted += 1
+      x = x*2 - 1
+      hypot2 = x*x + y*y
+      c = (a+b) * (a-b)
+
+  No::
+
+      i=i+1
+      submitted +=1
+      x = x * 2 - 1
+      hypot2 = x * x + y * y
+      c = (a + b) * (a - b)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;=&lt;/code&gt;符号来表示关键字参数或默认参数值时，不要在其周围使用空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def complex(real, imag=0.0):
+          return magic(r=real, i=imag)
+
+  No::
+
+      def complex(real, imag = 0.0):
+          return magic(r = real, i = imag)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在带注释的函数定义中需要在&lt;code&gt;=&lt;/code&gt;符号周围加上空格。此外, 在&lt;code&gt;:&lt;/code&gt;后使用一个空格，在&lt;code&gt;-&amp;gt;&lt;/code&gt;表示带注释的返回值时，其两侧各使用一个空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def munge(input: AnyStr):
+      def munge(sep: AnyStr = None):
+      def munge() -&amp;gt; AnyStr:
+      def munge(input: AnyStr, sep: AnyStr = None, limit=1000):
+
+  No::
+
+      def munge(input: AnyStr=None):
+      def munge(input:AnyStr):
+      def munge(input: AnyStr)-&amp;gt;PosInt:
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;复合语句（即将多行语句写在一行）一般是不鼓励使用的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      if foo == &amp;#39;blah&amp;#39;:
+          do_blah_thing()
+      do_one()
+      do_two()
+      do_three()
+
+  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      do_one(); do_two(); do_three()
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;有时也可以将短小的if/for/while中的语句写在一行，但对于有多个分句的语句永远不要这样做。也要避免将多行都写在一起。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      for x in lst: total += x
+      while t &amp;lt; 10: t = delay()
+
+  Definitely not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      else: do_non_blah_thing()
+
+      try: something()
+      finally: cleanup()
+
+      do_one(); do_two(); do_three(long, argument,
+                                   list, like, this)
+
+      if foo == &amp;#39;blah&amp;#39;: one(); two(); three()
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;注释comments&#34;&gt;注释(Comments)&lt;/h1&gt;
+&lt;p&gt;和代码矛盾的注释还不如没有。当代码有改动时，一定要优先更改注释使其保持最新。&lt;/p&gt;
+&lt;p&gt;注释应该是完整的多个句子。如果注释是一个短语或一个句子，其首字母应该大写，除非开头是一个以小写字母开头的标识符（永远不要更改标识符的大小写）。&lt;/p&gt;
+&lt;p&gt;如果注释很短，结束的句号可以被忽略。块注释通常由一段或几段完整的句子组成，每个句子都应该以句号结束。&lt;/p&gt;
+&lt;p&gt;你应该在句尾的句号后再加上2个空格。&lt;/p&gt;
+&lt;p&gt;使用英文写作，参考Strunk和White的《The Elements of Style》&lt;/p&gt;
+&lt;p&gt;来自非英语国家的Python程序员们，请使用英文来写注释，除非你120%确定你的代码永远不会被不懂你所用语言的人阅读到。&lt;/p&gt;
+&lt;h2 id=&#34;块注释block-comments&#34;&gt;块注释（Block Comments）&lt;/h2&gt;
+&lt;p&gt;块注释一般写在对应代码之前，并且和对应代码有同样的缩进级别。块注释的每一行都应该以&lt;code&gt;#&lt;/code&gt;和一个空格开头（除非该文本是在注释内缩进对齐的）。&lt;/p&gt;
+&lt;p&gt;块注释中的段落应该用只含有单个&lt;code&gt;#&lt;/code&gt;的一行隔开。&lt;/p&gt;
+&lt;h2 id=&#34;行内注释inline-comments&#34;&gt;行内注释（Inline Comments）&lt;/h2&gt;
+&lt;p&gt;尽量少用行内注释。&lt;/p&gt;
+&lt;p&gt;行内注释是和代码语句写在一行内的注释。行内注释应该至少和代码语句之间有两个空格的间隔，并且以&lt;code&gt;#&lt;/code&gt;和一个空格开始。&lt;/p&gt;
+&lt;p&gt;行内注释通常不是必要的，在代码含义很明显时甚至会让人分心。请不要这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Increment x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;但这样做是有用的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Compensate for border
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;文档字符串documentation-strings&#34;&gt;文档字符串(Documentation Strings)&lt;/h2&gt;
+&lt;p&gt;要知道如何写出好的文档字符串（docstring），请参考PEP 257。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;所有的公共模块，函数，类和方法都应该有文档字符串。对于非公共方法，文档字符串不是必要的，但你应该留有注释说明该方法的功能，该注释应当出现在&lt;code&gt;def&lt;/code&gt;的下一行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PEP 257描述了好的文档字符应该遵循的规则。其中最重要的是，多行文档字符串以单行&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;结尾，不能有其他字符，例如：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      &amp;#34;&amp;#34;&amp;#34;Return a foobang
+
+      Optional plotz says to frobnicate the bizbaz first.
+      &amp;#34;&amp;#34;&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;对于仅有一行的文档字符串，结尾处的&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;应该也写在这一行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;版本注记version-bookkeeping&#34;&gt;版本注记(Version Bookkeeping)&lt;/h1&gt;
+&lt;p&gt;如果你必须在源代码中包含Subversion, CVS或RCS crud，请这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;__version__ = &amp;quot;$Revision$&amp;quot;
+# $Source$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上几行的内容应当在模块的文档字符串之后，在其他代码之前，并且在其开始和结束都使用一个空行隔开。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Python代码风格指南（一）代码设计(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-07-04/</link>
+      <pubDate>Sat, 04 Jul 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-07-04/</guid>
+      <description>&lt;p&gt;翻译自：&lt;a href=&#34;https://www.python.org/dev/peps/pep-0008/&#34;&gt;PEP 8 - Style Guide for Python Code&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;介绍introduction&#34;&gt;介绍(Introduction)&lt;/h1&gt;
+&lt;p&gt;这篇文档说明了Python主要发行版中标准库代码所遵守的规范。请参考实现Python的C代码风格指南信息PEP。&lt;/p&gt;
+&lt;p&gt;这篇文档和PEP 257(Docstring Conventions)都改编自Guido(译注：Python之父)最早的Python风格指南文章，并加入了Barry风格指南里的内容。&lt;/p&gt;
+&lt;p&gt;语言自身在发生着改变，随着新的规范的出现和旧规范的过时，代码风格也会随着时间演变。&lt;/p&gt;
+&lt;p&gt;很多项目都有自己的一套风格指南。若和本指南有任何冲突，应该优先考虑其项目相关的那套指南。&lt;/p&gt;
+&lt;h1 id=&#34;保持盲目的一致是头脑简单的表现a-foolish-consistency-is-the-hobgoblin-of-little-minds&#34;&gt;保持盲目的一致是头脑简单的表现(A Foolish Consistency is the Hobgoblin of Little Minds)&lt;/h1&gt;
+&lt;p&gt;(注：标题语出自Ralph Waldo Emerson, Hobgolin意指民间故事中友好但常制造麻烦的动物角色。)&lt;/p&gt;
+&lt;p&gt;Guido的一个重要观点是代码被读的次数远多于被写的次数。这篇指南旨在提高代码的可读性，使浩瀚如烟的Python代码风格能保持一致。正如PEP 20那首《Zen of Python》的小诗里所说的：“可读性很重要(Readability counts)”。&lt;/p&gt;
+&lt;p&gt;这本风格指南是关于一致性的。同风格指南保持一致性是重要的，但是同项目保持一致性更加重要，同一个模块和一个函数保持一致性则最为重要。&lt;/p&gt;
+&lt;p&gt;然而最最重要的是：要知道何时去违反一致性，因为有时风格指南并不适用。当存有疑虑时，请自行做出最佳判断。请参考别的例子去做出最好的决定。并且不要犹豫，尽管提问。&lt;/p&gt;
+&lt;p&gt;特别的：千万不要为了遵守这篇PEP而破坏向后兼容性！&lt;/p&gt;
+&lt;p&gt;如果有以下借口，则可以忽略这份风格指南：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;当采用风格指南时会让代码更难读，甚至对于习惯阅读遵循这篇PEP的代码的人来说也是如此。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;需要和周围的代码保持一致性，但这些代码违反了指南中的风格（可是时历史原因造成的）——尽管这可能也是一个收拾别人烂摊子的机会（True in XP style?）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若是有问题的某段代码早于引入指南的时间，那么没有必要去修改这段代码。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码需要和更旧版本的Python保持兼容，而旧版本的Python不支持风格指南所推荐的特性。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码设计code-lay-out&#34;&gt;代码设计(Code lay-out)&lt;/h1&gt;
+&lt;h2 id=&#34;缩进indentation&#34;&gt;缩进(Indentation)&lt;/h2&gt;
+&lt;p&gt;每个缩进级别采用4个空格。&lt;/p&gt;
+&lt;p&gt;连续行所包装的元素应该要么采用Python隐式续行，即垂直对齐于圆括号、方括号和花括号，要么采用&lt;em&gt;悬挂缩进(hanging indent)&lt;/em&gt;。采用悬挂缩进时需考虑以下两点：第一行不应该包括参数，并且在续行中需要再缩进一级以便清楚表示。&lt;/p&gt;
+&lt;p&gt;正确的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 同开始分界符(左括号)对齐
+foo = long_function_name(var_one, var_two,
+                         var_three, var_four)
+
+# 续行多缩进一级以同其他代码区别
+def long_function_name(
+        var_one, var_two, var_three,
+        var_four):
+    print(var_one)
+
+# 悬挂缩进需要多缩进一级
+foo = long_function_name(
+    var_one, var_two,
+    var_three, var_four)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;错误的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 采用垂直对齐时第一行不应该有参数
+foo = long_function_name(var_one, var_two,
+    var_three, var_four)
+
+# 续行并没有被区分开，因此需要再缩进一级
+def long_function_name(
+    var_one, var_two, var_three,
+    var_four):
+    print(var_one)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对于续行来说，4空格的规则可以不遵守。&lt;/p&gt;
+&lt;p&gt;同样可行的例子:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 悬挂缩进可以不采用4空格的缩进方法。
+foo = long_function_name(
+  var_one, var_two,
+  var_three, var_four)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;多行if语句&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;如果&lt;code&gt;if&lt;/code&gt;语句太长，需要用多行书写，2个字符(例如,&lt;code&gt;if&lt;/code&gt;)加上一个空格和一个左括号刚好是4空格的缩进，但这对多行条件语句的续行是没用的。因为这会和&lt;code&gt;if&lt;/code&gt;语句中嵌套的其他的缩进的语句产生视觉上的冲突。这份PEP中并没有做出明确的说明应该怎样来区分条件语句和&lt;code&gt;if&lt;/code&gt;语句中所嵌套的语句。以下几种方法都是可行的，但不仅仅只限于这几种方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 不采用额外缩进
+if (this_is_one_thing and
+    that_is_another_thing):
+    do_something()
+
+# 增加一行注释，在编辑器中显示时能有所区分
+# supporting syntax highlighting.
+if (this_is_one_thing and
+    that_is_another_thing):
+    # Since both conditions are true, we can frobnicate.
+    do_something()
+
+# 在条件语句的续行增加一级缩进
+if (this_is_one_thing
+        and that_is_another_thing):
+    do_something()
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;多行结束右圆/方/花括号可以单独一行书写，和上一行的缩进对齐：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;my_list = [
+    1, 2, 3,
+    4, 5, 6,
+    ]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+    )
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;也可以和多行开始的第一行的第一个字符对齐：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;my_list = [
+    1, 2, 3,
+    4, 5, 6,
+]
+result = some_function_that_takes_arguments(
+    &#39;a&#39;, &#39;b&#39;, &#39;c&#39;,
+    &#39;d&#39;, &#39;e&#39;, &#39;f&#39;,
+)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;tab还是空格tab-or-space&#34;&gt;Tab还是空格？(Tab or space?)&lt;/h2&gt;
+&lt;p&gt;推荐使用空格来进行缩进。&lt;/p&gt;
+&lt;p&gt;Tab应该只在现有代码已经使用tab进行缩进的情况下使用，以便和现有代码保持一致。&lt;/p&gt;
+&lt;p&gt;Python 3不允许tab和空格混合使用。&lt;/p&gt;
+&lt;p&gt;Python 2的代码若有tab和空格混合使用的情况，应该把tab全部转换为只有空格。&lt;/p&gt;
+&lt;p&gt;当使用命令行运行Python 2时，使用&lt;code&gt;-t&lt;/code&gt;选项，会出现非法混用tab和空格的警告。当使用&lt;code&gt;-tt&lt;/code&gt;选项时，这些警告会变成错误。强烈推荐使用这些选项！&lt;/p&gt;
+&lt;h2 id=&#34;每行最大长度maximum-line-length&#34;&gt;每行最大长度(Maximum Line Length)&lt;/h2&gt;
+&lt;p&gt;将所有行都限制在79个字符长度以内。&lt;/p&gt;
+&lt;p&gt;对于连续大段的文字（比如文档字符串(docstring)或注释），其结构上的限制更少，这些行应该被限制在72个字符长度内。&lt;/p&gt;
+&lt;p&gt;限制编辑器的窗口宽度能让好几个文件同时打开在屏幕上显示，在使用代码评审(code review)工具时在两个相邻窗口显示两个版本的代码效果很好。&lt;/p&gt;
+&lt;p&gt;很多工具的默认自动换行会破坏代码的结构，使代码更难以理解。在窗口大小设置为80个字符的编辑器中，即使在换行时编辑器可能会在最后一列放置一个记号，为避免自动换行也需要限制每行字符长度。一些基于web的工具可能根本没有自动换行的功能。&lt;/p&gt;
+&lt;p&gt;一些团队会强烈希望行长度比79个字符更长。当代码仅仅只由一个团队维护时，可以达成一致让行长度增加到80到100字符(实际上最大行长是99字符)，注释和文档字符串仍然是以72字符换行。&lt;/p&gt;
+&lt;p&gt;Python标准库比较传统，将行长限制在79个字符以内（文档字符串/注释为72个字符）。&lt;/p&gt;
+&lt;p&gt;一种推荐的换行方式是利用Python圆括号、方括号和花括号中的隐式续行。长行可以通过在括号内换行来分成多行。应该最好加上反斜杠来区别续行。&lt;/p&gt;
+&lt;p&gt;有时续行只能使用反斜杠才。例如，较长的多个&lt;code&gt;with&lt;/code&gt;语句不能采用隐式续行，只能接受反斜杠表示换行：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;with open(&#39;/path/to/some/file/you/want/to/read&#39;) as file_1, \
+     open(&#39;/path/to/some/file/being/written&#39;, &#39;w&#39;) as file_2:
+    file_2.write(file_1.read())
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;（参照前面关于 &lt;code&gt;多行if语句&lt;/code&gt;的讨论来进一步考虑这里&lt;code&gt;with&lt;/code&gt;语句的缩进。）&lt;/p&gt;
+&lt;p&gt;另一个这样的例子是&lt;code&gt;assert&lt;/code&gt;语句。&lt;/p&gt;
+&lt;p&gt;要确保续行的缩进适当。逻辑运算符附近的换行处最好是在运算符&lt;strong&gt;之后&lt;/strong&gt;，而不是在其之前。来看一些例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class Rectangle(Blob):
+
+    def __init__(self, width, height,
+                 color=&#39;black&#39;, emphasis=None, highlight=0):
+        if (width == 0 and height == 0 and
+                color == &#39;red&#39; and emphasis == &#39;strong&#39; or
+                highlight &amp;gt; 100):
+            raise ValueError(&amp;quot;sorry, you lose&amp;quot;)
+        if width == 0 and height == 0 and (color == &#39;red&#39; or
+                                           emphasis is None):
+            raise ValueError(&amp;quot;I don&#39;t think so -- values are %s, %s&amp;quot; %
+                             (width, height))
+        Blob.__init__(self, width, height,
+                      color, emphasis, highlight)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;空行blank-line&#34;&gt;空行(Blank line)&lt;/h2&gt;
+&lt;p&gt;使用2个空行来分隔最高级的函数(function)和类(class)定义。&lt;/p&gt;
+&lt;p&gt;使用1个空行来分隔类中的方法(method)定义。&lt;/p&gt;
+&lt;p&gt;（尽量少地）使用额外的空行来分隔一组相关的函数。在一系列相关的仅占一行的函数之间，空格也可以被省略，比如一组dummy实现。&lt;/p&gt;
+&lt;p&gt;在函数内（尽量少地）使用空行使代码逻辑更清晰。&lt;/p&gt;
+&lt;p&gt;Python支持control-L（如:^L）换页符作为空格；许多工具将这些符号作为分页符，因此你可以使用这些符号来分页或者区分文件中的相关区域。注意，一些编辑器和基于web的代码预览器可能不会将control-L识别为分页符，而是显示成其他符号。&lt;/p&gt;
+&lt;h2 id=&#34;源文件编码source-file-encoding&#34;&gt;源文件编码(Source File Encoding)&lt;/h2&gt;
+&lt;p&gt;Python核心发行版中的代码应该一直使用UTF-8（Python 2中使用ASCII）。&lt;/p&gt;
+&lt;p&gt;使用ASCII（Python 2）或者UTF-8（Python 3）的文件不应该添加编码声明。&lt;/p&gt;
+&lt;p&gt;在标准库中，只有用作测试目的，或者注释或文档字符串需要提及作者名字而不得不使用非ASCII字符时，才能使用非默认的编码。否则，在字符串文字中包括非ASCII数据时，推荐使用&lt;code&gt;\x&lt;/code&gt;, &lt;code&gt;\u&lt;/code&gt;, &lt;code&gt;\U&lt;/code&gt;或&lt;code&gt;\N&lt;/code&gt;等转义符。&lt;/p&gt;
+&lt;p&gt;对于Python 3.0及其以后的版本中，标准库遵循以下原则（参见PEP 3131）：Python标准库中的所有标识符都&lt;strong&gt;必须&lt;/strong&gt;只采用ASCII编码的标识符，在可行的条件下也&lt;strong&gt;应当&lt;/strong&gt;使用英文词（很多情况下，使用的缩写和技术术语词都不是英文）。此外，字符串文字和注释应该只包括ASCII编码。只有两种例外：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;(a) 测试情况下为了测试非ASCII编码的特性&lt;/li&gt;
+&lt;li&gt;(b) 作者名字。作者名字不是由拉丁字母组成的也&lt;strong&gt;必须&lt;/strong&gt;提供一个拉丁音译名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;鼓励面向全世界的开源项目都采用类似的原则。&lt;/p&gt;
+&lt;h2 id=&#34;imports&#34;&gt;Imports&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Imports应该分行写，而不是都写在一行，例如：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 分开写
+import os
+import sys
+# 不要像下面一样写在一行
+import sys, os
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;这样写也是可以的：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from subprocess import Popen, PIPE
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Imports应该写在代码文件的开头，位于模块(module)注释和文档字符串之后，模块全局变量(globals)和常量(constants)声明之前。&lt;/p&gt;
+&lt;p&gt;Imports应该按照下面的顺序分组来写：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;标准库imports&lt;/li&gt;
+&lt;li&gt;相关第三方imports&lt;/li&gt;
+&lt;li&gt;本地应用/库的特定imports&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;不同组的imports之前用空格隔开。&lt;/p&gt;
+&lt;p&gt;将任何相关的&lt;code&gt;__all__&lt;/code&gt;说明(specification)放在imports之后。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;推荐使用绝对(absolute)imports，因为这样通常更易读，在import系统没有正确配置（比如中的路径以&lt;code&gt;sys.path&lt;/code&gt;结束）的情况下，也会有更好的表现（或者至少会给出错误信息）：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import mypkg.sibling
+from mypkg import sibling
+from mypkg.sibling import example
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然而，除了绝对imports，显式的相对imports也是一种可以接受的替代方式。特别是当处理复杂的包布局(package layouts)时，采用绝对imports会显得啰嗦。&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from . import sibling
+from .sibling import example
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Standard library code should avoid complex package layouts and always
+use absolute imports.
+标准库代码应当一直使用绝对imports，避免复杂的包布局。&lt;/p&gt;
+&lt;p&gt;隐式的相对imports应该&lt;strong&gt;永不&lt;/strong&gt;使用，并且Python 3中已经被去掉了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当从一个包括类的模块中import一个类时，通常可以这样写：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;from myclass import MyClass
+from foo.bar.yourclass import YourClass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;如果和本地命名的拼写产生了冲突，应当直接import模块：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;import myclass
+import foo.bar.yourclass
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后使用&amp;quot;myclass.MyClass&amp;quot;和&amp;quot;foo.bar.yourclass.YourClass&amp;quot;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;避免使用通配符imports(&lt;code&gt;from &amp;lt;module&amp;gt; import *&lt;/code&gt;)，因为会造成在当前命名空间出现的命名含义不清晰，给读者和许多自动化工具造成困扰。有一个可以正当使用通配符import的情形，即将一个内部接口重新发布成公共API的一部分（比如，使用备选的加速模块中的定义去覆盖纯Python实现的接口，被覆盖的定义恰好在不能提前知晓）。&lt;/p&gt;
+&lt;p&gt;当使用这种方式重新发布命名时，指南后面关于公共和内部接口的部分仍然适用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

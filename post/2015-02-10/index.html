@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="机器学习, 有监督学习, 线性回归, LMS, 梯度下降, 正规方程, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-02-10/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-02-10"/>
+<meta property="article:modified_time" content="2015-02-10"/>
+
+
+
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="有监督学习">
+<meta property="article:tag" content="线性回归">
+<meta property="article:tag" content="LMS">
+<meta property="article:tag" content="梯度下降">
+<meta property="article:tag" content="正规方程">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> 机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-02-10/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Tue Feb 10, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0">有监督学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92">线性回归</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/lms">LMS</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D">梯度下降</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B">正规方程</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="114">
+<meta itemprop="datePublished" content="2015-02-10">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-02-10/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>Andrew Ng cs229 Machine Learning 笔记</p>
+<h1 id="有监督学习">有监督学习</h1>
+<p>先理清几个概念：</p>
+<ul>
+<li>$x^{(i)}$表示&quot;输入&quot;变量(&ldquo;input&rdquo; variables)，也称为特征值(features)。</li>
+<li>$y^{(i)}$表示&quot;输出&quot;变量(&ldquo;output&rdquo; variables)，也称为目标值(target)。</li>
+<li>一对$(x^{(i)},y^{(i)})$称为一个训练样本(training example)，用作训练的数据集就是就是一组$m$个训练样本${(x^{(i)},y^{(i)});i=1,&hellip;,m}$，被称为训练集(training set)。</li>
+<li>$X$表示输入变量的取值空间，$Y$表示输出变量的取值空间。那么$h:X \rightarrow Y$是训练得到的映射函数，对于每个取值空间X的取值，都能给出取值空间Y上的一个预测值。函数$h$的含义为假设(hypothesis)。</li>
+<li>图形化表示整个过程：</li>
+</ul>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/supervised-learning.png&quot; alt=&quot;supervised-learning&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<ul>
+<li>当预测值y为连续值时，则有监督学习问题是回归(regression)问题；预测值y为离散值时，则为分类(classification)问题。</li>
+</ul>
+<h2 id="线性回归linear-regression">线性回归(Linear Regression)</h2>
+<p>先简单将y表示为x的线性函数：</p>
+<!-- raw HTML omitted -->
+<ul>
+<li>$\theta$ 称为参数(parameters)，也叫做权重(weights)，参数决定了$X$到$Y$的射映空间。</li>
+<li>用$x_0=1$来表示截距项(intercept term)。</li>
+</ul>
+<p>有了训练集，如果通过学习得到参数$\theta$？</p>
+<p>一种方法是，让预测值$h(x)$尽量接近真实值y，定义成本函数(cost function):</p>
+<!-- raw HTML omitted -->
+<p>这实际上就是最小二乘成本函数，我们把这个回归模型叫做普通最小二乘回归模型(ordinary least squares regression model)。</p>
+<h2 id="lms算法">LMS算法</h2>
+<p>为了找到使成本函数$J(\theta)$最小的参数$\theta$，采用搜索算法：给定一个$\theta$的初值，然后不断改进，每次改进都使$J(\theta)$更小，直到最小化$J(\theta)$的$\theta$的值收敛。</p>
+<p>考虑梯度下降(gradient descent)算法：从初始$\theta$开始，不断更新：</p>
+<p>$$\theta_j:=\theta_j-\alpha \frac{\delta}{\delta\theta_j}J(\theta)$$</p>
+<p>注意，更新是同时对所有$j=0,&hellip;,n$的$\theta_j$值进行。$\alpha$被称作学习率(learning rate)，也是梯度下降的长度，若$\alpha$取值较小，则收敛的时间较长；相反，若$\alpha$取值较大，则可能错过最优值。</p>
+<p>假设我们只有一个训练样本$(x,y)$，此时$J(\theta) = \frac12(h_{\theta}(x)-y)^2$，求偏导项得到：</p>
+<!-- raw HTML omitted -->
+<p>每次按照以下式子更新$\theta_j$的值：</p>
+<!-- raw HTML omitted -->
+<p>这种更新方法叫做LMS更新策略(Least Mean Squares update rule)，也叫做Widrow-Hoff 学习策略。</p>
+<p>采用LMS方法，参数更新的次数和误差项$(y^{(i)}-h_{\theta}(x^{(i)}))$成正比。也就是说，如果预测值与真实值的误差项较小，则参数调整改变不会很大，相反，如果误差项较大，参数进行的调整更大。</p>
+<p>如果训练集不只一个训练样本，可以采用以下方法更新参数：</p>
+<p>Repeat until convergence{</p>
+<p><code>$\theta_j:=\theta_j+\alpha\sum_{i=1}^m(y^{(i)}-h_\theta(x^{(i)})x_j^{(i)})$</code> (for every j)</p>
+<p>}</p>
+<p>实际上，这里的求和刚好是$\frac{\delta J(\theta)}{\delta\theta_j}$的值。这种方法每一步更新都会遍历每所有的训练样本，因此被称作批量梯度下降(batch gradient descent)。</p>
+<p>梯度下降法通常容易受局部最优值的影响，但这里的最优问题只有一个全局最优值，没有局部最优值。因此梯度下降总是收敛到全局最优解（学习率$\alpha$不能取太大，否则错过最优值）。</p>
+<p>除了批量梯度下降，还有一种方法叫做随机梯度下降(stochastic gradient descent)，也叫做增量梯度下降(incremental gradient descent)。其更新策略为：</p>
+<p>Loop{</p>
+<p>for i=1 to m,{</p>
+<p><code>$\theta_j:=\theta_j+\alpha(y^{(i)}-h_{\theta}(x^{(i)}))x_j^{(i)}$</code> (for every j).</p>
+<p>}</p>
+<p>}</p>
+<p>随机梯度下降和批量梯度下降不同点在于，批量梯度下降每一步更新$\theta$值，都需要遍历全部的训练样本，而随机梯度下降在遇到每个训练样本时，更新$\theta$之后继续处理下一个样本，每个样本只遍历一次，算法的学习时间比批量梯度下降快很多。但是，随机梯度下降可能永远不会收敛到全局最优值，而是在成本函数$J(\theta)$最优值周围附近摇摆。但是在实际问题中，接近最优值的参数值可能已经是足够好的结果了，特别是对于数据量非常大的训练集来说，随机梯度下降是比批量梯度下降更好的选择。</p>
+<p>在实际使用梯度下降算法时，将输入变量归一到同一取值范围，能够减少算法的迭代次数。这是因为$\theta$在小的取值范围内会下降很快，但在大的取值范围内会下降较慢。并且当输入变量取值范围不够均衡时，$\theta$更容易在最优值周围波动。采用特征缩放(feature scaling)和均值归一化(mean normalization)可以避免这些问题。选择学习率$\alpha$的值，要观察$J(\theta)$值在每次迭代后的变化。已经证明了如果$\alpha$的取值足够小，则$J(\theta)$每次迭代后的值都会减少。如果$J(\theta)$在某次迭代后反而增加了，说明学习率$\alpha$的值应该减小，因为错过了最优值。Andrew Ng推荐的一个经验是每次将$\alpha$减少3倍。</p>
+<h2 id="正规方程the-normal-equations">正规方程(The normal equations)</h2>
+<p>梯度下降是最小化$J(\theta)$的一种方式，正规方程是另一种求解参数$\theta$的方法，这种方法可以直接求出最优值参数结果，不需要迭代更新，也不需要事先对数据进行归一化预处理。这种方法实际上是直接求出$J(\theta)$的导数，并令其为0。</p>
+<!-- raw HTML omitted -->
+<p>$$\nabla_{\theta}J(\theta)=0$$</p>
+<!-- raw HTML omitted -->
+<p>解之，</p>
+<!-- raw HTML omitted -->
+<p>得到正规方程：</p>
+<!-- raw HTML omitted -->
+<p>求解$\theta$：</p>
+<!-- raw HTML omitted -->
+<p>正规方程求解$\theta$的时间复杂度为$O(n^3)$，n是特征数量。当特征数量很大时，正规方程求解会很慢。Andrew Ng给出的一个经验参考是：当n&gt;10,000时，采用梯度下降比正规方程更好。</p>
+<p>比较一下正规方程和梯度下降：</p>
+<table>
+<thead>
+<tr>
+<th>正规方程</th>
+<th>梯度下降</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不需要调整参数</td>
+<td>需要调整参数$\alpha$</td>
+</tr>
+<tr>
+<td>不需要迭代</td>
+<td>需要迭代更新$\theta$值</td>
+</tr>
+<tr>
+<td>n较大时效率低</td>
+<td>n较大时效率也不错</td>
+</tr>
+</tbody>
+</table>
+<p>正规方程还会遇到$X^TX$不可逆的情况，通常这是因为输入变量中存在线性相关的变量或者是因为特征太多($n\geq m$)。解决方法是去掉线性相关的冗余变量，或者删掉一些特征。</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

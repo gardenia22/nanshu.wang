@@ -1,0 +1,693 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>有监督学习 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Sun, 17 May 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记7 高偏差/低偏差，学习曲线，模型选择</title>
+      <link>https://nanshu.wang/post/2015-05-17/</link>
+      <pubDate>Sun, 17 May 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-05-17/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;p&gt;原文：https://share.coursera.org/wiki/index.php/ML:Advice_for_Applying_Machine_Learning&lt;/p&gt;
+&lt;p&gt;面对一个机器学习问题，我们提取好特征，挑选好训练集，选择一种机器学习算法，然后学习预测得到了第一步结果。然而我们不幸地发现，在测试集上的准确率低得离谱，误差高得吓人，要提高准确率、减少误差的话，下一步该做些什么呢？&lt;/p&gt;
+&lt;p&gt;可以采用以下的方法来减少预测的误差：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获得更多的训练样本&lt;/li&gt;
+&lt;li&gt;减少特征的数量&lt;/li&gt;
+&lt;li&gt;增加特征的数量&lt;/li&gt;
+&lt;li&gt;使用多项式特征&lt;/li&gt;
+&lt;li&gt;增大或减小正则化参数$\lambda$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但不要盲目在这些可行的方法里随便选一种来提升模型，需要用一些诊断模型的技术来帮助我们选择使用哪种策略。&lt;/p&gt;
+&lt;h1 id=&#34;1评估假设&#34;&gt;1.评估假设&lt;/h1&gt;
+&lt;p&gt;即使模型假设对于训练集的误差很低，若存在过拟合，模型的预测也同样会不准确。&lt;/p&gt;
+&lt;p&gt;给定一份训练集，我们可以将数据分成两部分：训练集和测试集。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;使用训练集最小化$J(\Theta)$得到$\Theta$参数&lt;/li&gt;
+&lt;li&gt;计算测试集的误差：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;3.计算分类错误率（即0/1分类错误率）&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;测试集的平均误差为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是测试集上分类错误的样本的比例。&lt;/p&gt;
+&lt;h1 id=&#34;2模型选择与训练验证测试集&#34;&gt;2.模型选择与训练/验证/测试集&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;学习算法若仅仅对训练集拟合较好，并不能说明其假设也是好的。&lt;/li&gt;
+&lt;li&gt;训练集上的假设误差通常要比其他数据集上得到的误差要小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为了在假设上选择模型，可以测试模型的多项式的次数来观察误差结果。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;无验证集&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。&lt;/li&gt;
+&lt;li&gt;找到在预测集上误差最小的模型的多项式次数$d$。&lt;/li&gt;
+&lt;li&gt;使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;在这个例子中，我们用测试集训练得到的一个变量，即多项式次数$d$，但这样做会使其他数据集的误差更大。&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我们引入了第三种数据集，即交叉验证集(Cross Validation Set)，来作为选择$d$的中间数据集。这样，测试集会给出一个准确，非乐观估计的误差结果。&lt;/p&gt;
+&lt;p&gt;例如，将数据集分成三份：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;训练集：60%&lt;/li&gt;
+&lt;li&gt;交叉验证集：20%&lt;/li&gt;
+&lt;li&gt;测试集：20%&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于这三个数据集我们可以计算三个不同误差值：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;有验证集&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。&lt;/li&gt;
+&lt;li&gt;找到在验证集上误差最小的模型的多项式次数$d$。&lt;/li&gt;
+&lt;li&gt;使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;使用验证集则避免了使用测试集来确定多项式次数$d$。&lt;/p&gt;
+&lt;h1 id=&#34;3诊断偏差-vs-方差&#34;&gt;3.诊断偏差 vs. 方差&lt;/h1&gt;
+&lt;p&gt;我们来讨论一下多项式次数$d$和过拟合以及欠拟合之间的关系。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们需要区分导致预测结果差的原因是偏差还是方差。&lt;/li&gt;
+&lt;li&gt;高偏差也就是欠拟合，高方差也就是过拟合。我们需要在这两者之间找到一个黄金分割。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;随着多项式次数$d$的增加，训练集的误差会&lt;strong&gt;减少&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;同时，交叉验证集的误差会随着$d$的增加而&lt;strong&gt;减少&lt;/strong&gt;，但在$d$增加到某一点之后，会随着$d$的增加而&lt;strong&gt;增加&lt;/strong&gt;，形成一个凸曲线&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高偏差（欠拟合）：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。&lt;/li&gt;
+&lt;li&gt;高方差（过拟合）：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$比$J_{train}(\Theta)$高得多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;可以用下图来表示：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/300px-Features-and-polynom-degree.png&amp;quot; alt=&amp;quot;Features-and-polynom-degree&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;4正则化和偏差方差&#34;&gt;4.正则化和偏差/方差&lt;/h1&gt;
+&lt;p&gt;下面来分析正则化参数$\lambda$。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$较大：高偏差（欠拟合）&lt;/li&gt;
+&lt;li&gt;$\lambda$不大不小：正好&lt;/li&gt;
+&lt;li&gt;$\lambda$较小：高方差（过拟合）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;较大的$\lambda$参数会惩罚$\Theta$参数，即简单化结果函数的曲线，造成欠拟合。&lt;/p&gt;
+&lt;p&gt;$\lambda$和训练集以及验证集的关系如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$较小：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$较高（高方差/过拟合）。&lt;/li&gt;
+&lt;li&gt;$\lambda$不大不小：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较低，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。&lt;/li&gt;
+&lt;li&gt;$\lambda$较大：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高（高偏差/欠拟合）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下图说明了$\lambda$值和假设之间的关系：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/300px-Features-and-lambda.png&amp;quot; alt=&amp;quot;Features-and-lambda&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;为了选择模型和正则化参数$lambda$，我们需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;列出$\lambda$测试的值，比如 $\lambda \in \lbrace0, 0.01, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56, 5.12, 10.24\rbrace$；&lt;/li&gt;
+&lt;li&gt;选择一个$\lambda$的值进行计算；&lt;/li&gt;
+&lt;li&gt;创建模型集，比如按照多项式次数或其他指标来创建；&lt;/li&gt;
+&lt;li&gt;选择一个模型来学习$\Theta$值；&lt;/li&gt;
+&lt;li&gt;用所选的模型学习得到$\Theta$值，使用选择的$\lambda$值计算$J_{train}(\Theta)$（为下一步学习参数$\Theta$）；&lt;/li&gt;
+&lt;li&gt;使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的训练误差$J_{train}(\Theta)$；&lt;/li&gt;
+&lt;li&gt;使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的交叉验证误差$J_{CV}(\Theta)$；&lt;/li&gt;
+&lt;li&gt;对模型集合所有$\lambda$取值重复上述步骤，选择使交叉验证集误差最小的组合；&lt;/li&gt;
+&lt;li&gt;如果需要使用图形化结果来帮助决策的话，可以绘制$\lambda$和$J_{train}(\Theta)$的图像，以及$\lambda$和$J_{CV}(\Theta)$的图像；&lt;/li&gt;
+&lt;li&gt;使用最好的$\Theta$和$\lambda$组合，在测试集上进行预测计算$J_{test}(\Theta)$的值来验证模型对问题是否有好的泛化能力。&lt;/li&gt;
+&lt;li&gt;为了帮助选择最好的多项式次数和$\lambda$的值，可以采用学习曲线来诊断。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;5学习曲线&#34;&gt;5.学习曲线&lt;/h1&gt;
+&lt;p&gt;训练3个样本很容易得到0误差，因为我们永远可以找到一条二次曲线完全经过3个点。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当训练集越来越大时，二次函数的误差也会增加。&lt;/li&gt;
+&lt;li&gt;误差值会在训练集大小m增加到一定程度后慢慢平缓。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;高偏差的情况&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;小训练集&lt;/strong&gt;：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大训练集&lt;/strong&gt;：$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果学习算法有高偏差的问题，那么获取更多的训练数据并不会有很多改进。&lt;/p&gt;
+&lt;p&gt;对于高方差的问题，对于训练集大小有如下关系：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;高方差的情况&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;小训练集&lt;/strong&gt;：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;大训练集&lt;/strong&gt;：$J_{train}(\Theta)$会略微增加，$J_{CV}(\Theta)会略微降低，并且$J_{train}(\Theta) &amp;lt; J_{CV}(\Theta)$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如果学习算法有高方差的问题，那么获取更多的训练数据是有用的。&lt;/p&gt;
+&lt;p&gt;下图展示了训练集大小和高偏差/高方差问题之间的关系。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/500px-High-variance-high-bias.png&amp;quot; alt=&amp;quot;High-variance-high-bias&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;6再次考虑如何选择提升模型的下一步&#34;&gt;6.再次考虑如何选择提升模型的下一步&lt;/h1&gt;
+&lt;p&gt;决策过程可以分解成以下几点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获得更多的训练样本
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;减少特征的数量
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加特征的数量
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;使用多项式特征
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;增加正则参数$\lambda$
+&lt;ul&gt;
+&lt;li&gt;解决高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;减少正则参数$\lambda$
+&lt;ul&gt;
+&lt;li&gt;解决高方差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;7诊断神经网络&#34;&gt;7.诊断神经网络&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;参数较少的神经网络很容易欠拟合，但同时计算也较容易。&lt;/li&gt;
+&lt;li&gt;参数较多的大型神经网络更容易过拟合，但同时计算量较大。在这种情况下可以使用正则化（增加$\lambda$）来避免过拟合问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用单个隐藏层是一个较好地开始默认设置。你可以使用验证集在多个隐藏层上训练神经网络。&lt;/p&gt;
+&lt;h1 id=&#34;8模型选择总结&#34;&gt;8.模型选择总结&lt;/h1&gt;
+&lt;p&gt;以下是机器学习诊断的一些总结&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;选择多项式次数M&lt;/li&gt;
+&lt;li&gt;如何选择模型中得参数$\Theta$（即模型选择）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有3种方式解决：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;获取更多数据（非常困难）&lt;/li&gt;
+&lt;li&gt;选择拟合数据最好且没有过拟合的模型（非常困难）&lt;/li&gt;
+&lt;li&gt;通过正则化来减少过拟合的机会&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;偏差：近似误差（预测值和期望值之间的差值）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高偏差 = 欠拟合（BU）&lt;/li&gt;
+&lt;li&gt;$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;方差：有限数据集之间的估计误差值&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高方差 = 过拟合（VO）&lt;/li&gt;
+&lt;li&gt;$J_{train}(\Theta)$较低，并且$J_{train}(\Theta) &amp;laquo; J_{CV}(\Theta)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;偏差-方差权衡的直觉&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;复杂模型=&amp;gt;数据敏感=&amp;gt;受训练集X变化的影响=&amp;gt;高方差，低偏差&lt;/li&gt;
+&lt;li&gt;简单模型=&amp;gt;更死板=&amp;gt;不受训练集X变化的影响=&amp;gt;低方差，高偏差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;机器学习的最重要的目标之一：找到一个模型在偏差-方差的权衡之间刚刚好。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;正则化影响&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\lambda$值较小（过拟合）使模型容易受噪声影响，导致高方差。&lt;/li&gt;
+&lt;li&gt;$\lambda$值较大（欠拟合）会将参数值接近于0，导致高偏差。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;模型复杂度影响&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;多项式次数较低的模型（模型复杂度低）有高偏差和低方差。在这种情况下，模型拟合总是很差。&lt;/li&gt;
+&lt;li&gt;多项式次数较高的模型（模型复杂度高）拟合训练集极好，拟合测试集极差。导致训练集上低偏差，但高方差。&lt;/li&gt;
+&lt;li&gt;在现实中，我们想要选择一个模型在以上两种情况之间，既然可以很好地拟合数据，也有很好地泛化能力。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用诊断时的一些典型经验法则&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;获取更多地训练样本可以解决高方差问题，不能解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;减少特征数量可以解决高方差问题，不能解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;增加特征数量可以解决高偏差问题，不能解决高方差问题。&lt;/li&gt;
+&lt;li&gt;增加多项式特征和交互特征（特征和特征交互）解决高偏差问题，不能解决高方差问题。&lt;/li&gt;
+&lt;li&gt;当使用梯度下降时，减少正则化参数$\lambda$值可以解决高方差问题，增加$\lambda$值可以解决高偏差问题。&lt;/li&gt;
+&lt;li&gt;当使用神经网络时，小型神经网络更容易欠拟合，大型神经网络更容易过拟合。交叉验证是选择神经网络大小的一种方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://class.coursera.org/ml/lecture/index&#34;&gt;https://class.coursera.org/ml/lecture/index&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf&#34;&gt;http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning&#34;&gt;http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf&#34;&gt;http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记5 神经网络2 参数学习</title>
+      <link>https://nanshu.wang/post/2015-03-26/</link>
+      <pubDate>Thu, 26 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-26/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;成本函数cost-function&#34;&gt;成本函数(Cost Function)&lt;/h1&gt;
+&lt;p&gt;以下是我们会用到的一些变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L$表示神经网络的层数&lt;/li&gt;
+&lt;li&gt;$s_l$表示第$l$层的神经单元数(不包括偏差(bias)单元)&lt;/li&gt;
+&lt;li&gt;$K$表示输出单元数(分类数)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当有多个输出类别时，采用$h_\Theta(x)_k$表示第$k$个输出的假设结果。&lt;/p&gt;
+&lt;p&gt;神经网络的成本函数是logistic回归中的成本函数更普遍的一种形式。&lt;/p&gt;
+&lt;p&gt;logistic回归中的成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;神经网络的成本函数稍微复杂一点：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;和logistic回归相比，第一个方括号内多了一层累加求和，即对多类输出节点的成本函数进行累加，会遍历所有的输出节点。&lt;/p&gt;
+&lt;p&gt;正则化的部分则是将每一层的参数都考虑了进去(包括偏差单元相关的参数值)。和logistic回归一样，每一项都进行了平方。&lt;/p&gt;
+&lt;p&gt;注意:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;双层累加中对于输出层所有单元的logistic回归的成本函数进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中则是对于整个神经网络中单独的$\Theta$参数的平方进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中的$i$和训练集中的$i$并不一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;向后传播backpropagation算法&#34;&gt;向后传播(Backpropagation)算法&lt;/h1&gt;
+&lt;p&gt;向后传播是神经网络中表示最小化成本函数的术语，就像logistic回归和线性回归中的梯度下降(gradient descent)一样。&lt;/p&gt;
+&lt;p&gt;我们的目标是计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;即我们想最小化成本函数$J$，得到最优化参数$\Theta$。&lt;/p&gt;
+&lt;p&gt;观察我们用于计算$J(\Theta)$偏导的等式：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;在向后传播中我们需要对每个节点计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;回忆一下，$a_j^{(i)}$表示第$l$层的节点$j$的激活结果。对于最后一层，误差的计算为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$L$表示层数，$a^{(L)}$是最后一层激活单元的向量化表示。因此对于最后一层，误差的计算就是简单的真实结果和预测结果的差值。&lt;/p&gt;
+&lt;p&gt;为了得到除了最后一层以外其他层的误差值，我们采用以下等式从右往左地向后计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是用$\Theta$去乘后一层的误差值，再对每一个元素乘上$g&amp;rsquo;$，也就是激活函数$g$输入值为$z^{(l)}$时的导数。&lt;/p&gt;
+&lt;p&gt;$g&amp;rsquo;$也可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么，对于内部节点来说，完整的向后传播计算等式为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，证明比较复杂，不过实现向后传播的算法也不用知道证明的细节。&lt;/p&gt;
+&lt;p&gt;对于每个训练样本$t$，可以采用激活值和误差值来计算偏导项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上述式子忽略了正则项，后面会再详细说明。&lt;/p&gt;
+&lt;p&gt;注意，其中$\delta^{l+1}$和$a^{l+1}$都是有$s_{l+1}$个元素的向量。类似地，$a^{(l)}$是有$s_l$个元素的向量。这两个向量相乘会产生和$\Theta^{(l)}$同样维度的$s_{l+1} * s_l$的矩阵。这个计算过程也就是得到了$\Theta^{(l)}$中每个元素的梯度项。&lt;/p&gt;
+&lt;p&gt;现在，将以上过程串起来，我们得到整个向后传播算法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定训练集$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$&lt;/li&gt;
+&lt;li&gt;设$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace \forall (l,i,j)$&lt;/li&gt;
+&lt;li&gt;对于每个训练集 $\text{for } t = 1 \text{ to } m$:
+&lt;ul&gt;
+&lt;li&gt;$a^{(1)} := x^{(t)}$&lt;/li&gt;
+&lt;li&gt;采用向前传播算法计算$a^{(l)}, l = 2,3,&amp;hellip;,l$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L)} = a^{(L)} - y^{(t)}$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$s&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$D^{(l)}_{i,j}$即最后我们所求的偏导。&lt;/p&gt;
+&lt;h1 id=&#34;向后传播的直观理解&#34;&gt;向后传播的直观理解&lt;/h1&gt;
+&lt;p&gt;成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;如果我们只考虑一个训练样本$(t=1)$，并且忽略正则项，那么成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;直观上可以将以上的等式近似看作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\delta_j^{(l)}$是$a_j^{(l)}$的误差。&lt;/p&gt;
+&lt;p&gt;严格来说，$\delta$值实际上是成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意偏导是成本函数切线的斜率，斜率越陡峭越不准确。&lt;/p&gt;
+&lt;h1 id=&#34;梯度检查gradient-checking&#34;&gt;梯度检查(Gradient Checking)&lt;/h1&gt;
+&lt;p&gt;梯度检查能够保证我们的向后传播算法的正确性。&lt;/p&gt;
+&lt;p&gt;我们可以用以下方法近似地估算成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\Theta$是很多个矩阵构成，可以对$\Theta_j$的偏导进行以下估算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\epsilon$的取值必须较小，才能得到接近真实的值。但如果$\epsilon$的值太小，计算可能会有精度问题而无法得到正确值。Andrew给的经验值时$\epsilon = 10^{-4}$。&lt;/p&gt;
+&lt;p&gt;如果可以验证梯度近似值和$\delta$大致相等，那么向后传播算法是正确的。在真正计算中不需要计算梯度近似值，因为其计算非常慢。&lt;/p&gt;
+&lt;h1 id=&#34;随机初始化&#34;&gt;随机初始化&lt;/h1&gt;
+&lt;p&gt;在神经网络中，不能将$\theta$权重初始化为0，否则在向后传播时，所有的节点会重复更新一样的值。&lt;/p&gt;
+&lt;p&gt;因此需要随机初始化权重：&lt;/p&gt;
+&lt;p&gt;将$\Theta_{ij}^{(l)}$赋为$[-\epsilon,\epsilon]$范围内的一个随机数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$Loutput$和$Linput+1$是$\Theta$参数的维度。这里的$\epsilon$和梯度检查中的$\epsilon$没有关系。&lt;/p&gt;
+&lt;h1 id=&#34;神经网络总结&#34;&gt;神经网络总结&lt;/h1&gt;
+&lt;p&gt;首先，选择神经网络的结构，确定神经网络的层数和每层的隐藏单元的个数。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入层单元数等于特征$x^(i)$的维度&lt;/li&gt;
+&lt;li&gt;输出层的单元数等于分类个数&lt;/li&gt;
+&lt;li&gt;默认设置：1个隐藏层。如果有多于1个隐藏层，则隐藏层的单元个数都一样多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;训练神经网络&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;随机初始化权重&lt;/li&gt;
+&lt;li&gt;实现向前传播计算$h_{\theta}(x^{(i)})$&lt;/li&gt;
+&lt;li&gt;实现成本函数&lt;/li&gt;
+&lt;li&gt;实现向后传播计算偏导值&lt;/li&gt;
+&lt;li&gt;采用梯度检查来确认向后传播的正确性后，再取消梯度检查。&lt;/li&gt;
+&lt;li&gt;采用梯度下降或其他已有的最优化函数来最小化成本函数，得到$\theta$权重值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于每个训练样本都循环采用向前和向后传播算法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记5 神经网络1 模型表达</title>
+      <link>https://nanshu.wang/post/2015-03-03-2/</link>
+      <pubDate>Tue, 03 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-03-2/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;神经网络&#34;&gt;神经网络&lt;/h1&gt;
+&lt;h2 id=&#34;非线性假设&#34;&gt;非线性假设&lt;/h2&gt;
+&lt;p&gt;在特征变量数较大的情况下，采用线性回归会很难处理，比如我的数据集有3个特征变量，想要在假设中引入所有特征变量的平方项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;共有6个特征，假设我们想知道选取其中任意两个可重复的平方项有多少组合，采用允许重复的组合公式计算$\frac{(n+r-1)!}{r!(n-1)!}$，共有$\frac{(3 + 2 - 1)!}{(2!\cdot (3-1)!)} = 6$种特征变量的组合。对于100个特征变量，则共有$\frac{(100 + 2 - 1)!}{(2\cdot (100-1)!)} = 5050$个新的特征变量。&lt;/p&gt;
+&lt;p&gt;可以大致估计特征变量的平方项组合个数的增长速度为$\mathcal{O}(\frac{n^2}2)$，立方项的组合个数的增长为$\mathcal{O}(n^3)$。这些增长都十分陡峭，让实际问题变得很棘手。&lt;/p&gt;
+&lt;p&gt;在变量假设十分复杂的情况下，神经网络提供了另一种机器学习算法。&lt;/p&gt;
+&lt;h1 id=&#34;神经元和大脑&#34;&gt;神经元和大脑&lt;/h1&gt;
+&lt;p&gt;神经网络是对大脑工作方式的一种简单模拟。有证据表明，大脑对所有的功能（如视觉，触觉，听觉等）都采用了一种“学习算法”。将听觉皮层和视觉神经连接到一起，听觉皮层可以学会“看见”。这种理论叫作“neuroplasticity”，已经得到了很多例子和实验验证。&lt;/p&gt;
+&lt;h1 id=&#34;模型表达&#34;&gt;模型表达&lt;/h1&gt;
+&lt;p&gt;简单来说，每个神经元都有输入（树突dendrites）和输出（轴突axons）。在模型中，输入就是我们的特征变量，输出就是模型假设的结果。&lt;/p&gt;
+&lt;p&gt;在神经网络中，分类问题通常采用logistic函数，也叫做sigmoid激活函数(sigmoid activation function)。$\theta$参数有时也被称为权重(weights)。&lt;/p&gt;
+&lt;p&gt;下面是一种简单的神经网络：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/neuron_model.jpg&amp;quot; alt=&amp;quot;hugo-server-1&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第一层是输入节点(nodes)，第二层是输出节点，也就是我们假设函数的结果$h_{\theta}(x)$。&lt;/p&gt;
+&lt;p&gt;第一层叫作“输入层”(input layer)，最后一层叫作“输出层”(output layer)，输入层和输出层之间还可以有多层，统称为“隐藏层”(hidden layer)。如下图中，第二层就叫隐藏层。隐藏层节点表示为$a^2_0 \cdots a^2_n$，被称作“激活单元(activation units)”。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/neuron_network_3layers.jpg&amp;quot; alt=&amp;quot;hugo-server-1&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$a_i^{(j)}$表示第$j$层的$i$单元被“激活”，$\Theta^{(j)}$表示从第$j$层到第$j+1$层的权重矩阵。&lt;/p&gt;
+&lt;p&gt;上图的神经网络中，激活单元的计算分别为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;每一层都有自己的权重矩阵$\Theta^{(j)}$，如果第$j$层有 $s_j$ 个单元，第$j+1$层有$s_{j+1}$个单元，则$\Theta^{(j)}$是$s_{j+1} \times (s_j+1)$的矩阵。&amp;quot;+1&amp;quot;是因为第$j$层包括一个&amp;quot;偏差节点(bias nodes)“，$x_0$和$\Theta_0^{(j)}$。换句话说，输出节点不包括偏差节点，但输入节点会包括偏差节点。&lt;/p&gt;
+&lt;p&gt;举个例子，第一层有2个输入节点，第二层有4个激活单元。$\Theta^{(1)}$的维度为$4 \times 3$。&lt;/p&gt;
+&lt;p&gt;下面将以上模型表达向量化。&lt;/p&gt;
+&lt;p&gt;采用$z^{(i)}_k$表示$g$函数的输入，那么有：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;给定第$j$层的节点$k$，变量$z$等于：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$x$和$z^{(j)}$的向量表示为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;因此，$z^{(j}) = \Theta^{(j-1)} x$&lt;/p&gt;
+&lt;p&gt;令$x = a^{(j-1)}$，则$z^{(j)} = \Theta^{(j-1)}a^{(j-1)}$&lt;/p&gt;
+&lt;p&gt;最后的结果为&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;神经网络拟合逻辑运算&#34;&gt;神经网络拟合逻辑运算&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;$x_1\ AND\ x_2$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;神经网络模型：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$x_0$为偏差，恒等于1。&lt;/p&gt;
+&lt;p&gt;权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;仅当$x_1$和$x_2$同时为1时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;$x_1\ NOR\ x_2$, $NOR$为$NOT\ OR$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;模型同上，权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;仅当$x_1$和$x_2$同时为0时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;$x_1\ OR\ x_2$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;模型同上，权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$x_1$和$x_2$不同时为0时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;$x_1\ XNOR\ x_2$，$XNOR$为$NOT\ XOR$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;将前面得到的模型组合起来$x_1\ XNOR\ x_2 = (x_1\ AND\ x_2)\ OR\ (x_1\ XOR\ x_2)$&lt;/p&gt;
+&lt;p&gt;模型如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第一层到第二层的$\Theta^{(1)}$分别表示$AND$和$NOR$操作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第二层到第三层的$\Theta^{(2)}$表示$OR$操作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;多类分类问题&#34;&gt;多类分类问题&lt;/h1&gt;
+&lt;p&gt;输出用向量来表示多类分类问题：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;最后的结果：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;表示该样本属于第三类，$h_{\Theta}(x)_3$。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记4 正则化</title>
+      <link>https://nanshu.wang/post/2015-02-17/</link>
+      <pubDate>Tue, 17 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-17/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;正则化-regularization&#34;&gt;正则化 Regularization&lt;/h1&gt;
+&lt;p&gt;为了和正规方程(normal equation)里&amp;quot;正规&amp;quot;区分开来，这里Regularization都译作“正则化”，有些地方也用的是“正规化”。以下内容来自&lt;a href=&#34;http://en.wikipedia.org/w/index.php?title=Regularization_(mathematics)&#34;&gt;wikipedia&lt;/a&gt;：&lt;/p&gt;
+&lt;p&gt;正则化是指通过引入额外新信息来解决机器学习中过拟合问题的一种方法。这种额外信息通常的形式是模型复杂性带来的惩罚度。正则化的一种理论解释是它试图引入&lt;a href=&#34;http://en.wikipedia.org/wiki/Occam%27s_razor&#34;&gt;奥卡姆剃刀原则&lt;/a&gt;。而从贝叶斯的观点来看，正则化则是在模型参数上引入了某种先验的分布。&lt;/p&gt;
+&lt;p&gt;机器学习中最常见的正则化是$L_1$和$L_2$正则化。正则化是在学习算法的损失(成本)函数$E(X,Y)$的基础上在加上一项正则化参数项：$E(X,Y)+\alpha|w|$，其中$w$是参数向量，$\alpha$是正则项的参数值，需要在实际训练中调整。正则化在许多模型中都适用，对于线性回归模型来说，采用$L_1$正则化的模型叫作lasso回归，采用$L_2$的叫作ridge回归。对于logistic回归，神经网络，支持向量机，随机条件场和一些矩阵分解方法，正则化也适用。在神经网络中，$L_2$正则化又叫作“权重衰减”(weight decay)。$L_1$正则化能产生稀疏模型，因此在特征选择中很有用，但是$L_1$范式不可微，所以需要在学习算法中修改，特别是基于梯度下降的算法。&lt;/p&gt;
+&lt;h1 id=&#34;过拟合问题&#34;&gt;过拟合问题&lt;/h1&gt;
+&lt;p&gt;欠拟合(也叫做高偏差(high bias))是指不能很好地拟合数据，一般是因为模型函数太简单或者特征较少。过拟合问题是指过于完美拟合了训练集数据，而对新的样本失去了一般性，不能有效预测新样本，这个问题也叫做高方差(high variances)。造成过拟合的原因可能是特征量太多或者模型函数过于复杂。线性回归和logistic回归都存在欠拟合和过拟合的问题。&lt;/p&gt;
+&lt;p&gt;要解决过拟合的问题，通常有两种方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;减少特征数量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手动筛选特征&lt;/li&gt;
+&lt;li&gt;采用特征筛选算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;正则化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留所有的特征，但尽可能使参数$\theta_j$尽量小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;正则化在很多特征变量对目标值只有很小影响的情况下非常有用。&lt;/p&gt;
+&lt;h1 id=&#34;成本函数&#34;&gt;成本函数&lt;/h1&gt;
+&lt;p&gt;在原有的成本函数的基础上加上使参数$\theta_j$正则化的项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中$\lambda$叫做正则化参数，决定了参数正则化项的影响大小。引入正则化参数项，可以避免模型过拟合的问题。如果$\lambda$的值设置过大，可能会使模型函数出现欠拟合的问题。&lt;/p&gt;
+&lt;h1 id=&#34;正则化线性回归&#34;&gt;正则化线性回归&lt;/h1&gt;
+&lt;h2 id=&#34;梯度下降法&#34;&gt;梯度下降法&lt;/h2&gt;
+&lt;p&gt;常数项$\theta_0$不用正则化，因此更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上面的式子可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意到$(1 - \alpha \frac{\lambda}m) &amp;lt; 1$，直观上可以理解为将式子中第一项$\theta_j$值减小了一点，第二项还是和无正则化的更新策略的第二项一致。&lt;/p&gt;
+&lt;h2 id=&#34;正规方程&#34;&gt;正规方程&lt;/h2&gt;
+&lt;p&gt;正则化正规方程求解$\theta$为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$L$是(n+1)*(n+1)的矩阵，除了右上角的值为0外，对角线上其他值都为1。直观上理解，不包括右上角$X_0$项，$L$是一个单位矩阵。&lt;/p&gt;
+&lt;p&gt;当$m\leq n$时，$X^TX$不可逆，但加入$\lambda L$后，$X^TX$也变得可逆了。&lt;/p&gt;
+&lt;h1 id=&#34;正则化logistic回归&#34;&gt;正则化logistic回归&lt;/h1&gt;
+&lt;h2 id=&#34;成本函数-1&#34;&gt;成本函数&lt;/h2&gt;
+&lt;p&gt;加上正则化参数$\theta$项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意$\sum_{j=1}^n \theta_j^2$中参数的下标时从1到n，没有包括常数项$\theta_0$&lt;/p&gt;
+&lt;h2 id=&#34;梯度下降&#34;&gt;梯度下降&lt;/h2&gt;
+&lt;p&gt;和线性回归一样，$\theta_0$和其他参数要分开更新：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和正则化线性回归的更新策略是一样的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记3 有监督学习 分类 logistic回归</title>
+      <link>https://nanshu.wang/post/2015-02-12/</link>
+      <pubDate>Thu, 12 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-12/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;分类问题&#34;&gt;分类问题&lt;/h1&gt;
+&lt;p&gt;分类问题和回归问题不同的是，分类问题的预测值$y$只能取离散值，而非连续值。首先来看一个二类分类问题，预测值$y$只能取0或1。0又被称作负例(negative class)，1被称作正例(positive class)。通常也用&amp;quot;-&amp;quot;,&amp;quot;+&amp;ldquo;符号来表示。对于一个样本集输入$x^{(i)}$，对应的目标值$y^{(i)}$也被为标注(lable)。&lt;/p&gt;
+&lt;h2 id=&#34;logistic回归&#34;&gt;logistic回归&lt;/h2&gt;
+&lt;p&gt;也可以用线性回归的方法运用到分类问题上，但是这样做很容易得到不好的结果。稍微改变一下我们的假设函数$h_\theta(x)$，使其的取值在{0,1}范围内：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$g(z)$叫做logistic函数，也叫做sigmoid函数。$g(z)$的函数图像如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/logistic-function.png&amp;quot; alt=&amp;quot;logistic-function&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$z\rightarrow \infty$时，$g(z)$趋近于1；当$z\rightarrow -\infty$时，$g(z)$趋近于0。因此$h(x)$的取值在0到1范围内。&lt;/p&gt;
+&lt;p&gt;求$g(z)$的导数可得：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;下面是对分类问题作出的一些假设，预测函数$h_\theta(x)$将给出样本目标值分类为1的概率：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么$\theta$的似然函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求log似然函数:&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求最大似然估计，同样可以采用梯度下降的方法，更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这里是求最大值，因此更新$\theta$是加上$l(\theta)$的偏导。&lt;/p&gt;
+&lt;p&gt;解之得到：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和之前在线性回归模型得到的LMS更新策略一样，这并不是巧合，而是因为线性回归和logistic回归都属于广义线性模型(GLM models)。&lt;/p&gt;
+&lt;h2 id=&#34;perceptron学习算法&#34;&gt;perceptron学习算法&lt;/h2&gt;
+&lt;p&gt;有趣的是，如果这里不采用logistic函数，而是采用一种简单粗暴的只考虑阈值的函数g(z)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;我们得到的更新$\theta$的策略和采用logistic函数得到的策略是一致。这种算法叫做感知器(perceptron)学习算法，感知器原指一种用来刻画大脑神经元的粗糙模型。虽然表面上看这种简单粗暴的方式和其他算法得到的结果是一样的，但是这是一种和logistic回归以及最小二乘线性回归非常不同的一类算法，它不能推导出有意义的概率解释，也不能通过极大似然估计得到。&lt;/p&gt;
+&lt;h2 id=&#34;牛顿法&#34;&gt;牛顿法&lt;/h2&gt;
+&lt;p&gt;为了求$f(\theta)=0$时$\theta$的取值，牛顿法每次更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;要最大化似然函数$l(\theta)$的值，使其导数$l&amp;rsquo;(\theta)＝0$。更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$\theta$为向量时，推广更一般的牛顿法，这种方法也叫做牛顿－拉普森法(Newton-Raphson method)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\nabla_\theta l(\theta)$是$l(\theta)$对于$\theta$的偏导。$H$是$(n+1)*(n+1)$的矩阵，叫做Hessian：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;牛顿法收敛的速度通常比批量梯度下降要快，但是牛顿法每次迭代的计算量更大，每次迭代重新计算Hessian矩阵，需要$O(n^2)$的时间复杂度。但在n没有很大的情况下，牛顿法是更有效率的。将牛顿法用于logistic回归的log似然函数$l(\theta)$得到的方法也被称为Fisher scoring。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记2 有监督学习 线性回归 局部加权回归 概率解释</title>
+      <link>https://nanshu.wang/post/2015-02-11/</link>
+      <pubDate>Wed, 11 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-11/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;有监督学习&#34;&gt;有监督学习&lt;/h1&gt;
+&lt;h2 id=&#34;局部加权线性回归locally-weighted-linear-regression&#34;&gt;局部加权线性回归(Locally weighted linear regression)&lt;/h2&gt;
+&lt;p&gt;参数学习算法(parametric learning algorithm)：参数个数固定&lt;/p&gt;
+&lt;p&gt;非参数学习算法(non-parametric learning algorithm)：参数个数随样本增加&lt;/p&gt;
+&lt;p&gt;特征选择对参数学习算法非常重要，否则会出现下面的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;欠拟合(underfitting)：特征过少，模型过于简单，高偏差(high bias)，不能很好拟合训练集&lt;/li&gt;
+&lt;li&gt;过拟合(overfitting)：特征过多，模型过于复杂，高方差(high variance)，过于拟合训练集，不能很好预测新样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于非参数学习算法来说，并不需要进行精心的特征选择，局部加权线性回归就是这样。&lt;/p&gt;
+&lt;p&gt;局部加权回归又叫做Loess，其成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$w^{(i)}$是非负权重，通常定义$w^{(i)}$如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;权值取决于用于预测的输入变量$x$的值：离$x$越近的样本，权值越接近1；越远的样本，越接近0。$\tau$被称为带宽(bandwidth)参数，决定了以$x$为中心，样本权重递减的速度。$\tau$越大，递减速度越慢；$\tau$越小，递减速度越快。&lt;/p&gt;
+&lt;p&gt;参数学习算法的参数是固定的，一经学习得到不再改变。而非参数学习算法的参数并不固定，每次预测都要重新学习一组新的参数，并且要一直保留完整的训练样本集。当样本集很大时，局部加权回归的计算开销会很大，Andrew Moore提出的KD-tree方法可以在大数据集上的计算更高效。&lt;/p&gt;
+&lt;h2 id=&#34;回归模型的概率解释&#34;&gt;回归模型的概率解释&lt;/h2&gt;
+&lt;p&gt;遇到一个回归问题，为什么采用线性回归，又为什么采用最小二乘作为成本函数？其实最小二乘回归中蕴含了非常自然的概率假设。假设目标值和输入值之间满足以下关系：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$\epsilon^{(i)}$是误差项，包含了模型未考虑到的影响目标值的因素和随机噪声。假设误差项独立同分布，服从均值为0，方差为$\sigma^2$的高斯分布（正态分布），即$\epsilon^{(i)}\sim N(0,\sigma^2)$。$\epsilon^{(i)}$的密度函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是说：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;或者也可以这样写：$(y^{(i)}|x^{(i)};\theta) \sim N(\theta^Tx^{(i)},\sigma^2)$。&lt;/p&gt;
+&lt;p&gt;为什么采用正态分布？一种原因是数学上处理起来比较便利，二是因为根据中心极限定理，独立的随机变量的和，即多种随机误差的累积，其总的影响是接近正态分布的。&lt;/p&gt;
+&lt;p&gt;$p(y^{(i)}|x^{(i)};\theta)$的含义是给定条件$x^{(i)}$，参数设定为$\theta$时，$y^{(i)}$的分布值。不能将$\theta$看作是概率条件，因为$\theta$不是随机变量，而是实际存在的真实值，虽然我们不知道真实值到底是多少。因此在以上的式子中，用了分号而不是逗号来区分$x^{(i)}$和$\theta$。&lt;/p&gt;
+&lt;p&gt;定义$\theta$的似然(likelihood)函数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;似然(likelihood)和概率(probability)实际上是一个东西，但是似然函数是对参数$\theta$定义的，为了加以区分，使用了似然这一术语。我们可以说参数的似然，数据的概率，但不能说数据的似然，参数的概率。&lt;/p&gt;
+&lt;p&gt;极大似然估计的含义是选择参数$\theta$，使参数的似然函数最大化，也就是说选择参数使得已有样本数据出现的概率最大。&lt;/p&gt;
+&lt;p&gt;为方便求解，再定义函数$l(\theta)$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;可得，要最大化似然函数$L(\theta)$，也就是最大化$l(\theta)$，也就是最小化：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这个式子刚好是最小二乘法中定义的成本函数$J(\theta)$。总结一下，最小二乘回归模型刚好就是在假设了误差独立同服从正态分布后，得到的最大似然估计。注意到，正态分布中的方差$\sigma^2$的取值对模型并没有影响。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程</title>
+      <link>https://nanshu.wang/post/2015-02-10/</link>
+      <pubDate>Tue, 10 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-10/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;有监督学习&#34;&gt;有监督学习&lt;/h1&gt;
+&lt;p&gt;先理清几个概念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$x^{(i)}$表示&amp;quot;输入&amp;quot;变量(&amp;ldquo;input&amp;rdquo; variables)，也称为特征值(features)。&lt;/li&gt;
+&lt;li&gt;$y^{(i)}$表示&amp;quot;输出&amp;quot;变量(&amp;ldquo;output&amp;rdquo; variables)，也称为目标值(target)。&lt;/li&gt;
+&lt;li&gt;一对$(x^{(i)},y^{(i)})$称为一个训练样本(training example)，用作训练的数据集就是就是一组$m$个训练样本${(x^{(i)},y^{(i)});i=1,&amp;hellip;,m}$，被称为训练集(training set)。&lt;/li&gt;
+&lt;li&gt;$X$表示输入变量的取值空间，$Y$表示输出变量的取值空间。那么$h:X \rightarrow Y$是训练得到的映射函数，对于每个取值空间X的取值，都能给出取值空间Y上的一个预测值。函数$h$的含义为假设(hypothesis)。&lt;/li&gt;
+&lt;li&gt;图形化表示整个过程：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/supervised-learning.png&amp;quot; alt=&amp;quot;supervised-learning&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;当预测值y为连续值时，则有监督学习问题是回归(regression)问题；预测值y为离散值时，则为分类(classification)问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线性回归linear-regression&#34;&gt;线性回归(Linear Regression)&lt;/h2&gt;
+&lt;p&gt;先简单将y表示为x的线性函数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;$\theta$ 称为参数(parameters)，也叫做权重(weights)，参数决定了$X$到$Y$的射映空间。&lt;/li&gt;
+&lt;li&gt;用$x_0=1$来表示截距项(intercept term)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有了训练集，如果通过学习得到参数$\theta$？&lt;/p&gt;
+&lt;p&gt;一种方法是，让预测值$h(x)$尽量接近真实值y，定义成本函数(cost function):&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这实际上就是最小二乘成本函数，我们把这个回归模型叫做普通最小二乘回归模型(ordinary least squares regression model)。&lt;/p&gt;
+&lt;h2 id=&#34;lms算法&#34;&gt;LMS算法&lt;/h2&gt;
+&lt;p&gt;为了找到使成本函数$J(\theta)$最小的参数$\theta$，采用搜索算法：给定一个$\theta$的初值，然后不断改进，每次改进都使$J(\theta)$更小，直到最小化$J(\theta)$的$\theta$的值收敛。&lt;/p&gt;
+&lt;p&gt;考虑梯度下降(gradient descent)算法：从初始$\theta$开始，不断更新：&lt;/p&gt;
+&lt;p&gt;$$\theta_j:=\theta_j-\alpha \frac{\delta}{\delta\theta_j}J(\theta)$$&lt;/p&gt;
+&lt;p&gt;注意，更新是同时对所有$j=0,&amp;hellip;,n$的$\theta_j$值进行。$\alpha$被称作学习率(learning rate)，也是梯度下降的长度，若$\alpha$取值较小，则收敛的时间较长；相反，若$\alpha$取值较大，则可能错过最优值。&lt;/p&gt;
+&lt;p&gt;假设我们只有一个训练样本$(x,y)$，此时$J(\theta) = \frac12(h_{\theta}(x)-y)^2$，求偏导项得到：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;每次按照以下式子更新$\theta_j$的值：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这种更新方法叫做LMS更新策略(Least Mean Squares update rule)，也叫做Widrow-Hoff 学习策略。&lt;/p&gt;
+&lt;p&gt;采用LMS方法，参数更新的次数和误差项$(y^{(i)}-h_{\theta}(x^{(i)}))$成正比。也就是说，如果预测值与真实值的误差项较小，则参数调整改变不会很大，相反，如果误差项较大，参数进行的调整更大。&lt;/p&gt;
+&lt;p&gt;如果训练集不只一个训练样本，可以采用以下方法更新参数：&lt;/p&gt;
+&lt;p&gt;Repeat until convergence{&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$\theta_j:=\theta_j+\alpha\sum_{i=1}^m(y^{(i)}-h_\theta(x^{(i)})x_j^{(i)})$&lt;/code&gt; (for every j)&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;实际上，这里的求和刚好是$\frac{\delta J(\theta)}{\delta\theta_j}$的值。这种方法每一步更新都会遍历每所有的训练样本，因此被称作批量梯度下降(batch gradient descent)。&lt;/p&gt;
+&lt;p&gt;梯度下降法通常容易受局部最优值的影响，但这里的最优问题只有一个全局最优值，没有局部最优值。因此梯度下降总是收敛到全局最优解（学习率$\alpha$不能取太大，否则错过最优值）。&lt;/p&gt;
+&lt;p&gt;除了批量梯度下降，还有一种方法叫做随机梯度下降(stochastic gradient descent)，也叫做增量梯度下降(incremental gradient descent)。其更新策略为：&lt;/p&gt;
+&lt;p&gt;Loop{&lt;/p&gt;
+&lt;p&gt;for i=1 to m,{&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$\theta_j:=\theta_j+\alpha(y^{(i)}-h_{\theta}(x^{(i)}))x_j^{(i)}$&lt;/code&gt; (for every j).&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;随机梯度下降和批量梯度下降不同点在于，批量梯度下降每一步更新$\theta$值，都需要遍历全部的训练样本，而随机梯度下降在遇到每个训练样本时，更新$\theta$之后继续处理下一个样本，每个样本只遍历一次，算法的学习时间比批量梯度下降快很多。但是，随机梯度下降可能永远不会收敛到全局最优值，而是在成本函数$J(\theta)$最优值周围附近摇摆。但是在实际问题中，接近最优值的参数值可能已经是足够好的结果了，特别是对于数据量非常大的训练集来说，随机梯度下降是比批量梯度下降更好的选择。&lt;/p&gt;
+&lt;p&gt;在实际使用梯度下降算法时，将输入变量归一到同一取值范围，能够减少算法的迭代次数。这是因为$\theta$在小的取值范围内会下降很快，但在大的取值范围内会下降较慢。并且当输入变量取值范围不够均衡时，$\theta$更容易在最优值周围波动。采用特征缩放(feature scaling)和均值归一化(mean normalization)可以避免这些问题。选择学习率$\alpha$的值，要观察$J(\theta)$值在每次迭代后的变化。已经证明了如果$\alpha$的取值足够小，则$J(\theta)$每次迭代后的值都会减少。如果$J(\theta)$在某次迭代后反而增加了，说明学习率$\alpha$的值应该减小，因为错过了最优值。Andrew Ng推荐的一个经验是每次将$\alpha$减少3倍。&lt;/p&gt;
+&lt;h2 id=&#34;正规方程the-normal-equations&#34;&gt;正规方程(The normal equations)&lt;/h2&gt;
+&lt;p&gt;梯度下降是最小化$J(\theta)$的一种方式，正规方程是另一种求解参数$\theta$的方法，这种方法可以直接求出最优值参数结果，不需要迭代更新，也不需要事先对数据进行归一化预处理。这种方法实际上是直接求出$J(\theta)$的导数，并令其为0。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$$\nabla_{\theta}J(\theta)=0$$&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;解之，&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;得到正规方程：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求解$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;正规方程求解$\theta$的时间复杂度为$O(n^3)$，n是特征数量。当特征数量很大时，正规方程求解会很慢。Andrew Ng给出的一个经验参考是：当n&amp;gt;10,000时，采用梯度下降比正规方程更好。&lt;/p&gt;
+&lt;p&gt;比较一下正规方程和梯度下降：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;正规方程&lt;/th&gt;
+&lt;th&gt;梯度下降&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;不需要调整参数&lt;/td&gt;
+&lt;td&gt;需要调整参数$\alpha$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不需要迭代&lt;/td&gt;
+&lt;td&gt;需要迭代更新$\theta$值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;n较大时效率低&lt;/td&gt;
+&lt;td&gt;n较大时效率也不错&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;正规方程还会遇到$X^TX$不可逆的情况，通常这是因为输入变量中存在线性相关的变量或者是因为特征太多($n\geq m$)。解决方法是去掉线性相关的冗余变量，或者删掉一些特征。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,209 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>字符串引用 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%95%E7%94%A8/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Sun, 30 Aug 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译)</title>
+      <link>https://nanshu.wang/post/2015-08-30/</link>
+      <pubDate>Sun, 30 Aug 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-08-30/</guid>
+      <description>&lt;h1 id=&#34;字符串引用string-quotes&#34;&gt;字符串引用(String Quotes)&lt;/h1&gt;
+&lt;p&gt;在Python中表示字符串时，不管用单引号还是双引号都是一样的。但是不推荐将这两种方式看作一样并且混用。最好选择一种规则并坚持使用。当字符串中包含单引号时，采用双引号来表示字符串，反之也是一样，这样可以避免使用反斜杠，代码也更易读。&lt;/p&gt;
+&lt;p&gt;对于三引号表示的字符串，使用双引号字符来表示（译注：即用&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;而不是&lt;code&gt;&#39;&#39;&#39;&lt;/code&gt;），这样可以和PEP 257的文档字符串（docstring）规则保持一致。&lt;/p&gt;
+&lt;h1 id=&#34;表达式和语句中的空格whitespace-in-expressions-and-statements&#34;&gt;表达式和语句中的空格(Whitespace in Expressions and Statements)&lt;/h1&gt;
+&lt;h2 id=&#34;一些痛点pet-peeves&#34;&gt;一些痛点(Pet peeves)&lt;/h2&gt;
+&lt;p&gt;在下列情形中避免使用过多的空白：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;方括号，圆括号和花括号之后：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(ham[1], {eggs: 2})
+      No:  spam( ham[ 1 ], { eggs: 2 } )
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;逗号，分号或冒号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: if x == 4: print x, y; x, y = y, x
+      No:  if x == 4 : print x , y ; x , y = y , x
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;不过，在分片操作时，冒号和二元运算符是一样的，应该在其左右两边保留相同数量的空格（就像对待优先级最低的运算符一样）。在扩展的分片操作中，所有冒号的左右两边空格数都应该相等。不过也有例外，当切片操作中的参数被省略时，应该也忽略空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes:
+
+      ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+      ham[lower:upper], ham[lower:upper:], ham[lower::step]
+      ham[lower+offset : upper+offset]
+      ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+      ham[lower + offset : upper + offset]
+
+  No:
+
+      ham[lower + offset:upper + offset]
+      ham[1: 9], ham[1 :9], ham[1:9 :3]
+      ham[lower : : upper]
+      ham[ : upper]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在调用函数时传递参数list的括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: spam(1)
+      No:  spam (1)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在索引和切片操作的左括号之前：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      Yes: dct[&amp;#39;key&amp;#39;] = lst[index]
+      No:  dct [&amp;#39;key&amp;#39;] = lst [index]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;赋值(或其他)运算符周围使用多个空格来和其他语句对齐：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      x = 1
+      y = 2
+      long_variable = 3
+
+  No::
+
+      x             = 1
+      y             = 2
+      long_variable = 3
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;其他建议&#34;&gt;其他建议&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在二元运算符的两边都使用一个空格：赋值运算符(&lt;code&gt;=&lt;/code&gt;)，增量赋值运算符(&lt;code&gt;+=&lt;/code&gt;, &lt;code&gt;-=&lt;/code&gt;
+etc.)，比较运算符(&lt;code&gt;==&lt;/code&gt;, &lt;code&gt;&amp;lt;&lt;/code&gt;, &lt;code&gt;&amp;gt;&lt;/code&gt;, &lt;code&gt;!=&lt;/code&gt;, &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;=&lt;/code&gt;,
+&lt;code&gt;&amp;gt;=&lt;/code&gt;, &lt;code&gt;in&lt;/code&gt;, &lt;code&gt;not in&lt;/code&gt;, &lt;code&gt;is&lt;/code&gt;, &lt;code&gt;is not&lt;/code&gt;)，布尔运算符(&lt;code&gt;and&lt;/code&gt;,
+&lt;code&gt;or&lt;/code&gt;, &lt;code&gt;not&lt;/code&gt;)。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;如果使用了优先级不同的运算符，则在优先级较低的操作符周围增加空白。请你自行判断，不过永远不要用超过1个空格，永远保持二元运算符两侧的空白数量一样。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      i = i + 1
+      submitted += 1
+      x = x*2 - 1
+      hypot2 = x*x + y*y
+      c = (a+b) * (a-b)
+
+  No::
+
+      i=i+1
+      submitted +=1
+      x = x * 2 - 1
+      hypot2 = x * x + y * y
+      c = (a + b) * (a - b)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;=&lt;/code&gt;符号来表示关键字参数或默认参数值时，不要在其周围使用空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def complex(real, imag=0.0):
+          return magic(r=real, i=imag)
+
+  No::
+
+      def complex(real, imag = 0.0):
+          return magic(r = real, i = imag)
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;在带注释的函数定义中需要在&lt;code&gt;=&lt;/code&gt;符号周围加上空格。此外, 在&lt;code&gt;:&lt;/code&gt;后使用一个空格，在&lt;code&gt;-&amp;gt;&lt;/code&gt;表示带注释的返回值时，其两侧各使用一个空格。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      def munge(input: AnyStr):
+      def munge(sep: AnyStr = None):
+      def munge() -&amp;gt; AnyStr:
+      def munge(input: AnyStr, sep: AnyStr = None, limit=1000):
+
+  No::
+
+      def munge(input: AnyStr=None):
+      def munge(input:AnyStr):
+      def munge(input: AnyStr)-&amp;gt;PosInt:
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;复合语句（即将多行语句写在一行）一般是不鼓励使用的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Yes::
+
+      if foo == &amp;#39;blah&amp;#39;:
+          do_blah_thing()
+      do_one()
+      do_two()
+      do_three()
+
+  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      do_one(); do_two(); do_three()
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;有时也可以将短小的if/for/while中的语句写在一行，但对于有多个分句的语句永远不要这样做。也要避免将多行都写在一起。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Rather not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      for x in lst: total += x
+      while t &amp;lt; 10: t = delay()
+
+  Definitely not::
+
+      if foo == &amp;#39;blah&amp;#39;: do_blah_thing()
+      else: do_non_blah_thing()
+
+      try: something()
+      finally: cleanup()
+
+      do_one(); do_two(); do_three(long, argument,
+                                   list, like, this)
+
+      if foo == &amp;#39;blah&amp;#39;: one(); two(); three()
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;注释comments&#34;&gt;注释(Comments)&lt;/h1&gt;
+&lt;p&gt;和代码矛盾的注释还不如没有。当代码有改动时，一定要优先更改注释使其保持最新。&lt;/p&gt;
+&lt;p&gt;注释应该是完整的多个句子。如果注释是一个短语或一个句子，其首字母应该大写，除非开头是一个以小写字母开头的标识符（永远不要更改标识符的大小写）。&lt;/p&gt;
+&lt;p&gt;如果注释很短，结束的句号可以被忽略。块注释通常由一段或几段完整的句子组成，每个句子都应该以句号结束。&lt;/p&gt;
+&lt;p&gt;你应该在句尾的句号后再加上2个空格。&lt;/p&gt;
+&lt;p&gt;使用英文写作，参考Strunk和White的《The Elements of Style》&lt;/p&gt;
+&lt;p&gt;来自非英语国家的Python程序员们，请使用英文来写注释，除非你120%确定你的代码永远不会被不懂你所用语言的人阅读到。&lt;/p&gt;
+&lt;h2 id=&#34;块注释block-comments&#34;&gt;块注释（Block Comments）&lt;/h2&gt;
+&lt;p&gt;块注释一般写在对应代码之前，并且和对应代码有同样的缩进级别。块注释的每一行都应该以&lt;code&gt;#&lt;/code&gt;和一个空格开头（除非该文本是在注释内缩进对齐的）。&lt;/p&gt;
+&lt;p&gt;块注释中的段落应该用只含有单个&lt;code&gt;#&lt;/code&gt;的一行隔开。&lt;/p&gt;
+&lt;h2 id=&#34;行内注释inline-comments&#34;&gt;行内注释（Inline Comments）&lt;/h2&gt;
+&lt;p&gt;尽量少用行内注释。&lt;/p&gt;
+&lt;p&gt;行内注释是和代码语句写在一行内的注释。行内注释应该至少和代码语句之间有两个空格的间隔，并且以&lt;code&gt;#&lt;/code&gt;和一个空格开始。&lt;/p&gt;
+&lt;p&gt;行内注释通常不是必要的，在代码含义很明显时甚至会让人分心。请不要这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Increment x
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;但这样做是有用的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x = x + 1                 # Compensate for border
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;文档字符串documentation-strings&#34;&gt;文档字符串(Documentation Strings)&lt;/h2&gt;
+&lt;p&gt;要知道如何写出好的文档字符串（docstring），请参考PEP 257。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;所有的公共模块，函数，类和方法都应该有文档字符串。对于非公共方法，文档字符串不是必要的，但你应该留有注释说明该方法的功能，该注释应当出现在&lt;code&gt;def&lt;/code&gt;的下一行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PEP 257描述了好的文档字符应该遵循的规则。其中最重要的是，多行文档字符串以单行&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;结尾，不能有其他字符，例如：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;      &amp;#34;&amp;#34;&amp;#34;Return a foobang
+
+      Optional plotz says to frobnicate the bizbaz first.
+      &amp;#34;&amp;#34;&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;对于仅有一行的文档字符串，结尾处的&lt;code&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/code&gt;应该也写在这一行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;版本注记version-bookkeeping&#34;&gt;版本注记(Version Bookkeeping)&lt;/h1&gt;
+&lt;p&gt;如果你必须在源代码中包含Subversion, CVS或RCS crud，请这样做：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;__version__ = &amp;quot;$Revision$&amp;quot;
+# $Source$
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;以上几行的内容应当在模块的文档字符串之后，在其他代码之前，并且在其开始和结束都使用一个空行隔开。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

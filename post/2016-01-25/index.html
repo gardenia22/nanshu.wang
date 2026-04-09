@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="Python, shortest, algorithm, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="How to write shortest code with Python : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2016-01-25/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-01-25"/>
+<meta property="article:modified_time" content="2016-01-25"/>
+
+
+
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="shortest">
+<meta property="article:tag" content="algorithm">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> How to write shortest code with Python - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2016-01-25/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >How to write shortest code with Python</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Mon Jan 25, 2016 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/python">Python</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/shortest">shortest</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/algorithm">algorithm</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="765">
+<meta itemprop="datePublished" content="2016-01-25">
+<meta itemprop="url" content="https://nanshu.wang/post/2016-01-25/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>I was so enthralled by the <a href="https://codefights.com">Codefights</a> Challenges of writing shortest code last weekend. After several attempts, I finally managed to rank #1 in this <a href="https://codefights.com/challenge/vjxo2WFyex6a85BrH">MatchingParentheses</a> problem with one-line solution of only 77 chars(excludes whitespace).</p>
+<p>Curtailing chars of solution is fun with little tricks. In the following I will show the tricks I used in this problem.</p>
+<h2 id="problem-description">Problem Description:</h2>
+<p>Given a string para, consisting of symbols <code>'('</code>, <code>'['</code>, <code>'{'</code>, <code>')'</code>, <code>']'</code>, <code>'}'</code> and <code>' '</code>, find out if it is a correct bracket sequence (CBS in short) with occasional whitespace <code>(' ')</code> characters. A CBS can be defined as follows:</p>
+<pre><code>- empty string (&quot;&quot;) is a CBS;
+- if S is a CBS, then (S), \[S\], {S} are CBSs;
+- if S1, S2 are CBS, then S1S2 is a CBS.
+</code></pre>
+<h3 id="example">Example:</h3>
+<pre><code>MatchingParentheses(&quot;( )(( )){([( )])}&quot;) = true
+MatchingParentheses(&quot;)(&quot;) = false
+</code></pre>
+<h3 id="input-string-para">input: string para</h3>
+<p>A string of symbols  <code>'('</code>, <code>'['</code>, <code>'{'</code>, <code>')'</code>, <code>']'</code>, <code>'}'</code> and <code>' '</code>.</p>
+<h3 id="output-boolean">output: boolean</h3>
+<p><code>true</code> if the given string is CBS, <code>false</code> otherwise.</p>
+<p>Let me put my solution here. It is short and hard to understand. I will explain step by step how I get there.</p>
+<pre><code>MatchingParentheses = f = lambda p,d=1:d and f(*re.subn('\(\)|{}|\[\]| ','',p)) or not p
+</code></pre>
+<p>First of my thought, stack would be a perfect way to solve this problem: push the element when left bracket appears and pop last element when matching right bracket appears. If the stack is empty at last, return True, otherwise False.</p>
+<p>Before translating this procedure into code, think twice if there is simpler way. The answer is YES.</p>
+<p>Instead of pushing and popping the element, can we directly delete adjacent matching parentheses? We delete repeatedly until the string is empty or we can&rsquo;t find parentheses to delete anymore. This way is quite straightforward:</p>
+<pre><code>def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    def d(p):
+        return re.sub('\(\)|{}|\[\]| ','',p)
+    while p and p!=d(p):
+        p = d(p)
+    if p=='':
+        return True
+    else:
+        return False
+</code></pre>
+<p>This solution is easy to understand with 125 chars. Then let&rsquo;s start to cut down the chars.</p>
+<h2 id="lessen-the-return-statement">Lessen the return statement</h2>
+<p>We can absolutely lose the if-else statement and write just:</p>
+<pre><code>return p==''
+</code></pre>
+<p>In Python, empty string has False value in bool type. This works too:</p>
+<pre><code>return not p
+</code></pre>
+<h2 id="use-subn-instead-of-sub">Use subn() instead of sub()</h2>
+<p>subn() return 2 arguments: first one is the modified string and second one is the times of modification. Then this solution becomes:</p>
+<pre><code>def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    def d(p):
+        return re.subn('\(\)|{}|\[\]| ','',p)
+    n = 1
+    while n:
+        p,n= d(p)
+    return not p
+</code></pre>
+<p>Since we only use d function once, there is no need to define it separately.</p>
+<pre><code>def MatchingParentheses(p):
+    # d function deletes adjacent matching parentheses and whitespace
+    n = 1
+    while n:
+        p,n= re.subn('\(\)|{}|\[\]| ','',p)
+    return not p
+</code></pre>
+<p>Now we have reduced this solution to 79 chars, but we still have rooms to go even further.</p>
+<h2 id="lambda-function">Lambda function</h2>
+<p>Let&rsquo;s translate the whole function into lambda expression. Because lambda can only have one-line, we need to use recursion as an alternative to while loop.</p>
+<pre><code>MatchingParentheses = lambda p,n=1:MatchingParentheses(re.subn('\(\)|{}|\[\]| ','',p)) if n else not p
+</code></pre>
+<p>We write MatchingParentheses twice, and that&rsquo;s a lot of chars! There is a little trick to save chars:</p>
+<pre><code>MatchingParentheses = f = lambda p,n=1:f(*re.subn('\(\)|{}|\[\]| ','',p)) if n else not p
+</code></pre>
+<p>Now we have 78 chars, with only 1 char reduced after this big transformation&hellip;(So we really shouldn&rsquo;t write code like this if we are not in this shortest code competition.)</p>
+<p>And can we reduce even more chars?</p>
+<p>Answer is still YES!</p>
+<h2 id="ternary-in-python">Ternary in Python</h2>
+<p>There is no ternary expression in Python, instead we have one-line if else. But there is a <em><strong>dangerous</strong></em> way to use bool operation as a substitute of ternary expression.</p>
+<pre><code>(condition)? v1:v2 #ternary expression
+v1 if condition else v2 #one-line if else
+condition and v1 or v2 #dangerous bool expression
+</code></pre>
+<p>This is dangerous because this substitute is actually <em><strong>wrong</strong></em> when v1 has possible 0 value. The right bool expression is:</p>
+<pre><code>(condition and [v1] or [v2])[0]. 
+</code></pre>
+<p>In this problem,</p>
+<pre><code>v1 = f(*re.subn('\(\)|{}|\[\]| ','',p))
+</code></pre>
+<p>v1 is a tuple of 2 values, so there is no chance v1 equals to 0. So we take a risk here and get our <em><strong>final solution</strong></em>:</p>
+<pre><code>MatchingParentheses = f = lambda p,n=1:n and f(*re.subn('\(\)|{}|\[\]| ','',p)) or not p
+</code></pre>
+<p>Fortunately, this trick saves one more char for us. The final solution has 77 chars in total.</p>
+<h2 id="some-takeaway">Some takeaway</h2>
+<ol>
+<li>Never pursue writing shortest code in real practice.</li>
+<li>Never overuse tricks.</li>
+<li>Keep code readable and simple.</li>
+</ol>
+<p>If you can write even shorter solution for this problem, welcome to leave a comment here. :)</p>
+
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

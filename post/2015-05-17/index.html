@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="机器学习, 有监督学习, 高偏差, 高方差, 过拟合, 欠拟合, 学习曲线, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="机器学习笔记7 高偏差/低偏差，学习曲线，模型选择 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-05-17/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-05-17"/>
+<meta property="article:modified_time" content="2015-05-17"/>
+
+
+
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="有监督学习">
+<meta property="article:tag" content="高偏差">
+<meta property="article:tag" content="高方差">
+<meta property="article:tag" content="过拟合">
+<meta property="article:tag" content="欠拟合">
+<meta property="article:tag" content="学习曲线">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> 机器学习笔记7 高偏差/低偏差，学习曲线，模型选择 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-05-17/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >机器学习笔记7 高偏差/低偏差，学习曲线，模型选择</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Sun May 17, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0">有监督学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E9%AB%98%E5%81%8F%E5%B7%AE">高偏差</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E9%AB%98%E6%96%B9%E5%B7%AE">高方差</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E8%BF%87%E6%8B%9F%E5%90%88">过拟合</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%AC%A0%E6%8B%9F%E5%90%88">欠拟合</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E5%AD%A6%E4%B9%A0%E6%9B%B2%E7%BA%BF">学习曲线</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="190">
+<meta itemprop="datePublished" content="2015-05-17">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-05-17/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>Andrew Ng cs229 Machine Learning 笔记</p>
+<p>原文：https://share.coursera.org/wiki/index.php/ML:Advice_for_Applying_Machine_Learning</p>
+<p>面对一个机器学习问题，我们提取好特征，挑选好训练集，选择一种机器学习算法，然后学习预测得到了第一步结果。然而我们不幸地发现，在测试集上的准确率低得离谱，误差高得吓人，要提高准确率、减少误差的话，下一步该做些什么呢？</p>
+<p>可以采用以下的方法来减少预测的误差：</p>
+<ul>
+<li>获得更多的训练样本</li>
+<li>减少特征的数量</li>
+<li>增加特征的数量</li>
+<li>使用多项式特征</li>
+<li>增大或减小正则化参数$\lambda$</li>
+</ul>
+<p>但不要盲目在这些可行的方法里随便选一种来提升模型，需要用一些诊断模型的技术来帮助我们选择使用哪种策略。</p>
+<h1 id="1评估假设">1.评估假设</h1>
+<p>即使模型假设对于训练集的误差很低，若存在过拟合，模型的预测也同样会不准确。</p>
+<p>给定一份训练集，我们可以将数据分成两部分：训练集和测试集。</p>
+<ol>
+<li>使用训练集最小化$J(\Theta)$得到$\Theta$参数</li>
+<li>计算测试集的误差：</li>
+</ol>
+<!-- raw HTML omitted -->
+<p>3.计算分类错误率（即0/1分类错误率）</p>
+<!-- raw HTML omitted -->
+<p>测试集的平均误差为：</p>
+<!-- raw HTML omitted -->
+<p>也就是测试集上分类错误的样本的比例。</p>
+<h1 id="2模型选择与训练验证测试集">2.模型选择与训练/验证/测试集</h1>
+<ul>
+<li>学习算法若仅仅对训练集拟合较好，并不能说明其假设也是好的。</li>
+<li>训练集上的假设误差通常要比其他数据集上得到的误差要小。</li>
+</ul>
+<p>为了在假设上选择模型，可以测试模型的多项式的次数来观察误差结果。</p>
+<p><strong>无验证集</strong></p>
+<ol>
+<li>对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。</li>
+<li>找到在预测集上误差最小的模型的多项式次数$d$。</li>
+<li>使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。</li>
+</ol>
+<p>在这个例子中，我们用测试集训练得到的一个变量，即多项式次数$d$，但这样做会使其他数据集的误差更大。</p>
+<p>为了解决这个问题，我们引入了第三种数据集，即交叉验证集(Cross Validation Set)，来作为选择$d$的中间数据集。这样，测试集会给出一个准确，非乐观估计的误差结果。</p>
+<p>例如，将数据集分成三份：</p>
+<ul>
+<li>训练集：60%</li>
+<li>交叉验证集：20%</li>
+<li>测试集：20%</li>
+</ul>
+<p>对于这三个数据集我们可以计算三个不同误差值：</p>
+<p><strong>有验证集</strong></p>
+<ol>
+<li>对不同的多项式次数的模型通过训练集得到最优化参数$\Theta$。</li>
+<li>找到在验证集上误差最小的模型的多项式次数$d$。</li>
+<li>使用测试集估计泛化误差$J_{test}(\Theta^{(d)})$。</li>
+</ol>
+<p>使用验证集则避免了使用测试集来确定多项式次数$d$。</p>
+<h1 id="3诊断偏差-vs-方差">3.诊断偏差 vs. 方差</h1>
+<p>我们来讨论一下多项式次数$d$和过拟合以及欠拟合之间的关系。</p>
+<ul>
+<li>我们需要区分导致预测结果差的原因是偏差还是方差。</li>
+<li>高偏差也就是欠拟合，高方差也就是过拟合。我们需要在这两者之间找到一个黄金分割。</li>
+</ul>
+<p>随着多项式次数$d$的增加，训练集的误差会<strong>减少</strong>。</p>
+<p>同时，交叉验证集的误差会随着$d$的增加而<strong>减少</strong>，但在$d$增加到某一点之后，会随着$d$的增加而<strong>增加</strong>，形成一个凸曲线</p>
+<ul>
+<li>高偏差（欠拟合）：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。</li>
+<li>高方差（过拟合）：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$比$J_{train}(\Theta)$高得多。</li>
+</ul>
+<p>可以用下图来表示：</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/300px-Features-and-polynom-degree.png&quot; alt=&quot;Features-and-polynom-degree&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h1 id="4正则化和偏差方差">4.正则化和偏差/方差</h1>
+<p>下面来分析正则化参数$\lambda$。</p>
+<ul>
+<li>$\lambda$较大：高偏差（欠拟合）</li>
+<li>$\lambda$不大不小：正好</li>
+<li>$\lambda$较小：高方差（过拟合）</li>
+</ul>
+<p>较大的$\lambda$参数会惩罚$\Theta$参数，即简单化结果函数的曲线，造成欠拟合。</p>
+<p>$\lambda$和训练集以及验证集的关系如下：</p>
+<ul>
+<li>$\lambda$较小：$J_{train}(\Theta)$较低，且$J_{CV}(\Theta)$较高（高方差/过拟合）。</li>
+<li>$\lambda$不大不小：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较低，并且$J_{CV}(\Theta) \approx J_{train}(\Theta)$。</li>
+<li>$\lambda$较大：$J_{train}(\Theta)$和$J_{CV}(\Theta)$都较高（高偏差/欠拟合）。</li>
+</ul>
+<p>下图说明了$\lambda$值和假设之间的关系：</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/300px-Features-and-lambda.png&quot; alt=&quot;Features-and-lambda&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<p>为了选择模型和正则化参数$lambda$，我们需要：</p>
+<ol>
+<li>列出$\lambda$测试的值，比如 $\lambda \in \lbrace0, 0.01, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28, 2.56, 5.12, 10.24\rbrace$；</li>
+<li>选择一个$\lambda$的值进行计算；</li>
+<li>创建模型集，比如按照多项式次数或其他指标来创建；</li>
+<li>选择一个模型来学习$\Theta$值；</li>
+<li>用所选的模型学习得到$\Theta$值，使用选择的$\lambda$值计算$J_{train}(\Theta)$（为下一步学习参数$\Theta$）；</li>
+<li>使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的训练误差$J_{train}(\Theta)$；</li>
+<li>使用学习（带$\lambda$）得到的参数$\Theta$计算不带正则项或是$\lambda=0$的交叉验证误差$J_{CV}(\Theta)$；</li>
+<li>对模型集合所有$\lambda$取值重复上述步骤，选择使交叉验证集误差最小的组合；</li>
+<li>如果需要使用图形化结果来帮助决策的话，可以绘制$\lambda$和$J_{train}(\Theta)$的图像，以及$\lambda$和$J_{CV}(\Theta)$的图像；</li>
+<li>使用最好的$\Theta$和$\lambda$组合，在测试集上进行预测计算$J_{test}(\Theta)$的值来验证模型对问题是否有好的泛化能力。</li>
+<li>为了帮助选择最好的多项式次数和$\lambda$的值，可以采用学习曲线来诊断。</li>
+</ol>
+<h1 id="5学习曲线">5.学习曲线</h1>
+<p>训练3个样本很容易得到0误差，因为我们永远可以找到一条二次曲线完全经过3个点。</p>
+<ul>
+<li>当训练集越来越大时，二次函数的误差也会增加。</li>
+<li>误差值会在训练集大小m增加到一定程度后慢慢平缓。</li>
+</ul>
+<p><strong>高偏差的情况</strong></p>
+<ul>
+<li><strong>小训练集</strong>：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。</li>
+<li><strong>大训练集</strong>：$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$。</li>
+</ul>
+<p>如果学习算法有高偏差的问题，那么获取更多的训练数据并不会有很多改进。</p>
+<p>对于高方差的问题，对于训练集大小有如下关系：</p>
+<p><strong>高方差的情况</strong></p>
+<ul>
+<li><strong>小训练集</strong>：$J_{train}(\Theta)$较低，$J_{CV}(\Theta)较高。</li>
+<li><strong>大训练集</strong>：$J_{train}(\Theta)$会略微增加，$J_{CV}(\Theta)会略微降低，并且$J_{train}(\Theta) &lt; J_{CV}(\Theta)$。</li>
+</ul>
+<p>如果学习算法有高方差的问题，那么获取更多的训练数据是有用的。</p>
+<p>下图展示了训练集大小和高偏差/高方差问题之间的关系。</p>
+<!-- raw HTML omitted -->
+<pre><code>    &lt;img src=&quot;/media/500px-High-variance-high-bias.png&quot; alt=&quot;High-variance-high-bias&quot; /&gt;
+</code></pre>
+<!-- raw HTML omitted -->
+<h1 id="6再次考虑如何选择提升模型的下一步">6.再次考虑如何选择提升模型的下一步</h1>
+<p>决策过程可以分解成以下几点：</p>
+<ul>
+<li>获得更多的训练样本
+<ul>
+<li>解决高方差</li>
+</ul>
+</li>
+<li>减少特征的数量
+<ul>
+<li>解决高方差</li>
+</ul>
+</li>
+<li>增加特征的数量
+<ul>
+<li>解决高偏差</li>
+</ul>
+</li>
+<li>使用多项式特征
+<ul>
+<li>解决高偏差</li>
+</ul>
+</li>
+<li>增加正则参数$\lambda$
+<ul>
+<li>解决高偏差</li>
+</ul>
+</li>
+<li>减少正则参数$\lambda$
+<ul>
+<li>解决高方差</li>
+</ul>
+</li>
+</ul>
+<h1 id="7诊断神经网络">7.诊断神经网络</h1>
+<ul>
+<li>参数较少的神经网络很容易欠拟合，但同时计算也较容易。</li>
+<li>参数较多的大型神经网络更容易过拟合，但同时计算量较大。在这种情况下可以使用正则化（增加$\lambda$）来避免过拟合问题。</li>
+</ul>
+<p>使用单个隐藏层是一个较好地开始默认设置。你可以使用验证集在多个隐藏层上训练神经网络。</p>
+<h1 id="8模型选择总结">8.模型选择总结</h1>
+<p>以下是机器学习诊断的一些总结</p>
+<ul>
+<li>选择多项式次数M</li>
+<li>如何选择模型中得参数$\Theta$（即模型选择）</li>
+</ul>
+<p>有3种方式解决：</p>
+<ol>
+<li>获取更多数据（非常困难）</li>
+<li>选择拟合数据最好且没有过拟合的模型（非常困难）</li>
+<li>通过正则化来减少过拟合的机会</li>
+</ol>
+<p><strong>偏差：近似误差（预测值和期望值之间的差值）</strong></p>
+<ul>
+<li>高偏差 = 欠拟合（BU）</li>
+<li>$J_{train}(\Theta)$和$J_{CV}(\Theta)都较高，并且$J_{train}(\Theta) \approx J_{CV}(\Theta)$</li>
+</ul>
+<p><strong>方差：有限数据集之间的估计误差值</strong></p>
+<ul>
+<li>高方差 = 过拟合（VO）</li>
+<li>$J_{train}(\Theta)$较低，并且$J_{train}(\Theta) &laquo; J_{CV}(\Theta)$</li>
+</ul>
+<p><strong>偏差-方差权衡的直觉</strong></p>
+<ul>
+<li>复杂模型=&gt;数据敏感=&gt;受训练集X变化的影响=&gt;高方差，低偏差</li>
+<li>简单模型=&gt;更死板=&gt;不受训练集X变化的影响=&gt;低方差，高偏差</li>
+</ul>
+<p>机器学习的最重要的目标之一：找到一个模型在偏差-方差的权衡之间刚刚好。</p>
+<p><strong>正则化影响</strong></p>
+<ul>
+<li>$\lambda$值较小（过拟合）使模型容易受噪声影响，导致高方差。</li>
+<li>$\lambda$值较大（欠拟合）会将参数值接近于0，导致高偏差。</li>
+</ul>
+<p><strong>模型复杂度影响</strong></p>
+<ul>
+<li>多项式次数较低的模型（模型复杂度低）有高偏差和低方差。在这种情况下，模型拟合总是很差。</li>
+<li>多项式次数较高的模型（模型复杂度高）拟合训练集极好，拟合测试集极差。导致训练集上低偏差，但高方差。</li>
+<li>在现实中，我们想要选择一个模型在以上两种情况之间，既然可以很好地拟合数据，也有很好地泛化能力。</li>
+</ul>
+<p>使用诊断时的一些典型经验法则</p>
+<ul>
+<li>获取更多地训练样本可以解决高方差问题，不能解决高偏差问题。</li>
+<li>减少特征数量可以解决高方差问题，不能解决高偏差问题。</li>
+<li>增加特征数量可以解决高偏差问题，不能解决高方差问题。</li>
+<li>增加多项式特征和交互特征（特征和特征交互）解决高偏差问题，不能解决高方差问题。</li>
+<li>当使用梯度下降时，减少正则化参数$\lambda$值可以解决高方差问题，增加$\lambda$值可以解决高偏差问题。</li>
+<li>当使用神经网络时，小型神经网络更容易欠拟合，大型神经网络更容易过拟合。交叉验证是选择神经网络大小的一种方式。</li>
+</ul>
+<p>参考：</p>
+<ul>
+<li><a href="https://class.coursera.org/ml/lecture/index">https://class.coursera.org/ml/lecture/index</a></li>
+<li><a href="http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf">http://www.cedar.buffalo.edu/~srihari/CSE555/Chap9.Part2.pdf</a></li>
+<li><a href="http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning">http://blog.stephenpurpura.com/post/13052575854/managing-bias-variance-tradeoff-in-machine-learning</a></li>
+<li><a href="http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf">http://www.cedar.buffalo.edu/~srihari/CSE574/Chap3/Bias-Variance.pdf</a></li>
+</ul>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

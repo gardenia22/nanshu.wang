@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="机器学习, 有监督学习, 神经网络, 分类问题, “成本函数&#34;, 梯度检查, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="机器学习笔记5 神经网络2 参数学习 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-03-26/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-03-26"/>
+<meta property="article:modified_time" content="2015-03-26"/>
+
+
+
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="有监督学习">
+<meta property="article:tag" content="神经网络">
+<meta property="article:tag" content="分类问题">
+<meta property="article:tag" content="“成本函数&#34;">
+<meta property="article:tag" content="梯度检查">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> 机器学习笔记5 神经网络2 参数学习 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-03-26/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >机器学习笔记5 神经网络2 参数学习</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Thu Mar 26, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%89%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0">有监督学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">神经网络</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98">分类问题</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%88%90%E6%9C%AC%E5%87%BD%E6%95%B0">“成本函数&#34;</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%A2%AF%E5%BA%A6%E6%A3%80%E6%9F%A5">梯度检查</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="146">
+<meta itemprop="datePublished" content="2015-03-26">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-03-26/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>Andrew Ng cs229 Machine Learning 笔记</p>
+<h1 id="成本函数cost-function">成本函数(Cost Function)</h1>
+<p>以下是我们会用到的一些变量：</p>
+<ul>
+<li>$L$表示神经网络的层数</li>
+<li>$s_l$表示第$l$层的神经单元数(不包括偏差(bias)单元)</li>
+<li>$K$表示输出单元数(分类数)</li>
+</ul>
+<p>当有多个输出类别时，采用$h_\Theta(x)_k$表示第$k$个输出的假设结果。</p>
+<p>神经网络的成本函数是logistic回归中的成本函数更普遍的一种形式。</p>
+<p>logistic回归中的成本函数为：</p>
+<!-- raw HTML omitted -->
+<p>神经网络的成本函数稍微复杂一点：</p>
+<!-- raw HTML omitted -->
+<p>和logistic回归相比，第一个方括号内多了一层累加求和，即对多类输出节点的成本函数进行累加，会遍历所有的输出节点。</p>
+<p>正则化的部分则是将每一层的参数都考虑了进去(包括偏差单元相关的参数值)。和logistic回归一样，每一项都进行了平方。</p>
+<p>注意:</p>
+<ul>
+<li>双层累加中对于输出层所有单元的logistic回归的成本函数进行求和</li>
+<li>三层累加中则是对于整个神经网络中单独的$\Theta$参数的平方进行求和</li>
+<li>三层累加中的$i$和训练集中的$i$并不一样</li>
+</ul>
+<h1 id="向后传播backpropagation算法">向后传播(Backpropagation)算法</h1>
+<p>向后传播是神经网络中表示最小化成本函数的术语，就像logistic回归和线性回归中的梯度下降(gradient descent)一样。</p>
+<p>我们的目标是计算：</p>
+<!-- raw HTML omitted -->
+<p>即我们想最小化成本函数$J$，得到最优化参数$\Theta$。</p>
+<p>观察我们用于计算$J(\Theta)$偏导的等式：</p>
+<!-- raw HTML omitted -->
+<p>在向后传播中我们需要对每个节点计算：</p>
+<!-- raw HTML omitted -->
+<p>回忆一下，$a_j^{(i)}$表示第$l$层的节点$j$的激活结果。对于最后一层，误差的计算为：</p>
+<!-- raw HTML omitted -->
+<p>其中，$L$表示层数，$a^{(L)}$是最后一层激活单元的向量化表示。因此对于最后一层，误差的计算就是简单的真实结果和预测结果的差值。</p>
+<p>为了得到除了最后一层以外其他层的误差值，我们采用以下等式从右往左地向后计算：</p>
+<!-- raw HTML omitted -->
+<p>也就是用$\Theta$去乘后一层的误差值，再对每一个元素乘上$g&rsquo;$，也就是激活函数$g$输入值为$z^{(l)}$时的导数。</p>
+<p>$g&rsquo;$也可以写成：</p>
+<!-- raw HTML omitted -->
+<p>那么，对于内部节点来说，完整的向后传播计算等式为：</p>
+<!-- raw HTML omitted -->
+<p>其中，证明比较复杂，不过实现向后传播的算法也不用知道证明的细节。</p>
+<p>对于每个训练样本$t$，可以采用激活值和误差值来计算偏导项：</p>
+<!-- raw HTML omitted -->
+<p>上述式子忽略了正则项，后面会再详细说明。</p>
+<p>注意，其中$\delta^{l+1}$和$a^{l+1}$都是有$s_{l+1}$个元素的向量。类似地，$a^{(l)}$是有$s_l$个元素的向量。这两个向量相乘会产生和$\Theta^{(l)}$同样维度的$s_{l+1} * s_l$的矩阵。这个计算过程也就是得到了$\Theta^{(l)}$中每个元素的梯度项。</p>
+<p>现在，将以上过程串起来，我们得到整个向后传播算法：</p>
+<ul>
+<li>给定训练集$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$</li>
+<li>设$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace \forall (l,i,j)$</li>
+<li>对于每个训练集 $\text{for } t = 1 \text{ to } m$:
+<ul>
+<li>$a^{(1)} := x^{(t)}$</li>
+<li>采用向前传播算法计算$a^{(l)}, l = 2,3,&hellip;,l$</li>
+<li>计算$\delta^{(L)} = a^{(L)} - y^{(t)}$</li>
+<li>计算$\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$</li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$s</li>
+<li>$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$</li>
+</ul>
+<p>$D^{(l)}_{i,j}$即最后我们所求的偏导。</p>
+<h1 id="向后传播的直观理解">向后传播的直观理解</h1>
+<p>成本函数为：</p>
+<!-- raw HTML omitted -->
+<p>如果我们只考虑一个训练样本$(t=1)$，并且忽略正则项，那么成本函数为：</p>
+<!-- raw HTML omitted -->
+<p>直观上可以将以上的等式近似看作：</p>
+<!-- raw HTML omitted -->
+<p>$\delta_j^{(l)}$是$a_j^{(l)}$的误差。</p>
+<p>严格来说，$\delta$值实际上是成本函数的偏导：</p>
+<!-- raw HTML omitted -->
+<p>注意偏导是成本函数切线的斜率，斜率越陡峭越不准确。</p>
+<h1 id="梯度检查gradient-checking">梯度检查(Gradient Checking)</h1>
+<p>梯度检查能够保证我们的向后传播算法的正确性。</p>
+<p>我们可以用以下方法近似地估算成本函数的偏导：</p>
+<!-- raw HTML omitted -->
+<p>$\Theta$是很多个矩阵构成，可以对$\Theta_j$的偏导进行以下估算：</p>
+<!-- raw HTML omitted -->
+<p>$\epsilon$的取值必须较小，才能得到接近真实的值。但如果$\epsilon$的值太小，计算可能会有精度问题而无法得到正确值。Andrew给的经验值时$\epsilon = 10^{-4}$。</p>
+<p>如果可以验证梯度近似值和$\delta$大致相等，那么向后传播算法是正确的。在真正计算中不需要计算梯度近似值，因为其计算非常慢。</p>
+<h1 id="随机初始化">随机初始化</h1>
+<p>在神经网络中，不能将$\theta$权重初始化为0，否则在向后传播时，所有的节点会重复更新一样的值。</p>
+<p>因此需要随机初始化权重：</p>
+<p>将$\Theta_{ij}^{(l)}$赋为$[-\epsilon,\epsilon]$范围内的一个随机数：</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>其中，$Loutput$和$Linput+1$是$\Theta$参数的维度。这里的$\epsilon$和梯度检查中的$\epsilon$没有关系。</p>
+<h1 id="神经网络总结">神经网络总结</h1>
+<p>首先，选择神经网络的结构，确定神经网络的层数和每层的隐藏单元的个数。</p>
+<ul>
+<li>输入层单元数等于特征$x^(i)$的维度</li>
+<li>输出层的单元数等于分类个数</li>
+<li>默认设置：1个隐藏层。如果有多于1个隐藏层，则隐藏层的单元个数都一样多。</li>
+</ul>
+<p><strong>训练神经网络</strong></p>
+<ol>
+<li>随机初始化权重</li>
+<li>实现向前传播计算$h_{\theta}(x^{(i)})$</li>
+<li>实现成本函数</li>
+<li>实现向后传播计算偏导值</li>
+<li>采用梯度检查来确认向后传播的正确性后，再取消梯度检查。</li>
+<li>采用梯度下降或其他已有的最优化函数来最小化成本函数，得到$\theta$权重值。</li>
+</ol>
+<p>对于每个训练样本都循环采用向前和向后传播算法：</p>
+<pre><code>for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+</code></pre>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

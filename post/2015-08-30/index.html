@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="Python, 代码风格, 翻译, 风格指南, 字符串引用, 注释, PEP8, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译) : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-08-30/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-08-30"/>
+<meta property="article:modified_time" content="2015-08-30"/>
+
+
+
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="代码风格">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="风格指南">
+<meta property="article:tag" content="字符串引用">
+<meta property="article:tag" content="注释">
+<meta property="article:tag" content="PEP8">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译) - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-08-30/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >Python代码风格指南（二）字符串引用、空格、注释和版本注记(PEP8中文翻译)</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Sun Aug 30, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/python">Python</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC">代码风格</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BF%BB%E8%AF%91">翻译</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E9%A3%8E%E6%A0%BC%E6%8C%87%E5%8D%97">风格指南</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BC%95%E7%94%A8">字符串引用</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%B3%A8%E9%87%8A">注释</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/pep8">PEP8</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="405">
+<meta itemprop="datePublished" content="2015-08-30">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-08-30/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <h1 id="字符串引用string-quotes">字符串引用(String Quotes)</h1>
+<p>在Python中表示字符串时，不管用单引号还是双引号都是一样的。但是不推荐将这两种方式看作一样并且混用。最好选择一种规则并坚持使用。当字符串中包含单引号时，采用双引号来表示字符串，反之也是一样，这样可以避免使用反斜杠，代码也更易读。</p>
+<p>对于三引号表示的字符串，使用双引号字符来表示（译注：即用<code>&quot;&quot;&quot;</code>而不是<code>'''</code>），这样可以和PEP 257的文档字符串（docstring）规则保持一致。</p>
+<h1 id="表达式和语句中的空格whitespace-in-expressions-and-statements">表达式和语句中的空格(Whitespace in Expressions and Statements)</h1>
+<h2 id="一些痛点pet-peeves">一些痛点(Pet peeves)</h2>
+<p>在下列情形中避免使用过多的空白：</p>
+<ul>
+<li>方括号，圆括号和花括号之后：</li>
+</ul>
+<pre tabindex="0"><code>      Yes: spam(ham[1], {eggs: 2})
+      No:  spam( ham[ 1 ], { eggs: 2 } )
+</code></pre><ul>
+<li>逗号，分号或冒号之前：</li>
+</ul>
+<pre tabindex="0"><code>      Yes: if x == 4: print x, y; x, y = y, x
+      No:  if x == 4 : print x , y ; x , y = y , x
+</code></pre><ul>
+<li>不过，在分片操作时，冒号和二元运算符是一样的，应该在其左右两边保留相同数量的空格（就像对待优先级最低的运算符一样）。在扩展的分片操作中，所有冒号的左右两边空格数都应该相等。不过也有例外，当切片操作中的参数被省略时，应该也忽略空格。</li>
+</ul>
+<pre tabindex="0"><code>  Yes:
+
+      ham[1:9], ham[1:9:3], ham[:9:3], ham[1::3], ham[1:9:]
+      ham[lower:upper], ham[lower:upper:], ham[lower::step]
+      ham[lower+offset : upper+offset]
+      ham[: upper_fn(x) : step_fn(x)], ham[:: step_fn(x)]
+      ham[lower + offset : upper + offset]
+
+  No:
+
+      ham[lower + offset:upper + offset]
+      ham[1: 9], ham[1 :9], ham[1:9 :3]
+      ham[lower : : upper]
+      ham[ : upper]
+</code></pre><ul>
+<li>在调用函数时传递参数list的括号之前：</li>
+</ul>
+<pre tabindex="0"><code>      Yes: spam(1)
+      No:  spam (1)
+</code></pre><ul>
+<li>在索引和切片操作的左括号之前：</li>
+</ul>
+<pre tabindex="0"><code>      Yes: dct[&#39;key&#39;] = lst[index]
+      No:  dct [&#39;key&#39;] = lst [index]
+</code></pre><ul>
+<li>赋值(或其他)运算符周围使用多个空格来和其他语句对齐：</li>
+</ul>
+<pre tabindex="0"><code>  Yes::
+
+      x = 1
+      y = 2
+      long_variable = 3
+
+  No::
+
+      x             = 1
+      y             = 2
+      long_variable = 3
+</code></pre><h2 id="其他建议">其他建议</h2>
+<ul>
+<li>
+<p>在二元运算符的两边都使用一个空格：赋值运算符(<code>=</code>)，增量赋值运算符(<code>+=</code>, <code>-=</code>
+etc.)，比较运算符(<code>==</code>, <code>&lt;</code>, <code>&gt;</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&lt;=</code>,
+<code>&gt;=</code>, <code>in</code>, <code>not in</code>, <code>is</code>, <code>is not</code>)，布尔运算符(<code>and</code>,
+<code>or</code>, <code>not</code>)。</p>
+</li>
+<li>
+<p>如果使用了优先级不同的运算符，则在优先级较低的操作符周围增加空白。请你自行判断，不过永远不要用超过1个空格，永远保持二元运算符两侧的空白数量一样。</p>
+</li>
+</ul>
+<pre tabindex="0"><code>  Yes::
+
+      i = i + 1
+      submitted += 1
+      x = x*2 - 1
+      hypot2 = x*x + y*y
+      c = (a+b) * (a-b)
+
+  No::
+
+      i=i+1
+      submitted +=1
+      x = x * 2 - 1
+      hypot2 = x * x + y * y
+      c = (a + b) * (a - b)
+</code></pre><ul>
+<li>使用<code>=</code>符号来表示关键字参数或默认参数值时，不要在其周围使用空格。</li>
+</ul>
+<pre tabindex="0"><code>  Yes::
+
+      def complex(real, imag=0.0):
+          return magic(r=real, i=imag)
+
+  No::
+
+      def complex(real, imag = 0.0):
+          return magic(r = real, i = imag)
+</code></pre><ul>
+<li>在带注释的函数定义中需要在<code>=</code>符号周围加上空格。此外, 在<code>:</code>后使用一个空格，在<code>-&gt;</code>表示带注释的返回值时，其两侧各使用一个空格。</li>
+</ul>
+<pre tabindex="0"><code>  Yes::
+
+      def munge(input: AnyStr):
+      def munge(sep: AnyStr = None):
+      def munge() -&gt; AnyStr:
+      def munge(input: AnyStr, sep: AnyStr = None, limit=1000):
+
+  No::
+
+      def munge(input: AnyStr=None):
+      def munge(input:AnyStr):
+      def munge(input: AnyStr)-&gt;PosInt:
+</code></pre><ul>
+<li>复合语句（即将多行语句写在一行）一般是不鼓励使用的。</li>
+</ul>
+<pre tabindex="0"><code>  Yes::
+
+      if foo == &#39;blah&#39;:
+          do_blah_thing()
+      do_one()
+      do_two()
+      do_three()
+
+  Rather not::
+
+      if foo == &#39;blah&#39;: do_blah_thing()
+      do_one(); do_two(); do_three()
+</code></pre><ul>
+<li>有时也可以将短小的if/for/while中的语句写在一行，但对于有多个分句的语句永远不要这样做。也要避免将多行都写在一起。</li>
+</ul>
+<pre tabindex="0"><code>  Rather not::
+
+      if foo == &#39;blah&#39;: do_blah_thing()
+      for x in lst: total += x
+      while t &lt; 10: t = delay()
+
+  Definitely not::
+
+      if foo == &#39;blah&#39;: do_blah_thing()
+      else: do_non_blah_thing()
+
+      try: something()
+      finally: cleanup()
+
+      do_one(); do_two(); do_three(long, argument,
+                                   list, like, this)
+
+      if foo == &#39;blah&#39;: one(); two(); three()
+</code></pre><h1 id="注释comments">注释(Comments)</h1>
+<p>和代码矛盾的注释还不如没有。当代码有改动时，一定要优先更改注释使其保持最新。</p>
+<p>注释应该是完整的多个句子。如果注释是一个短语或一个句子，其首字母应该大写，除非开头是一个以小写字母开头的标识符（永远不要更改标识符的大小写）。</p>
+<p>如果注释很短，结束的句号可以被忽略。块注释通常由一段或几段完整的句子组成，每个句子都应该以句号结束。</p>
+<p>你应该在句尾的句号后再加上2个空格。</p>
+<p>使用英文写作，参考Strunk和White的《The Elements of Style》</p>
+<p>来自非英语国家的Python程序员们，请使用英文来写注释，除非你120%确定你的代码永远不会被不懂你所用语言的人阅读到。</p>
+<h2 id="块注释block-comments">块注释（Block Comments）</h2>
+<p>块注释一般写在对应代码之前，并且和对应代码有同样的缩进级别。块注释的每一行都应该以<code>#</code>和一个空格开头（除非该文本是在注释内缩进对齐的）。</p>
+<p>块注释中的段落应该用只含有单个<code>#</code>的一行隔开。</p>
+<h2 id="行内注释inline-comments">行内注释（Inline Comments）</h2>
+<p>尽量少用行内注释。</p>
+<p>行内注释是和代码语句写在一行内的注释。行内注释应该至少和代码语句之间有两个空格的间隔，并且以<code>#</code>和一个空格开始。</p>
+<p>行内注释通常不是必要的，在代码含义很明显时甚至会让人分心。请不要这样做：</p>
+<pre><code>x = x + 1                 # Increment x
+</code></pre>
+<p>但这样做是有用的：</p>
+<pre><code>x = x + 1                 # Compensate for border
+</code></pre>
+<h2 id="文档字符串documentation-strings">文档字符串(Documentation Strings)</h2>
+<p>要知道如何写出好的文档字符串（docstring），请参考PEP 257。</p>
+<ul>
+<li>
+<p>所有的公共模块，函数，类和方法都应该有文档字符串。对于非公共方法，文档字符串不是必要的，但你应该留有注释说明该方法的功能，该注释应当出现在<code>def</code>的下一行。</p>
+</li>
+<li>
+<p>PEP 257描述了好的文档字符应该遵循的规则。其中最重要的是，多行文档字符串以单行<code>&quot;&quot;&quot;</code>结尾，不能有其他字符，例如：</p>
+</li>
+</ul>
+<pre tabindex="0"><code>      &#34;&#34;&#34;Return a foobang
+
+      Optional plotz says to frobnicate the bizbaz first.
+      &#34;&#34;&#34;
+</code></pre><ul>
+<li>对于仅有一行的文档字符串，结尾处的<code>&quot;&quot;&quot;</code>应该也写在这一行。</li>
+</ul>
+<h1 id="版本注记version-bookkeeping">版本注记(Version Bookkeeping)</h1>
+<p>如果你必须在源代码中包含Subversion, CVS或RCS crud，请这样做：</p>
+<pre><code>__version__ = &quot;$Revision$&quot;
+# $Source$
+</code></pre>
+<p>以上几行的内容应当在模块的文档字符串之后，在其他代码之前，并且在其开始和结束都使用一个空行隔开。</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

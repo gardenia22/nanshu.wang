@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="机器学习, scikit-learn, 翻译, Python, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="Scikit-Learn机器学习介绍（中文翻译） : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2014-12-02/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2014-12-02"/>
+<meta property="article:modified_time" content="2014-12-02"/>
+
+
+
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="scikit-learn">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="Python">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> Scikit-Learn机器学习介绍（中文翻译） - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2014-12-02/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >Scikit-Learn机器学习介绍（中文翻译）</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Tue Dec 2, 2014 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/scikit-learn">scikit-learn</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E7%BF%BB%E8%AF%91">翻译</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/python">Python</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="321">
+<meta itemprop="datePublished" content="2014-12-02">
+<meta itemprop="url" content="https://nanshu.wang/post/2014-12-02/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>翻译自：http://scikit-learn.org/stable/tutorial/basic/tutorial.html</p>
+<p>以后可能会根据自己的学习慢慢翻译其他的章节，水平有限，不足之处请指正。</p>
+<blockquote>
+<p>本章内容
+在本章中，我们会介绍在使用scikit-learn中遇到的<a href="http://en.wikipedia.org/wiki/Machine_learning">机器学习</a>(machine learning)术语，以及一个简单的机器学习例子。</p>
+</blockquote>
+<h2 id="机器学习问题设定">机器学习：问题设定</h2>
+<hr>
+<p>一般来说，机器学习问题可以这样来理解：我们有n个<a href="http://en.wikipedia.org/wiki/Sample_(statistics)">样本</a>(sample)的数据集，想要预测未知数据的属性。</p>
+<p>如果描述每个样本的数字不只一个，比如一个多维的条目（也叫做<a href="http://en.wikipedia.org/wiki/Multivariate_random_variable">多变量数据</a>(multivariate data)），那么这个样本就有多个属性或者<strong>特征</strong>。
+我们可以将学习问题分为以下几类：</p>
+<ul>
+<li>
+<p><a href="http://en.wikipedia.org/wiki/Supervised_learning">有监督学习</a>(supervised learning)是指数据中包括了我们想预测的属性，有监督学习问题有以下两类：</p>
+<ul>
+<li>
+<p><a href="http://en.wikipedia.org/wiki/Classification_in_machine_learning">分类</a>（classification）:样本属于两个或多个类别，我们希望通过从已标记类别的数据学习，来预测未标记数据的分类。例如，识别手写数字就是一个分类问题，其目标是将每个输入向量对应到有穷的数字类别。从另一种角度来思考，分类是一种有监督学习的离散（相对于连续）形式，对于n个样本，一方有对应的有限个类别数量，另一方则试图标记样本并分配到正确的类别。</p>
+</li>
+<li>
+<p><a href="http://en.wikipedia.org/wiki/Regression_analysis">回归</a>(regression):如果希望的输出是一个或多个连续的变量，那么这项任务被称作<em>回归</em>，比如用年龄和体重的函数来预测三文鱼的长度。</p>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="http://en.wikipedia.org/wiki/Unsupervised_learning">无监督学习</a>(unsupervised learning)的训练数据包括了输入向量X的集合，但没有相对应的目标变量。这类问题的目标可以是发掘数据中相似样本的分组，被称作<a href="http://en.wikipedia.org/wiki/Cluster_analysis">聚类</a>(Clustering)；也可以是确定输入样本空间中的数据分布，被称作<a href="http://en.wikipedia.org/wiki/Density_estimation">密度估计</a>（density estimation）;还可以是将数据从高维空间投射到两维或三维空间，以便进行数据可视化。<a href="http://scikit-learn.org/stable/unsupervised_learning.html#unsupervised-learning">这里</a>是Scikit-Learn的无监督学习主页。</p>
+</li>
+</ul>
+<blockquote>
+<p>训练集和测试集
+机器学习是关于如何从数据学习到一些属性并且用于新的数据集。这也是为什么机器学习中评估算法的一个习惯做法是将手头已有的数据集分成两部分：一部分我们称作<strong>训练集</strong>（training set），用来学习数据的属性；另一部分叫做<strong>测试集</strong>（testing set），用来测试这些属性。</p>
+</blockquote>
+<h2 id="加载样例数据集">加载样例数据集</h2>
+<hr>
+<p>scikit-learn有一些标准数据集，比如用于分类的<a href="http://en.wikipedia.org/wiki/Iris_flower_data_set">iris</a>和<a href="http://archive.ics.uci.edu/ml/datasets/Pen-Based+Recognition+of+Handwritten+Digits">digits</a>数据集，和用于回归的<a href="http://archive.ics.uci.edu/ml/datasets/Housing">波士顿房价</a>(boston house prices)数据集。
+下面，我们会用shell里的Python解释器来加载<code>iris</code>和<code>digits</code>数据集。<code>$</code>表示shell提示符，<code>&gt;&gt;&gt;</code>表示Python解释器提示符：</p>
+<pre><code>  $ python
+  &gt;&gt;&gt; from sklearn import datasets
+  &gt;&gt;&gt; iris = datasets.load_iris()
+  &gt;&gt;&gt; digits = datasets.load_digits()
+</code></pre>
+<p>数据集类似字典对象，包括了所有的数据和关于数据的元数据（metadata）。数据被存储在<code>.data</code>成员内，是一个<code>n_samples*n_features</code>的数组。在有监督问题的情形下，一个或多个因变量（response variables）被储存在<code>.target</code>成员中。有关不同数据集的更多细节可以在<a href="http://scikit-learn.org/stable/datasets/index.html#datasets">这里</a>被找到。
+例如，在digits数据集中，<code>digits.data</code>是可以用来分类数字样本的特征：</p>
+<pre><code>  &gt;&gt;&gt; print(digits.data)  # doctest: +NORMALIZE_WHITESPACE
+  [[  0.   0.   5. ...,   0.   0.   0.]
+   [  0.   0.   0. ...,  10.   0.   0.]
+   [  0.   0.   0. ...,  16.   9.   0.]
+   ...,
+   [  0.   0.   1. ...,   6.   0.   0.]
+   [  0.   0.   2. ...,  12.   0.   0.]
+   [  0.   0.  10. ...,  12.   1.   0.]]
+</code></pre>
+<p><code>digits.target</code>给出了digits数据集的真实值，即每个数字图案对应的我们想预测的真实数字：</p>
+<pre><code>  &gt;&gt;&gt; digits.target
+  array([0, 1, 2, ..., 8, 9, 8])
+</code></pre>
+<blockquote>
+<p>数据数组的形式
+数据是一个2维<code>n_samples*n_features</code>的数组，尽管原始数据集可能会有不同的形式。在digits数据集中，每个原始样本是一个8*8的数组，可以用以下方式访问：</p>
+</blockquote>
+<pre><code>    &gt;&gt;&gt; digits.images[0]
+    array([[  0.,   0.,   5.,  13.,   9.,   1.,   0.,   0.],
+         [  0.,   0.,  13.,  15.,  10.,  15.,   5.,   0.],
+         [  0.,   3.,  15.,   2.,   0.,  11.,   8.,   0.],
+         [  0.,   4.,  12.,   0.,   0.,   8.,   8.,   0.],
+         [  0.,   5.,   8.,   0.,   0.,   9.,   8.,   0.],
+         [  0.,   4.,  11.,   0.,   1.,  12.,   7.,   0.],
+         [  0.,   2.,  14.,   5.,  10.,  12.,   0.,   0.],
+         [  0.,   0.,   6.,  13.,  10.,   0.,   0.,   0.]])
+</code></pre>
+<blockquote>
+<p><a href="http://scikit-learn.org/stable/auto_examples/plot_digits_classification.html#example-plot-digits-classification-py">这个简单的例子</a>说明了如何从原始问题里将数据形式化，以便scikit-learn使用。</p>
+</blockquote>
+<h2 id="学习和预测">学习和预测</h2>
+<hr>
+<p>在digits数据集中，我们的任务是给定一个图案，预测其表示的数字是什么。我们的样本有10个可能的分类（数字0到9)，我们将拟合一个<a href="http://en.wikipedia.org/wiki/Estimator">预测器</a>(estimator)来<strong>预测</strong>(predict)未知样本所属的分类。
+在scikit-learn中，分类的预测器是一个Python对象，来实现<code>fit(X, y)</code>和 <code>predict(T)</code>方法。
+下面这个预测器的例子是class<code>sklearn.svm.SVC</code>，实现了<a href="http://en.wikipedia.org/wiki/Support_vector_machine">支持向量机分类</a>。创建分类器需要模型参数，但现在，我们暂时先将预测器看作是一个黑盒：</p>
+<pre><code>  &gt;&gt;&gt; from sklearn import svm
+  &gt;&gt;&gt; clf = svm.SVC(gamma=0.001, C=100.)
+</code></pre>
+<blockquote>
+<p>选择模型参数
+在这个例子里我们手动设置了<code>gamma</code>值。可以通过这些工具例如<a href="http://scikit-learn.org/stable/modules/grid_search.html#grid-search">网格搜索</a>（grid search）和<a href="http://scikit-learn.org/stable/modules/cross_validation.html#cross-validation">交叉验证</a>（cross validation）来自动找到参数的最佳取值。</p>
+</blockquote>
+<p>给预测器取个名字叫做<code>clf</code>（claasifier）。现在预测器必须来<strong>拟合</strong>（fit）模型，也就是说，它必须从模型中<strong>学习</strong>（learn）。这个过程是通过将训练集传递给<code>fit</code>方法来实现的。我们将除了最后一个样本的数据全部作为训练集。通过Python语法<code>[:-1]</code>来选择训练集，这会生成一个新的数组，包含了除最后一个条目的<code>digits.data</code>：</p>
+<pre><code>  &gt;&gt;&gt; clf.fit(digits.data[:-1], digits.target[:-1])  # doctest: +NORMALIZE_WHITESPACE
+  SVC(C=100.0, cache_size=200, class_weight=None, coef0=0.0, degree=3,
+    gamma=0.001, kernel='rbf', max_iter=-1, probability=False,
+    random_state=None, shrinking=True, tol=0.001, verbose=False)
+</code></pre>
+<p>现在你可以预测新值了，具体来说，我们可以询问分类器，<code>digits</code>数据集里最后一个图案所代表的数字是什么，我们并没有用最后一个数据来训练分类器。</p>
+<pre><code>  &gt;&gt;&gt; clf.predict(digits.data[-1])
+  array([8])
+</code></pre>
+<p>最一个图案如下：
+<img src="http://scikit-learn.org/stable/_images/plot_digits_last_image_0011.png" alt="此处输入图片的描述"></p>
+<p>如你所见，这项任务很具有挑战性：这个图案的分辨率很差。你能和分类器得到一致结果吗？
+一个更复杂的分类问题的例子在这里:<a href="http://scikit-learn.org/stable/auto_examples/plot_digits_classification.html#example-plot-digits-classification-py">识别手写数字</a>（Recognizing hand-written digits），供学习参考。</p>
+<h2 id="模型持久性model-persistence">模型持久性（Model persistence）</h2>
+<hr>
+<p>可以采用Python内建的持久性模型<a href="http://docs.python.org/library/pickle.html">pickle</a>来保存scikit的模型:</p>
+<pre><code>  &gt;&gt;&gt; from sklearn import svm
+  &gt;&gt;&gt; from sklearn import datasets
+  &gt;&gt;&gt; clf = svm.SVC()
+  &gt;&gt;&gt; iris = datasets.load_iris()
+  &gt;&gt;&gt; X, y = iris.data, iris.target
+  &gt;&gt;&gt; clf.fit(X, y)  # doctest: +NORMALIZE_WHITESPACE
+  SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0, degree=3, gamma=0.0,
+    kernel='rbf', max_iter=-1, probability=False, random_state=None,
+    shrinking=True, tol=0.001, verbose=False)
+
+  &gt;&gt;&gt; import pickle
+  &gt;&gt;&gt; s = pickle.dumps(clf)
+  &gt;&gt;&gt; clf2 = pickle.loads(s)
+  &gt;&gt;&gt; clf2.predict(X[0])
+  array([0])
+  &gt;&gt;&gt; y[0]
+  0
+</code></pre>
+<p>在scikit的特定情形下，用joblib&rsquo;s来代替pickle（<code>joblib.dump</code> &amp; <code>joblib.load</code>）会更吸引人，在大数据下效率更高，但只能pickle到磁盘而不是字符串：</p>
+<pre><code>  &gt;&gt;&gt; from sklearn.externals import joblib
+  &gt;&gt;&gt; joblib.dump(clf, 'filename.pkl') # doctest: +SKIP
+</code></pre>
+<p>你可以在之后重新加载pickled模型（可以在另一个Python程序里）：</p>
+<pre><code>  &gt;&gt;&gt; clf = joblib.load('filename.pkl') # doctest:+SKIP
+</code></pre>
+<blockquote>
+<p>注意：
+joblib.dump返回一个文件名列表。每个包含在<code>clf</code>对象中独立的numpy数组是在文件系统中是按顺序排列的一个独立文件。当用joblib.load重新加载模型时，所有文件必须在同一个目录下。</p>
+</blockquote>
+<p>注意pickle有一些安全性和维护性问题。请参考<a href="http://scikit-learn.org/stable/modules/model_persistence.html#model-persistence">模型持久性</a>章节获得更多关于scikit-learn模型持久性的信息。</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>

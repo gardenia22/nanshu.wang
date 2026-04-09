@@ -1,0 +1,217 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>神经网络 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Thu, 26 Mar 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记5 神经网络2 参数学习</title>
+      <link>https://nanshu.wang/post/2015-03-26/</link>
+      <pubDate>Thu, 26 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-26/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;成本函数cost-function&#34;&gt;成本函数(Cost Function)&lt;/h1&gt;
+&lt;p&gt;以下是我们会用到的一些变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L$表示神经网络的层数&lt;/li&gt;
+&lt;li&gt;$s_l$表示第$l$层的神经单元数(不包括偏差(bias)单元)&lt;/li&gt;
+&lt;li&gt;$K$表示输出单元数(分类数)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当有多个输出类别时，采用$h_\Theta(x)_k$表示第$k$个输出的假设结果。&lt;/p&gt;
+&lt;p&gt;神经网络的成本函数是logistic回归中的成本函数更普遍的一种形式。&lt;/p&gt;
+&lt;p&gt;logistic回归中的成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;神经网络的成本函数稍微复杂一点：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;和logistic回归相比，第一个方括号内多了一层累加求和，即对多类输出节点的成本函数进行累加，会遍历所有的输出节点。&lt;/p&gt;
+&lt;p&gt;正则化的部分则是将每一层的参数都考虑了进去(包括偏差单元相关的参数值)。和logistic回归一样，每一项都进行了平方。&lt;/p&gt;
+&lt;p&gt;注意:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;双层累加中对于输出层所有单元的logistic回归的成本函数进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中则是对于整个神经网络中单独的$\Theta$参数的平方进行求和&lt;/li&gt;
+&lt;li&gt;三层累加中的$i$和训练集中的$i$并不一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;向后传播backpropagation算法&#34;&gt;向后传播(Backpropagation)算法&lt;/h1&gt;
+&lt;p&gt;向后传播是神经网络中表示最小化成本函数的术语，就像logistic回归和线性回归中的梯度下降(gradient descent)一样。&lt;/p&gt;
+&lt;p&gt;我们的目标是计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;即我们想最小化成本函数$J$，得到最优化参数$\Theta$。&lt;/p&gt;
+&lt;p&gt;观察我们用于计算$J(\Theta)$偏导的等式：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;在向后传播中我们需要对每个节点计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;回忆一下，$a_j^{(i)}$表示第$l$层的节点$j$的激活结果。对于最后一层，误差的计算为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$L$表示层数，$a^{(L)}$是最后一层激活单元的向量化表示。因此对于最后一层，误差的计算就是简单的真实结果和预测结果的差值。&lt;/p&gt;
+&lt;p&gt;为了得到除了最后一层以外其他层的误差值，我们采用以下等式从右往左地向后计算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是用$\Theta$去乘后一层的误差值，再对每一个元素乘上$g&amp;rsquo;$，也就是激活函数$g$输入值为$z^{(l)}$时的导数。&lt;/p&gt;
+&lt;p&gt;$g&amp;rsquo;$也可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么，对于内部节点来说，完整的向后传播计算等式为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，证明比较复杂，不过实现向后传播的算法也不用知道证明的细节。&lt;/p&gt;
+&lt;p&gt;对于每个训练样本$t$，可以采用激活值和误差值来计算偏导项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上述式子忽略了正则项，后面会再详细说明。&lt;/p&gt;
+&lt;p&gt;注意，其中$\delta^{l+1}$和$a^{l+1}$都是有$s_{l+1}$个元素的向量。类似地，$a^{(l)}$是有$s_l$个元素的向量。这两个向量相乘会产生和$\Theta^{(l)}$同样维度的$s_{l+1} * s_l$的矩阵。这个计算过程也就是得到了$\Theta^{(l)}$中每个元素的梯度项。&lt;/p&gt;
+&lt;p&gt;现在，将以上过程串起来，我们得到整个向后传播算法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;给定训练集$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace$&lt;/li&gt;
+&lt;li&gt;设$\lbrace (x^{(1)}, y^{(1)}) \cdots (x^{(m)}, y^{(m)})\rbrace \forall (l,i,j)$&lt;/li&gt;
+&lt;li&gt;对于每个训练集 $\text{for } t = 1 \text{ to } m$:
+&lt;ul&gt;
+&lt;li&gt;$a^{(1)} := x^{(t)}$&lt;/li&gt;
+&lt;li&gt;采用向前传播算法计算$a^{(l)}, l = 2,3,&amp;hellip;,l$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L)} = a^{(L)} - y^{(t)}$&lt;/li&gt;
+&lt;li&gt;计算$\delta^{(L-1)}, \delta^{(L-2)},\dots,\delta^{(2)}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\left(\Delta^{(l)}_{i,j} + \lambda\Theta^{(l)}_{i,j}\right)$s&lt;/li&gt;
+&lt;li&gt;$D^{(l)}_{i,j} := \dfrac{1}{m}\Delta^{(l)}_{i,j}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$D^{(l)}_{i,j}$即最后我们所求的偏导。&lt;/p&gt;
+&lt;h1 id=&#34;向后传播的直观理解&#34;&gt;向后传播的直观理解&lt;/h1&gt;
+&lt;p&gt;成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;如果我们只考虑一个训练样本$(t=1)$，并且忽略正则项，那么成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;直观上可以将以上的等式近似看作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\delta_j^{(l)}$是$a_j^{(l)}$的误差。&lt;/p&gt;
+&lt;p&gt;严格来说，$\delta$值实际上是成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意偏导是成本函数切线的斜率，斜率越陡峭越不准确。&lt;/p&gt;
+&lt;h1 id=&#34;梯度检查gradient-checking&#34;&gt;梯度检查(Gradient Checking)&lt;/h1&gt;
+&lt;p&gt;梯度检查能够保证我们的向后传播算法的正确性。&lt;/p&gt;
+&lt;p&gt;我们可以用以下方法近似地估算成本函数的偏导：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\Theta$是很多个矩阵构成，可以对$\Theta_j$的偏导进行以下估算：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\epsilon$的取值必须较小，才能得到接近真实的值。但如果$\epsilon$的值太小，计算可能会有精度问题而无法得到正确值。Andrew给的经验值时$\epsilon = 10^{-4}$。&lt;/p&gt;
+&lt;p&gt;如果可以验证梯度近似值和$\delta$大致相等，那么向后传播算法是正确的。在真正计算中不需要计算梯度近似值，因为其计算非常慢。&lt;/p&gt;
+&lt;h1 id=&#34;随机初始化&#34;&gt;随机初始化&lt;/h1&gt;
+&lt;p&gt;在神经网络中，不能将$\theta$权重初始化为0，否则在向后传播时，所有的节点会重复更新一样的值。&lt;/p&gt;
+&lt;p&gt;因此需要随机初始化权重：&lt;/p&gt;
+&lt;p&gt;将$\Theta_{ij}^{(l)}$赋为$[-\epsilon,\epsilon]$范围内的一个随机数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$Loutput$和$Linput+1$是$\Theta$参数的维度。这里的$\epsilon$和梯度检查中的$\epsilon$没有关系。&lt;/p&gt;
+&lt;h1 id=&#34;神经网络总结&#34;&gt;神经网络总结&lt;/h1&gt;
+&lt;p&gt;首先，选择神经网络的结构，确定神经网络的层数和每层的隐藏单元的个数。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入层单元数等于特征$x^(i)$的维度&lt;/li&gt;
+&lt;li&gt;输出层的单元数等于分类个数&lt;/li&gt;
+&lt;li&gt;默认设置：1个隐藏层。如果有多于1个隐藏层，则隐藏层的单元个数都一样多。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;训练神经网络&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;随机初始化权重&lt;/li&gt;
+&lt;li&gt;实现向前传播计算$h_{\theta}(x^{(i)})$&lt;/li&gt;
+&lt;li&gt;实现成本函数&lt;/li&gt;
+&lt;li&gt;实现向后传播计算偏导值&lt;/li&gt;
+&lt;li&gt;采用梯度检查来确认向后传播的正确性后，再取消梯度检查。&lt;/li&gt;
+&lt;li&gt;采用梯度下降或其他已有的最优化函数来最小化成本函数，得到$\theta$权重值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于每个训练样本都循环采用向前和向后传播算法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;for i = 1:m,
+   Perform forward propagation and backpropagation using example (x(i),y(i))
+   (Get activations a(l) and delta terms d(l) for l = 2,...,L
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记5 神经网络1 模型表达</title>
+      <link>https://nanshu.wang/post/2015-03-03-2/</link>
+      <pubDate>Tue, 03 Mar 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-03-03-2/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;神经网络&#34;&gt;神经网络&lt;/h1&gt;
+&lt;h2 id=&#34;非线性假设&#34;&gt;非线性假设&lt;/h2&gt;
+&lt;p&gt;在特征变量数较大的情况下，采用线性回归会很难处理，比如我的数据集有3个特征变量，想要在假设中引入所有特征变量的平方项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;共有6个特征，假设我们想知道选取其中任意两个可重复的平方项有多少组合，采用允许重复的组合公式计算$\frac{(n+r-1)!}{r!(n-1)!}$，共有$\frac{(3 + 2 - 1)!}{(2!\cdot (3-1)!)} = 6$种特征变量的组合。对于100个特征变量，则共有$\frac{(100 + 2 - 1)!}{(2\cdot (100-1)!)} = 5050$个新的特征变量。&lt;/p&gt;
+&lt;p&gt;可以大致估计特征变量的平方项组合个数的增长速度为$\mathcal{O}(\frac{n^2}2)$，立方项的组合个数的增长为$\mathcal{O}(n^3)$。这些增长都十分陡峭，让实际问题变得很棘手。&lt;/p&gt;
+&lt;p&gt;在变量假设十分复杂的情况下，神经网络提供了另一种机器学习算法。&lt;/p&gt;
+&lt;h1 id=&#34;神经元和大脑&#34;&gt;神经元和大脑&lt;/h1&gt;
+&lt;p&gt;神经网络是对大脑工作方式的一种简单模拟。有证据表明，大脑对所有的功能（如视觉，触觉，听觉等）都采用了一种“学习算法”。将听觉皮层和视觉神经连接到一起，听觉皮层可以学会“看见”。这种理论叫作“neuroplasticity”，已经得到了很多例子和实验验证。&lt;/p&gt;
+&lt;h1 id=&#34;模型表达&#34;&gt;模型表达&lt;/h1&gt;
+&lt;p&gt;简单来说，每个神经元都有输入（树突dendrites）和输出（轴突axons）。在模型中，输入就是我们的特征变量，输出就是模型假设的结果。&lt;/p&gt;
+&lt;p&gt;在神经网络中，分类问题通常采用logistic函数，也叫做sigmoid激活函数(sigmoid activation function)。$\theta$参数有时也被称为权重(weights)。&lt;/p&gt;
+&lt;p&gt;下面是一种简单的神经网络：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/neuron_model.jpg&amp;quot; alt=&amp;quot;hugo-server-1&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第一层是输入节点(nodes)，第二层是输出节点，也就是我们假设函数的结果$h_{\theta}(x)$。&lt;/p&gt;
+&lt;p&gt;第一层叫作“输入层”(input layer)，最后一层叫作“输出层”(output layer)，输入层和输出层之间还可以有多层，统称为“隐藏层”(hidden layer)。如下图中，第二层就叫隐藏层。隐藏层节点表示为$a^2_0 \cdots a^2_n$，被称作“激活单元(activation units)”。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/neuron_network_3layers.jpg&amp;quot; alt=&amp;quot;hugo-server-1&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$a_i^{(j)}$表示第$j$层的$i$单元被“激活”，$\Theta^{(j)}$表示从第$j$层到第$j+1$层的权重矩阵。&lt;/p&gt;
+&lt;p&gt;上图的神经网络中，激活单元的计算分别为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;每一层都有自己的权重矩阵$\Theta^{(j)}$，如果第$j$层有 $s_j$ 个单元，第$j+1$层有$s_{j+1}$个单元，则$\Theta^{(j)}$是$s_{j+1} \times (s_j+1)$的矩阵。&amp;quot;+1&amp;quot;是因为第$j$层包括一个&amp;quot;偏差节点(bias nodes)“，$x_0$和$\Theta_0^{(j)}$。换句话说，输出节点不包括偏差节点，但输入节点会包括偏差节点。&lt;/p&gt;
+&lt;p&gt;举个例子，第一层有2个输入节点，第二层有4个激活单元。$\Theta^{(1)}$的维度为$4 \times 3$。&lt;/p&gt;
+&lt;p&gt;下面将以上模型表达向量化。&lt;/p&gt;
+&lt;p&gt;采用$z^{(i)}_k$表示$g$函数的输入，那么有：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;给定第$j$层的节点$k$，变量$z$等于：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$x$和$z^{(j)}$的向量表示为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;因此，$z^{(j}) = \Theta^{(j-1)} x$&lt;/p&gt;
+&lt;p&gt;令$x = a^{(j-1)}$，则$z^{(j)} = \Theta^{(j-1)}a^{(j-1)}$&lt;/p&gt;
+&lt;p&gt;最后的结果为&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;神经网络拟合逻辑运算&#34;&gt;神经网络拟合逻辑运算&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;$x_1\ AND\ x_2$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;神经网络模型：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$x_0$为偏差，恒等于1。&lt;/p&gt;
+&lt;p&gt;权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;仅当$x_1$和$x_2$同时为1时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;$x_1\ NOR\ x_2$, $NOR$为$NOT\ OR$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;模型同上，权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;仅当$x_1$和$x_2$同时为0时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;$x_1\ OR\ x_2$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;模型同上，权重参数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$x_1$和$x_2$不同时为0时，$h_{\Theta}(x) = 1$。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;$x_1\ XNOR\ x_2$，$XNOR$为$NOT\ XOR$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;将前面得到的模型组合起来$x_1\ XNOR\ x_2 = (x_1\ AND\ x_2)\ OR\ (x_1\ XOR\ x_2)$&lt;/p&gt;
+&lt;p&gt;模型如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第一层到第二层的$\Theta^{(1)}$分别表示$AND$和$NOR$操作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;第二层到第三层的$\Theta^{(2)}$表示$OR$操作：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h1 id=&#34;多类分类问题&#34;&gt;多类分类问题&lt;/h1&gt;
+&lt;p&gt;输出用向量来表示多类分类问题：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;最后的结果：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;表示该样本属于第三类，$h_{\Theta}(x)_3$。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

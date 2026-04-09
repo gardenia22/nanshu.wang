@@ -1,0 +1,258 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+      <title>线性回归 on Nanshu&#39;s blog </title>
+      <generator uri="https://gohugo.io">Hugo</generator>
+    <link>https://nanshu.wang/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/</link>
+    <language>en-us</language>
+    <author>Nanshu Wang</author>
+    <copyright>Copyright (c) 2015, Nanshu Wang; all rights reserved.</copyright>
+    <updated>Tue, 17 Feb 2015 00:00:00 UTC</updated>
+    
+    <item>
+      <title>机器学习笔记4 正则化</title>
+      <link>https://nanshu.wang/post/2015-02-17/</link>
+      <pubDate>Tue, 17 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-17/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;正则化-regularization&#34;&gt;正则化 Regularization&lt;/h1&gt;
+&lt;p&gt;为了和正规方程(normal equation)里&amp;quot;正规&amp;quot;区分开来，这里Regularization都译作“正则化”，有些地方也用的是“正规化”。以下内容来自&lt;a href=&#34;http://en.wikipedia.org/w/index.php?title=Regularization_(mathematics)&#34;&gt;wikipedia&lt;/a&gt;：&lt;/p&gt;
+&lt;p&gt;正则化是指通过引入额外新信息来解决机器学习中过拟合问题的一种方法。这种额外信息通常的形式是模型复杂性带来的惩罚度。正则化的一种理论解释是它试图引入&lt;a href=&#34;http://en.wikipedia.org/wiki/Occam%27s_razor&#34;&gt;奥卡姆剃刀原则&lt;/a&gt;。而从贝叶斯的观点来看，正则化则是在模型参数上引入了某种先验的分布。&lt;/p&gt;
+&lt;p&gt;机器学习中最常见的正则化是$L_1$和$L_2$正则化。正则化是在学习算法的损失(成本)函数$E(X,Y)$的基础上在加上一项正则化参数项：$E(X,Y)+\alpha|w|$，其中$w$是参数向量，$\alpha$是正则项的参数值，需要在实际训练中调整。正则化在许多模型中都适用，对于线性回归模型来说，采用$L_1$正则化的模型叫作lasso回归，采用$L_2$的叫作ridge回归。对于logistic回归，神经网络，支持向量机，随机条件场和一些矩阵分解方法，正则化也适用。在神经网络中，$L_2$正则化又叫作“权重衰减”(weight decay)。$L_1$正则化能产生稀疏模型，因此在特征选择中很有用，但是$L_1$范式不可微，所以需要在学习算法中修改，特别是基于梯度下降的算法。&lt;/p&gt;
+&lt;h1 id=&#34;过拟合问题&#34;&gt;过拟合问题&lt;/h1&gt;
+&lt;p&gt;欠拟合(也叫做高偏差(high bias))是指不能很好地拟合数据，一般是因为模型函数太简单或者特征较少。过拟合问题是指过于完美拟合了训练集数据，而对新的样本失去了一般性，不能有效预测新样本，这个问题也叫做高方差(high variances)。造成过拟合的原因可能是特征量太多或者模型函数过于复杂。线性回归和logistic回归都存在欠拟合和过拟合的问题。&lt;/p&gt;
+&lt;p&gt;要解决过拟合的问题，通常有两种方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;减少特征数量&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;手动筛选特征&lt;/li&gt;
+&lt;li&gt;采用特征筛选算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;正则化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;保留所有的特征，但尽可能使参数$\theta_j$尽量小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;正则化在很多特征变量对目标值只有很小影响的情况下非常有用。&lt;/p&gt;
+&lt;h1 id=&#34;成本函数&#34;&gt;成本函数&lt;/h1&gt;
+&lt;p&gt;在原有的成本函数的基础上加上使参数$\theta_j$正则化的项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中$\lambda$叫做正则化参数，决定了参数正则化项的影响大小。引入正则化参数项，可以避免模型过拟合的问题。如果$\lambda$的值设置过大，可能会使模型函数出现欠拟合的问题。&lt;/p&gt;
+&lt;h1 id=&#34;正则化线性回归&#34;&gt;正则化线性回归&lt;/h1&gt;
+&lt;h2 id=&#34;梯度下降法&#34;&gt;梯度下降法&lt;/h2&gt;
+&lt;p&gt;常数项$\theta_0$不用正则化，因此更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;上面的式子可以写成：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意到$(1 - \alpha \frac{\lambda}m) &amp;lt; 1$，直观上可以理解为将式子中第一项$\theta_j$值减小了一点，第二项还是和无正则化的更新策略的第二项一致。&lt;/p&gt;
+&lt;h2 id=&#34;正规方程&#34;&gt;正规方程&lt;/h2&gt;
+&lt;p&gt;正则化正规方程求解$\theta$为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$L$是(n+1)*(n+1)的矩阵，除了右上角的值为0外，对角线上其他值都为1。直观上理解，不包括右上角$X_0$项，$L$是一个单位矩阵。&lt;/p&gt;
+&lt;p&gt;当$m\leq n$时，$X^TX$不可逆，但加入$\lambda L$后，$X^TX$也变得可逆了。&lt;/p&gt;
+&lt;h1 id=&#34;正则化logistic回归&#34;&gt;正则化logistic回归&lt;/h1&gt;
+&lt;h2 id=&#34;成本函数-1&#34;&gt;成本函数&lt;/h2&gt;
+&lt;p&gt;加上正则化参数$\theta$项：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;注意$\sum_{j=1}^n \theta_j^2$中参数的下标时从1到n，没有包括常数项$\theta_0$&lt;/p&gt;
+&lt;h2 id=&#34;梯度下降&#34;&gt;梯度下降&lt;/h2&gt;
+&lt;p&gt;和线性回归一样，$\theta_0$和其他参数要分开更新：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和正则化线性回归的更新策略是一样的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记3 有监督学习 分类 logistic回归</title>
+      <link>https://nanshu.wang/post/2015-02-12/</link>
+      <pubDate>Thu, 12 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-12/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;分类问题&#34;&gt;分类问题&lt;/h1&gt;
+&lt;p&gt;分类问题和回归问题不同的是，分类问题的预测值$y$只能取离散值，而非连续值。首先来看一个二类分类问题，预测值$y$只能取0或1。0又被称作负例(negative class)，1被称作正例(positive class)。通常也用&amp;quot;-&amp;quot;,&amp;quot;+&amp;ldquo;符号来表示。对于一个样本集输入$x^{(i)}$，对应的目标值$y^{(i)}$也被为标注(lable)。&lt;/p&gt;
+&lt;h2 id=&#34;logistic回归&#34;&gt;logistic回归&lt;/h2&gt;
+&lt;p&gt;也可以用线性回归的方法运用到分类问题上，但是这样做很容易得到不好的结果。稍微改变一下我们的假设函数$h_\theta(x)$，使其的取值在{0,1}范围内：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$g(z)$叫做logistic函数，也叫做sigmoid函数。$g(z)$的函数图像如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/logistic-function.png&amp;quot; alt=&amp;quot;logistic-function&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$z\rightarrow \infty$时，$g(z)$趋近于1；当$z\rightarrow -\infty$时，$g(z)$趋近于0。因此$h(x)$的取值在0到1范围内。&lt;/p&gt;
+&lt;p&gt;求$g(z)$的导数可得：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;下面是对分类问题作出的一些假设，预测函数$h_\theta(x)$将给出样本目标值分类为1的概率：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;那么$\theta$的似然函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求log似然函数:&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求最大似然估计，同样可以采用梯度下降的方法，更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这里是求最大值，因此更新$\theta$是加上$l(\theta)$的偏导。&lt;/p&gt;
+&lt;p&gt;解之得到：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这和之前在线性回归模型得到的LMS更新策略一样，这并不是巧合，而是因为线性回归和logistic回归都属于广义线性模型(GLM models)。&lt;/p&gt;
+&lt;h2 id=&#34;perceptron学习算法&#34;&gt;perceptron学习算法&lt;/h2&gt;
+&lt;p&gt;有趣的是，如果这里不采用logistic函数，而是采用一种简单粗暴的只考虑阈值的函数g(z)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;我们得到的更新$\theta$的策略和采用logistic函数得到的策略是一致。这种算法叫做感知器(perceptron)学习算法，感知器原指一种用来刻画大脑神经元的粗糙模型。虽然表面上看这种简单粗暴的方式和其他算法得到的结果是一样的，但是这是一种和logistic回归以及最小二乘线性回归非常不同的一类算法，它不能推导出有意义的概率解释，也不能通过极大似然估计得到。&lt;/p&gt;
+&lt;h2 id=&#34;牛顿法&#34;&gt;牛顿法&lt;/h2&gt;
+&lt;p&gt;为了求$f(\theta)=0$时$\theta$的取值，牛顿法每次更新$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;要最大化似然函数$l(\theta)$的值，使其导数$l&amp;rsquo;(\theta)＝0$。更新策略为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;当$\theta$为向量时，推广更一般的牛顿法，这种方法也叫做牛顿－拉普森法(Newton-Raphson method)：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$\nabla_\theta l(\theta)$是$l(\theta)$对于$\theta$的偏导。$H$是$(n+1)*(n+1)$的矩阵，叫做Hessian：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;牛顿法收敛的速度通常比批量梯度下降要快，但是牛顿法每次迭代的计算量更大，每次迭代重新计算Hessian矩阵，需要$O(n^2)$的时间复杂度。但在n没有很大的情况下，牛顿法是更有效率的。将牛顿法用于logistic回归的log似然函数$l(\theta)$得到的方法也被称为Fisher scoring。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记2 有监督学习 线性回归 局部加权回归 概率解释</title>
+      <link>https://nanshu.wang/post/2015-02-11/</link>
+      <pubDate>Wed, 11 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-11/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;有监督学习&#34;&gt;有监督学习&lt;/h1&gt;
+&lt;h2 id=&#34;局部加权线性回归locally-weighted-linear-regression&#34;&gt;局部加权线性回归(Locally weighted linear regression)&lt;/h2&gt;
+&lt;p&gt;参数学习算法(parametric learning algorithm)：参数个数固定&lt;/p&gt;
+&lt;p&gt;非参数学习算法(non-parametric learning algorithm)：参数个数随样本增加&lt;/p&gt;
+&lt;p&gt;特征选择对参数学习算法非常重要，否则会出现下面的问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;欠拟合(underfitting)：特征过少，模型过于简单，高偏差(high bias)，不能很好拟合训练集&lt;/li&gt;
+&lt;li&gt;过拟合(overfitting)：特征过多，模型过于复杂，高方差(high variance)，过于拟合训练集，不能很好预测新样本&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于非参数学习算法来说，并不需要进行精心的特征选择，局部加权线性回归就是这样。&lt;/p&gt;
+&lt;p&gt;局部加权回归又叫做Loess，其成本函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$w^{(i)}$是非负权重，通常定义$w^{(i)}$如下：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;权值取决于用于预测的输入变量$x$的值：离$x$越近的样本，权值越接近1；越远的样本，越接近0。$\tau$被称为带宽(bandwidth)参数，决定了以$x$为中心，样本权重递减的速度。$\tau$越大，递减速度越慢；$\tau$越小，递减速度越快。&lt;/p&gt;
+&lt;p&gt;参数学习算法的参数是固定的，一经学习得到不再改变。而非参数学习算法的参数并不固定，每次预测都要重新学习一组新的参数，并且要一直保留完整的训练样本集。当样本集很大时，局部加权回归的计算开销会很大，Andrew Moore提出的KD-tree方法可以在大数据集上的计算更高效。&lt;/p&gt;
+&lt;h2 id=&#34;回归模型的概率解释&#34;&gt;回归模型的概率解释&lt;/h2&gt;
+&lt;p&gt;遇到一个回归问题，为什么采用线性回归，又为什么采用最小二乘作为成本函数？其实最小二乘回归中蕴含了非常自然的概率假设。假设目标值和输入值之间满足以下关系：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;其中，$\epsilon^{(i)}$是误差项，包含了模型未考虑到的影响目标值的因素和随机噪声。假设误差项独立同分布，服从均值为0，方差为$\sigma^2$的高斯分布（正态分布），即$\epsilon^{(i)}\sim N(0,\sigma^2)$。$\epsilon^{(i)}$的密度函数为：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;也就是说：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;或者也可以这样写：$(y^{(i)}|x^{(i)};\theta) \sim N(\theta^Tx^{(i)},\sigma^2)$。&lt;/p&gt;
+&lt;p&gt;为什么采用正态分布？一种原因是数学上处理起来比较便利，二是因为根据中心极限定理，独立的随机变量的和，即多种随机误差的累积，其总的影响是接近正态分布的。&lt;/p&gt;
+&lt;p&gt;$p(y^{(i)}|x^{(i)};\theta)$的含义是给定条件$x^{(i)}$，参数设定为$\theta$时，$y^{(i)}$的分布值。不能将$\theta$看作是概率条件，因为$\theta$不是随机变量，而是实际存在的真实值，虽然我们不知道真实值到底是多少。因此在以上的式子中，用了分号而不是逗号来区分$x^{(i)}$和$\theta$。&lt;/p&gt;
+&lt;p&gt;定义$\theta$的似然(likelihood)函数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;似然(likelihood)和概率(probability)实际上是一个东西，但是似然函数是对参数$\theta$定义的，为了加以区分，使用了似然这一术语。我们可以说参数的似然，数据的概率，但不能说数据的似然，参数的概率。&lt;/p&gt;
+&lt;p&gt;极大似然估计的含义是选择参数$\theta$，使参数的似然函数最大化，也就是说选择参数使得已有样本数据出现的概率最大。&lt;/p&gt;
+&lt;p&gt;为方便求解，再定义函数$l(\theta)$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;可得，要最大化似然函数$L(\theta)$，也就是最大化$l(\theta)$，也就是最小化：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这个式子刚好是最小二乘法中定义的成本函数$J(\theta)$。总结一下，最小二乘回归模型刚好就是在假设了误差独立同服从正态分布后，得到的最大似然估计。注意到，正态分布中的方差$\sigma^2$的取值对模型并没有影响。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>机器学习笔记1 有监督学习 线性回归 LMS算法 正规方程</title>
+      <link>https://nanshu.wang/post/2015-02-10/</link>
+      <pubDate>Tue, 10 Feb 2015 00:00:00 UTC</pubDate>
+      <author>Nanshu Wang</author>
+      <guid>https://nanshu.wang/post/2015-02-10/</guid>
+      <description>&lt;p&gt;Andrew Ng cs229 Machine Learning 笔记&lt;/p&gt;
+&lt;h1 id=&#34;有监督学习&#34;&gt;有监督学习&lt;/h1&gt;
+&lt;p&gt;先理清几个概念：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$x^{(i)}$表示&amp;quot;输入&amp;quot;变量(&amp;ldquo;input&amp;rdquo; variables)，也称为特征值(features)。&lt;/li&gt;
+&lt;li&gt;$y^{(i)}$表示&amp;quot;输出&amp;quot;变量(&amp;ldquo;output&amp;rdquo; variables)，也称为目标值(target)。&lt;/li&gt;
+&lt;li&gt;一对$(x^{(i)},y^{(i)})$称为一个训练样本(training example)，用作训练的数据集就是就是一组$m$个训练样本${(x^{(i)},y^{(i)});i=1,&amp;hellip;,m}$，被称为训练集(training set)。&lt;/li&gt;
+&lt;li&gt;$X$表示输入变量的取值空间，$Y$表示输出变量的取值空间。那么$h:X \rightarrow Y$是训练得到的映射函数，对于每个取值空间X的取值，都能给出取值空间Y上的一个预测值。函数$h$的含义为假设(hypothesis)。&lt;/li&gt;
+&lt;li&gt;图形化表示整个过程：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;img src=&amp;quot;/media/supervised-learning.png&amp;quot; alt=&amp;quot;supervised-learning&amp;quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;当预测值y为连续值时，则有监督学习问题是回归(regression)问题；预测值y为离散值时，则为分类(classification)问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;线性回归linear-regression&#34;&gt;线性回归(Linear Regression)&lt;/h2&gt;
+&lt;p&gt;先简单将y表示为x的线性函数：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;$\theta$ 称为参数(parameters)，也叫做权重(weights)，参数决定了$X$到$Y$的射映空间。&lt;/li&gt;
+&lt;li&gt;用$x_0=1$来表示截距项(intercept term)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;有了训练集，如果通过学习得到参数$\theta$？&lt;/p&gt;
+&lt;p&gt;一种方法是，让预测值$h(x)$尽量接近真实值y，定义成本函数(cost function):&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这实际上就是最小二乘成本函数，我们把这个回归模型叫做普通最小二乘回归模型(ordinary least squares regression model)。&lt;/p&gt;
+&lt;h2 id=&#34;lms算法&#34;&gt;LMS算法&lt;/h2&gt;
+&lt;p&gt;为了找到使成本函数$J(\theta)$最小的参数$\theta$，采用搜索算法：给定一个$\theta$的初值，然后不断改进，每次改进都使$J(\theta)$更小，直到最小化$J(\theta)$的$\theta$的值收敛。&lt;/p&gt;
+&lt;p&gt;考虑梯度下降(gradient descent)算法：从初始$\theta$开始，不断更新：&lt;/p&gt;
+&lt;p&gt;$$\theta_j:=\theta_j-\alpha \frac{\delta}{\delta\theta_j}J(\theta)$$&lt;/p&gt;
+&lt;p&gt;注意，更新是同时对所有$j=0,&amp;hellip;,n$的$\theta_j$值进行。$\alpha$被称作学习率(learning rate)，也是梯度下降的长度，若$\alpha$取值较小，则收敛的时间较长；相反，若$\alpha$取值较大，则可能错过最优值。&lt;/p&gt;
+&lt;p&gt;假设我们只有一个训练样本$(x,y)$，此时$J(\theta) = \frac12(h_{\theta}(x)-y)^2$，求偏导项得到：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;每次按照以下式子更新$\theta_j$的值：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;这种更新方法叫做LMS更新策略(Least Mean Squares update rule)，也叫做Widrow-Hoff 学习策略。&lt;/p&gt;
+&lt;p&gt;采用LMS方法，参数更新的次数和误差项$(y^{(i)}-h_{\theta}(x^{(i)}))$成正比。也就是说，如果预测值与真实值的误差项较小，则参数调整改变不会很大，相反，如果误差项较大，参数进行的调整更大。&lt;/p&gt;
+&lt;p&gt;如果训练集不只一个训练样本，可以采用以下方法更新参数：&lt;/p&gt;
+&lt;p&gt;Repeat until convergence{&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$\theta_j:=\theta_j+\alpha\sum_{i=1}^m(y^{(i)}-h_\theta(x^{(i)})x_j^{(i)})$&lt;/code&gt; (for every j)&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;实际上，这里的求和刚好是$\frac{\delta J(\theta)}{\delta\theta_j}$的值。这种方法每一步更新都会遍历每所有的训练样本，因此被称作批量梯度下降(batch gradient descent)。&lt;/p&gt;
+&lt;p&gt;梯度下降法通常容易受局部最优值的影响，但这里的最优问题只有一个全局最优值，没有局部最优值。因此梯度下降总是收敛到全局最优解（学习率$\alpha$不能取太大，否则错过最优值）。&lt;/p&gt;
+&lt;p&gt;除了批量梯度下降，还有一种方法叫做随机梯度下降(stochastic gradient descent)，也叫做增量梯度下降(incremental gradient descent)。其更新策略为：&lt;/p&gt;
+&lt;p&gt;Loop{&lt;/p&gt;
+&lt;p&gt;for i=1 to m,{&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;$\theta_j:=\theta_j+\alpha(y^{(i)}-h_{\theta}(x^{(i)}))x_j^{(i)}$&lt;/code&gt; (for every j).&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;随机梯度下降和批量梯度下降不同点在于，批量梯度下降每一步更新$\theta$值，都需要遍历全部的训练样本，而随机梯度下降在遇到每个训练样本时，更新$\theta$之后继续处理下一个样本，每个样本只遍历一次，算法的学习时间比批量梯度下降快很多。但是，随机梯度下降可能永远不会收敛到全局最优值，而是在成本函数$J(\theta)$最优值周围附近摇摆。但是在实际问题中，接近最优值的参数值可能已经是足够好的结果了，特别是对于数据量非常大的训练集来说，随机梯度下降是比批量梯度下降更好的选择。&lt;/p&gt;
+&lt;p&gt;在实际使用梯度下降算法时，将输入变量归一到同一取值范围，能够减少算法的迭代次数。这是因为$\theta$在小的取值范围内会下降很快，但在大的取值范围内会下降较慢。并且当输入变量取值范围不够均衡时，$\theta$更容易在最优值周围波动。采用特征缩放(feature scaling)和均值归一化(mean normalization)可以避免这些问题。选择学习率$\alpha$的值，要观察$J(\theta)$值在每次迭代后的变化。已经证明了如果$\alpha$的取值足够小，则$J(\theta)$每次迭代后的值都会减少。如果$J(\theta)$在某次迭代后反而增加了，说明学习率$\alpha$的值应该减小，因为错过了最优值。Andrew Ng推荐的一个经验是每次将$\alpha$减少3倍。&lt;/p&gt;
+&lt;h2 id=&#34;正规方程the-normal-equations&#34;&gt;正规方程(The normal equations)&lt;/h2&gt;
+&lt;p&gt;梯度下降是最小化$J(\theta)$的一种方式，正规方程是另一种求解参数$\theta$的方法，这种方法可以直接求出最优值参数结果，不需要迭代更新，也不需要事先对数据进行归一化预处理。这种方法实际上是直接求出$J(\theta)$的导数，并令其为0。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;$$\nabla_{\theta}J(\theta)=0$$&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;解之，&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;得到正规方程：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;求解$\theta$：&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;正规方程求解$\theta$的时间复杂度为$O(n^3)$，n是特征数量。当特征数量很大时，正规方程求解会很慢。Andrew Ng给出的一个经验参考是：当n&amp;gt;10,000时，采用梯度下降比正规方程更好。&lt;/p&gt;
+&lt;p&gt;比较一下正规方程和梯度下降：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;正规方程&lt;/th&gt;
+&lt;th&gt;梯度下降&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;不需要调整参数&lt;/td&gt;
+&lt;td&gt;需要调整参数$\alpha$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不需要迭代&lt;/td&gt;
+&lt;td&gt;需要迭代更新$\theta$值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;n较大时效率低&lt;/td&gt;
+&lt;td&gt;n较大时效率也不错&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;正规方程还会遇到$X^TX$不可逆的情况，通常这是因为输入变量中存在线性相关的变量或者是因为特征太多($n\geq m$)。解决方法是去掉线性相关的冗余变量，或者删掉一些特征。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="keywords" content="阿里, 比赛, 机器学习, 数据挖掘, ">
+
+ 
+<meta property="og:type" content="article"/>
+<meta property="og:description" content=""/>
+<meta property="og:title" content="机器学习第一战——阿里天池移动推荐算法比赛经验总结攻略 : nanshu.wang"/>
+<meta property="og:site_name" content="nanshu wang blog"/>
+<meta property="og:image" content="" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta property="og:url" content="https://nanshu.wang/post/2015-07-01/">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2015-07-01"/>
+<meta property="article:modified_time" content="2015-07-01"/>
+
+
+
+<meta property="article:tag" content="阿里">
+<meta property="article:tag" content="比赛">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="数据挖掘">
+
+
+
+
+
+    <base href="https://nanshu.wang/">
+    <title> 机器学习第一战——阿里天池移动推荐算法比赛经验总结攻略 - nanshu.wang </title>
+    <link rel="canonical" href="https://nanshu.wang/post/2015-07-01/">
+    
+
+    
+<link rel="stylesheet" href="/static/css/style.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?a79535ca63291dc820e3ecefa615aad1";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
+
+</head>
+
+<body lang="en" itemscope itemtype="http://schema.org/Article">
+<header id="header">
+	<nav id="nav">
+	<div id="title"><a href="/">Nanshu Wang</a></div>
+    <div><a href=mailto: nanshu.wang@gmail.com target="_blank" class="mailto"> </span> <span class="icon-mail"></span>gardenia22</a></div>
+	</nav>
+    <nav id="nav">
+    	        <ul id="mainnav">
+            <li>
+                <a href="/蘅芜/">
+                <span class="icon"> <i aria-hidden="true" class="icon-pencil"></i></span>
+                <span> 蘅芜 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/潇湘/">
+                <span class="icon"> <i aria-hidden="true" class="icon-quill"></i></span>
+                <span> 潇湘 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/观叹/">
+                <span class="icon"> <i aria-hidden="true" class="icon-leaf"></i></span>
+                <span> 观叹 </span>
+            </a>
+            </li>
+            <li>
+            <a href="/about">
+                <span class="icon"> <i aria-hidden="true" class="icon-heart"></i></span>
+                <span> 关于 </span>
+            </a>
+            </li>
+        </ul>
+
+    </nav>
+    <nav id="nav">
+       	        <ul id="social">
+
+            <li id="share">
+                <span class="title"> 友链 </span>
+                <div class="dropdown share">
+                    <ul class="social">
+                      
+                      <li> <a href="https://spf13.com" target="_blank" title="spf13 is Steve Francis" class="facebook">spf13</a> </li>
+                      <li> <a href="http://libaier.net" target="_blank" title="Libaier" class="rss">Libaier</a> </li>
+                      <li> <a href="https://read.douban.com/column/195295/" target="_blank" title="100个故事" class="douban">一百个故事</a></li>
+                      <li> <a href="https://zhangwenli.com/blog/" target="_blank" title="羡辙杂俎" class="yangzhe">羡辙杂俎</a></li>
+                      <li> <a href="https://tianwang.gift/" target="_blank" title="Tian" class="tian">Tian</a></li>
+                    </ul>
+                <span class="icon icon-bubbles"> </span> <span class="subcount"></span> </div>
+            </li>
+
+            <li id="follow">
+                <span class="title"> 驻留地 </span>
+                <div class="dropdown follow">
+                    <ul class="social">
+                        
+
+                        <li> <a href="https://weibo.com/gardenia22/" target="_blank" title="微博" class="weibo">微博</a> </li>
+                        <li> <a href="https://www.douban.com/people/gardenia22" target="_blank"
+                        title="豆瓣" class="douban">豆瓣</a> </li>
+                        <li> <a href="https://www.zhihu.com/people/gardenia" target="_blank" title="知乎" class="zhihu">知乎</a> </li>
+                        <li> <a href="https://github.com/gardenia22" target="_blank" title="GitHub" class="github">GitHub</a> </li>
+                        <li> <a href="https://www.facebook.com/gardenia.nanshu.wang" target="_blank" title="Facebook" class="facebook"> Facebook</a></li>
+                        <li> <a href="https://instagram.com/ainedrag22" target="_blank" title="Instagram" class="instagram">Instagram</a> </li>
+
+
+                    </ul>
+                <span class="icon icon-rocket"> </span> <span class="subcount"></span> </div>
+            </li>
+
+        </ul>
+
+	</nav>
+</header>
+
+
+
+<section id="main">
+  <h1 itemprop="name" >机器学习第一战——阿里天池移动推荐算法比赛经验总结攻略</h1>
+  
+
+<aside id="meta">
+
+    <div>
+        <section id="datecount">
+          <h4 id="date"> Wed Jul 1, 2015 </h4>
+          
+        </section>
+        
+        <ul id="tags">
+          
+            <li> <a href="https://nanshu.wang//tags/%E9%98%BF%E9%87%8C">阿里</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%AF%94%E8%B5%9B">比赛</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0">机器学习</a> </li>
+          
+            <li> <a href="https://nanshu.wang//tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98">数据挖掘</a> </li>
+          
+        </ul>
+    </div>
+
+</aside>
+
+<meta itemprop="wordCount" content="136">
+<meta itemprop="datePublished" content="2015-07-01">
+<meta itemprop="url" content="https://nanshu.wang/post/2015-07-01/">
+
+
+  <div>
+        <article itemprop="articleBody" id="content">
+           <p>历时98天的<a href="http://tianchi.aliyun.com/competition/introduction.htm?spm=5176.100066.333.5.0n5wpl&amp;raceId=1">阿里移动推荐算法</a>终于结束了，有种终于下了贼船的感觉。总的来说，整个比赛的体验并不好：时间太长，资源不够，运气成分大，学到的干货少。虽然学到的干货不多，但这毕竟是在Data Science道路上进军的第一场实战，还是有必要好好总结一下。</p>
+<h1 id="比赛统计">比赛统计</h1>
+<p>初赛名次：21</p>
+<p>复赛名次：22</p>
+<p>Python代码行数：2320</p>
+<p>SQL代码行数：6656</p>
+<p>天池平台数据表数：1006</p>
+<p>线下结果数：490</p>
+<h1 id="初识比赛">初识比赛</h1>
+<p>虽然比赛的名字叫做移动推荐算法，但本质上也是一个机器学习的问题。比赛给出了一个月（2014.11.18~2014.12.18）的用户对商品操作的行为数据，需要预测12.19号这天的购买行为，评分采用经典的F1值计算。行为数据中包括了时间、地点、用户、商品、行为类型、商品类别六个要素，特征提取的思路就是围绕这六个要素进行。题目还给出了一个商品子集，只需要提交对商品子集购买行为的预测结果。</p>
+<p>大致看了去年前十选手的比赛总结，比赛流程大致分为<strong>4个模块</strong>：</p>
+<ol>
+<li>特征提取</li>
+<li>训练集构造</li>
+<li>模型学习调参</li>
+<li>模型融合</li>
+</ol>
+<p>这4个模块并不是相互独立的，比如特征提取和训练集构造通常是一起完成，构造训练集也会用到简单模型学习来平衡正负样本数。</p>
+<p>比赛分为<strong>两个赛季</strong>：</p>
+<ol>
+<li>初赛3.20-4.25，仅提供1万用户数据，采用本地调试提交。</li>
+<li>复赛4.30-7.1，有500万用户数据，使用阿里天池平台提交。</li>
+</ol>
+<p>初赛和复赛是需要区别对待的：</p>
+<ol>
+<li><strong>工具</strong>：初赛本地调试，学习模型和特征提取并不拘泥，可以用任意熟悉的工具。然而复赛需要使用天池平台，工具受限制。</li>
+<li>**模型or规则？**初赛数据量很小，很可能模型效果并不好，事实证明，规则实际上是简单粗暴效果佳的。复赛则不可能寄希望于规则，老老实实搞模型吧。</li>
+<li><strong>时间分配</strong>：初赛只用进前500名即可，不用投入太多的精力。到复赛前期越快熟悉环境越好，尽量前期多做，比赛资源并不充足，后期资源会非常有限，速度很慢。</li>
+</ol>
+<h1 id="初赛">初赛</h1>
+<p>初赛的环境使用了MySQL+Python，选择Python的原因是数据挖掘的包很齐全也容易上手：numpy、scipy、pandas，还有机器学习包scikit-learn，对付比赛足够用了。</p>
+<h2 id="特征提取">特征提取</h2>
+<p>根据行为数据的各个字段，很容易可以将特征分为以下<strong>5类</strong>：</p>
+<ol>
+<li>用户-商品UI特征</li>
+<li>用户特征</li>
+<li>商品特征</li>
+<li>类别特征</li>
+<li>地理位置特征</li>
+</ol>
+<p>特征类别主要是<strong>计数</strong>和<strong>4行为转化率</strong>，比如用户1行为计数，4行为计数/1行为计数等等。</p>
+<p>第一赛季并没有想到时间特征，只是根据时间划分训练集，第二赛季才发现时间特征非常重要。</p>
+<p>为了便于特征提取，我用两种方法存放数据，一种是存入SQL表中：</p>
+<pre><code>建立表logUser，user_id为主键,
+字段名：
+user_id,item_start,item_end
+
+建立表logItem,item_idx为主键，
+字段名：
+item_idx,item_id,bhv_start,bhv_end
+
+建立表logBhv,bhv_idx为主键，
+字段名：
+bhv_idx, behavior_type,user_geohash,item_category,time
+</code></pre>
+<p>这样存放可以方便地提取UI特征，但事实证明这种方法实际上也没有很快，因为需要大量的SQL查询操作。幸而第一赛季数据量并不大，提取训练集并不是瓶颈。</p>
+<p>第二种方法是将数据按天分开，便于提取用户、商品、地理、类别的全局特征，这部分特征我全部使用了awk脚本提取。</p>
+<h2 id="构造训练集">构造训练集</h2>
+<p>线下训练集使用12.18号购买行为标注样本，严格使用18号之前的数据提取特征（包括全局特征），样本为18号之前n天有交互行为的UI对。
+线上预测集则使用19号之前n天所有的交互行为的UI对。</p>
+<p>由于正例负例不平衡，需要对训练集进行抽样，抽样比例是在1:5到1:20这个区间里找最优结果。</p>
+<h2 id="模型训练">模型训练</h2>
+<p>主要使用了Adaboost，Random forrest，Logistic Regression三种模型，直接调用Scikit-lSearn提供的模型训练。其中树型模型的测试结果最好。</p>
+<p>然而第一赛季受到数据量的限制，实际上规则比模型好用多了，比如购物车+时间规则：前一天晚上8点后加入购入车的UI，就可以做到比单个模型结果好很多。</p>
+<h2 id="模型融合">模型融合</h2>
+<p>第一赛季比赛前期一直死磕模型，成绩一直提不上去，改成规则后才大呼坑爹。</p>
+<p>初赛的最优成绩使用了规则+模型混合的方法，使用规则得到候选集后，再从候选集中去掉多个模型预测按概率排序后的top k负例交集。</p>
+<h1 id="复赛">复赛</h1>
+<p>第二赛季要使用天池平台，第一赛季的代码都用不上，得全部推翻重写。天池平台的工具有SQL、Map Reduce、UDF，算法平台也提供了经典的机器学习模型。</p>
+<p>SQL容易学习，但写起来复杂容易出错，没有可读性，不提供参数设置，复用比较麻烦。Map Reduce和UDF学习成本高，可以实现复杂逻辑，但天池对这两个工具的限制很多，文档对用户非常不友好。</p>
+<p>大部分特征、训练集和模型基本需求如计算f1等等都是通过SQL实现，少部分特征和其他复杂功能使用了UDF和Map Reduce。比较有用的是Map Reduce实现了特征Information Gain的计算，用来进行特征筛选，这要感谢会Java的队友/男票<a href="http://www.xgezhang.com">xge</a>。</p>
+<h2 id="特征提取-1">特征提取</h2>
+<p>整个复赛的特征工程一共进行了10次更改，更改大多是增加新特征，从最初的22维增加到最后的380维。特征构建还是一赛季的思路，不过根据一赛季的结果，筛选掉了一部分无用特征。除了简单计数和4行为转化特征，在第一赛季基础上增加的特征有：</p>
+<ol>
+<li>时间特征
+<ul>
+<li>UI行为距离标注日的小时数</li>
+<li>用时间衰减来计算加权后的行为计数</li>
+<li>多次行为操作之间的时间间隔(Map Reduce实现)</li>
+</ul>
+</li>
+<li>不同时间粒度的UI特征
+<ul>
+<li>按照标注日前1天，3天，7天，30天为粒度提取</li>
+<li>按照标注日前4小时，8小时，16小时为粒度提取</li>
+</ul>
+</li>
+<li>增加地理特征
+<ul>
+<li>用户商品的距离</li>
+<li>用户地理用最后操作位置填充</li>
+<li>商品地理用购买该商品的用户位置填充</li>
+</ul>
+</li>
+<li>计数特征去重
+<ul>
+<li>商品特征计数对用户去重</li>
+<li>类别特征计数对商品去重</li>
+</ul>
+</li>
+<li>增加交叉特征
+<ul>
+<li>用户&amp;UI特征交叉</li>
+<li>商品&amp;UI特征交叉</li>
+<li>类别&amp;UI特征交叉</li>
+<li>用户&amp;商品特征交叉</li>
+</ul>
+</li>
+</ol>
+<p><strong>特征增加对分数提升是最显著的</strong>，在特征选择中也需要注意：</p>
+<ol>
+<li><strong>不要盲目添加大量特征</strong>，最好一部分一部分添加，这样会对添加的特征效果有个大体的认识。</li>
+<li>添加的特征要能从现实逻辑上解释得通，最好是<strong>直观上影响购买行为的特征</strong>。</li>
+<li>特征筛选或许有用，但最好添加特征时就尽量加入有用的特征，<strong>不要妄图从一大堆特征中再筛选</strong>。</li>
+</ol>
+<h2 id="训练集构造">训练集构造</h2>
+<p>构造训练集前对数据进行了一个初步的统计，第二天的购买行为中仅有32%的UI是有过交互的，剩下64%的购买行为都是当天的偶发购买。前1天有过交互的占16%，前2天21%，前2天23%，前4天25%。也就是说，有一半的正样本是前1天的，因此<strong>仅仅使用前1天的交互UI构造训练集</strong>。</p>
+<p>考虑到仅仅需要对商品子集进行预测，为了使训练集和预测集保持一致，又可以减少训练集的规模，所以<strong>只使用了商品子集内的商品构造训练集</strong>。</p>
+<p>在比赛前期，这样构造训练集是有效的，缩短了模型训练时间，加快了特征迭代的工作。但是当特征增加不能再提升分数时，应该想到，这样构造训练集存在很大的问题，丢掉了很多正例样本。和其他队伍交流来看，这实际上是比赛后期的一个瓶颈，限制了特征的发挥。</p>
+<p>正确的做法是：在特征工程比较完善之后，最好是比赛中期，使用不止1天的交互和商品全集构造训练集，采用简单模型过滤掉大量负样本。这点我到比赛后期才开始改，平台资源已经不够了，所以并没有做好，也是比赛的一大遗憾。</p>
+<p>可以通过不同的标注日来得到不同的训练集，注意要<strong>预留出相同规模的验证集和测试集</strong>，到模型融合时会有用。</p>
+<h2 id="模型学习调参">模型学习+调参</h2>
+<ol>
+<li><strong>逻辑回归</strong>
+逻辑回归（Logistic Regression）训练速度预测速度很快，预测效果较差，可以用来进行负样本筛选，模型融合也有用。</li>
+<li><strong>随机森林</strong>
+随机森林学习速度一般，预测速度很慢，主要用于模型融合。</li>
+<li><strong>GBDT二分类</strong>
+GBDT训练速度慢，预测速度一般，单模型的效果最优。唯一的调参经验是：树越多越好，但速度也越慢。并且特征不一样，最优的参数也不一样，调参时注意每次最好只改变一个参数值，否则不容易看出参数的影响。不要使用枚举参数的办法调参，太浪费时间。</li>
+</ol>
+<h2 id="模型融合-1">模型融合</h2>
+<p>总结一下道听途说模型融合的方法：</p>
+<ol>
+<li>取不同模型top k并集</li>
+<li>取不同模型top k交集</li>
+<li>直接将预测概率相加</li>
+<li>将预测概率作为特征用lr训练</li>
+<li>将预测概率作为特征加入验证集，再将验证集当做训练集训练。</li>
+</ol>
+<p>对我来说以上5种方法都是然并卵，不论使用哪种融合方式，总没有单模型的结果好。具体的原因还没有找到，或许是因为没有对训练集进行抽样，GBDT模型对正负样本比例并不敏感，所以我直接用了所有的负样本，也算是这次比赛的第二大遗憾吧。</p>
+<h1 id="其他收获">其他收获</h1>
+<p>与其说是收获，不如说是一些犯过的错误，总结出来自勉：</p>
+<p><strong>不要过早优化</strong></p>
+<p>主要是模型调参和模型融合，这两部分应当留到比赛中后期来做，过早优化耽误时间也没有意义。</p>
+<p><strong>不要短视</strong></p>
+<p>比赛每天都在更新名次，但不要只关注短期的分数，更要为长期做打算。比如虽然调参、获得更多的训练集会提升暂时的分数，但是也失去了快速迭代特征的机会。要时刻记住这是一场长时间的比赛，终点才是胜利，中间领跑并不说明问题。</p>
+<p><strong>合理安排时间精力</strong></p>
+<p>初赛不需要投入全部精力，复赛前期尽量多做，否则后期没有资源。</p>
+<p><strong>不要妄下结论</strong></p>
+<p>对于不确定的猜想，一定要用数据验证，比如训练集用商品全集还是子集的区别，是否需要抽样等等。尽量多试多做，要去尝试各种可能性。</p>
+<p><strong>不要懒，不要懒，不要懒</strong></p>
+<p>重要的事情说三遍。有时会觉得麻烦，于是采用了写起来简单但效率低的方法。有时明明应该改成另一种方法，又觉得不改也没影响就算了吧。有时觉得今天太晚了就不做了，马虎总是不检查提交结果，于是又浪费了很多次机会。其实这种时候就会感觉，有个队友还是挺好的。</p>
+<h1 id="后记">后记</h1>
+<p>比赛最初的期望是进复赛，进入复赛后又期望进前50，进入前50后又期望进首页，进入首页又期望进前十，最好的时候也排到过第二名。但是比赛后期确实陷入了瓶颈，主要是模型融合和训练集的构造，还是挺遗憾的。虽说如此，但还是超预期完成了目标，也是值得开心一下。貌似赢的积分可以拿去换个杯子T恤和音响，为了身心健康，也决定不再参加阿里天池的其他比赛了，第二战打算去搞搞Kaggle。</p>
+<p>最后，衷心感谢拉我参赛从头到尾互为小号没有放弃的<a href="http://www.libaier.net">Libaier</a>战友，长时间占据榜首传授高招的<strong>江神</strong>，以闺蜜幸福为代价出售特征的闺蜜男票<strong>Xuhuan</strong>童鞋，以及男票兼打酱油队友<a href="http://www.xgezhang.com">xge</a>。</p>
+<p>完。</p>
+        </article>
+  </div>
+</section>
+
+<aside id=comments>
+    <div><h2> Comments </h2></div>
+    <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "nanshuwang" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</aside>
+
+<footer>
+  <div>
+    <p>
+    &copy; 2015 <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Nanshu Wang.</span></span>
+        Powered by <a href="http://hugo.spf13.com">Hugo</a>.
+        Theme by <a href="http://spf13.com">Steve Francia</a>.
+    </p>
+  </div>
+</footer>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    // Fix <code> tags after MathJax finishes running. This is a
+    // hack to overcome a shortcoming of Markdown. Discussion at
+    // https://github.com/mojombo/jekyll/issues/199
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i &lt; all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
+
+
+<script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+</body>
