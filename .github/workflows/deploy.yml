@@ -4,9 +4,6 @@ on:
   push:
     branches: ["master"]
 
-permissions:
-  contents: write
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,11 +20,12 @@ jobs:
       - name: Build site
         run: hugo
 
-      - name: Deploy to gh-pages branch
+      - name: Deploy to gardenia22.github.io
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
+          external_repository: gardenia22/gardenia22.github.io
+          publish_branch: master
           publish_dir: ./public
           user_name: gardenia22
           user_email: nanshu.wang@gmail.com
