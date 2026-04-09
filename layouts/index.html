@@ -6,10 +6,10 @@
     <meta name="keywords" content="程序员个人博客,python,机器学习,算法,数据挖掘,网站技术,读书,笔记,翻译">
     {{ partial "meta.html" . }}
     <meta name="google-site-verification" content="BHWZ_E95BFh9L12Z90adRkxTjXIxIGSQG4qiFkcLhUw" />
-    <base href="{{ .Site.BaseUrl }}">
+    <base href="{{ .Site.BaseURL }}">
     <title>{{ .Site.Title }}</title>
     <link rel="canonical" href="{{ .Permalink }}">
-    <link href="{{ .RSSlink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+    <link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
 
     {{ partial "head_includes.html" . }}
 </head>
@@ -20,10 +20,8 @@
 <section id="main">
   <div>
       <h1 id="title">Carpe Diem</h1>
-    {{ range .Data.Pages }}
-      {{ if .Section}}
+    {{ range .Site.RegularPages }}
         {{ .Render "summary"}}
-      {{ end }}
     {{ end }}
   </div>
 </section>
