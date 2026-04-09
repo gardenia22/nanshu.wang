@@ -1,4 +1,4 @@
-baseurl = "http://nanshu.wang/"
+baseurl = "https://nanshu.wang/"
 title = "Nanshu's blog"
 languageCode = "en-us"
 disqusShortname = "nanshuwang"
