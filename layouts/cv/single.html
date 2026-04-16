@@ -18,65 +18,147 @@
     }
     a { color: #4a90d9; text-decoration: none; }
     a:hover { text-decoration: underline; }
-    h1 { font-size: 1.8rem; font-weight: normal; margin-bottom: 0.2em; }
-    .subtitle { color: #666; margin-bottom: 2em; font-size: 0.95rem; }
-    h2 {
+    .back {
+      display: inline-block;
+      margin-bottom: 2.5em;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 0.75rem;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: #999;
-      margin: 2.5em 0 0.8em;
-      padding-bottom: 0.4em;
+      color: #4a90d9;
+    }
+
+    /* Header */
+    h1 { font-size: 2rem; font-weight: normal; margin-bottom: 0.2em; }
+    .meta {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.4em;
+    }
+    .meta span { margin-right: 1.2em; }
+
+    /* Intro */
+    .intro {
+      margin: 1.8em 0 0;
+      color: #444;
+      font-size: 0.97rem;
+      line-height: 1.8;
+      max-width: 640px;
+    }
+
+    /* Section headings */
+    h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin: 3em 0 1em;
+      padding-bottom: 0.5em;
       border-bottom: 1px solid #eee;
     }
-    .entry { margin-bottom: 1.2em; }
-    .entry-header { display: flex; justify-content: space-between; align-items: baseline; }
-    .entry-title { font-weight: bold; }
-    .entry-date { color: #999; font-size: 0.85rem; white-space: nowrap; margin-left: 1em; }
-    .entry-sub { color: #555; font-style: italic; }
-    .entry-desc { margin-top: 0.3em; color: #444; }
-    .back { display: inline-block; margin-bottom: 2em; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #4a90d9; }
+
+    /* Experience entries */
+    .entry { margin-bottom: 1.6em; }
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.3em;
+    }
+    .entry-title { font-weight: bold; font-size: 1rem; }
+    .entry-date {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #aaa;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    .entry-sub {
+      color: #666;
+      font-style: italic;
+      font-size: 0.92rem;
+      margin-top: 0.1em;
+    }
+    .entry-desc {
+      margin-top: 0.4em;
+      color: #444;
+      font-size: 0.92rem;
+    }
+
+    /* Work / Media entries */
+    .media-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.3em;
+      margin-bottom: 0.9em;
+      font-size: 0.92rem;
+    }
+    .media-entry .media-title { color: #222; }
+    .media-entry .media-outlet {
+      color: #888;
+      font-style: italic;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body>
   <a class="back" href="/">← Nanshu Wang</a>
 
   <h1>Nanshu Wang</h1>
-  <p class="subtitle">
-    <!-- your title / location / contact here -->
-    Researcher &nbsp;·&nbsp; nanshu.wang@gmail.com
+  <p class="meta">
+    <span><!-- Title / Affiliation --></span>
+    <span><a href="mailto:nanshu.wang@gmail.com">nanshu.wang@gmail.com</a></span>
   </p>
 
-  <h2>Education</h2>
-  <div class="entry">
-    <div class="entry-header">
-      <span class="entry-title">University Name</span>
-      <span class="entry-date">20XX – 20XX</span>
-    </div>
-    <div class="entry-sub">Degree, Department</div>
-  </div>
+  <!-- ── Intro ────────────────────────────────────────────── -->
+  <p class="intro">
+    <!-- A short bio paragraph goes here. Describe your research interests,
+         current position, and what you work on. 2–3 sentences is ideal. -->
+    Placeholder introduction. Describe your background, research focus,
+    and what you are currently working on.
+  </p>
 
+  <!-- ── Experience ────────────────────────────────────────── -->
   <h2>Experience</h2>
+
   <div class="entry">
     <div class="entry-header">
       <span class="entry-title">Organization / Company</span>
       <span class="entry-date">20XX – present</span>
     </div>
-    <div class="entry-sub">Role</div>
-    <div class="entry-desc">Brief description of work.</div>
+    <div class="entry-sub">Role &nbsp;·&nbsp; Location</div>
+    <div class="entry-desc">Brief description of responsibilities and achievements.</div>
   </div>
 
-  <h2>Publications</h2>
   <div class="entry">
-    <div class="entry-desc">
-      <strong>Paper Title.</strong> Author A, <strong>Nanshu Wang</strong>, Author B.
-      <em>Conference / Journal</em>, 20XX.
+    <div class="entry-header">
+      <span class="entry-title">Organization / Company</span>
+      <span class="entry-date">20XX – 20XX</span>
     </div>
+    <div class="entry-sub">Role &nbsp;·&nbsp; Location</div>
+    <div class="entry-desc">Brief description of responsibilities and achievements.</div>
   </div>
 
-  <h2>Skills</h2>
-  <div class="entry">
-    <div class="entry-desc">Python, Go, Machine Learning, …</div>
+  <!-- ── Work / Media ──────────────────────────────────────── -->
+  <h2>Work / Media</h2>
+
+  <div class="media-entry">
+    <span class="media-title"><a href="#">"Article or project title"</a></span>
+    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
+  </div>
+
+  <div class="media-entry">
+    <span class="media-title"><a href="#">"Article or project title"</a></span>
+    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
+  </div>
+
+  <div class="media-entry">
+    <span class="media-title"><a href="#">"Article or project title"</a></span>
+    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
   </div>
 
 </body>
