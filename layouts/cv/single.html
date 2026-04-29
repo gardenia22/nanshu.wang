@@ -28,25 +28,22 @@
       color: #4a90d9;
     }
 
-    /* Header */
-    h1 { font-size: 2rem; font-weight: normal; margin-bottom: 0.2em; }
+    h1 { font-size: 2rem; font-weight: normal; margin-bottom: 0.3em; }
     .meta {
       color: #666;
       font-size: 0.9rem;
-      margin-bottom: 0.4em;
+      margin-bottom: 0.2em;
     }
     .meta span { margin-right: 1.2em; }
 
-    /* Intro */
     .intro {
-      margin: 1.8em 0 0;
+      margin: 1.6em 0 0;
       color: #444;
       font-size: 0.97rem;
       line-height: 1.8;
       max-width: 640px;
     }
 
-    /* Section headings */
     h2 {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 0.7rem;
@@ -58,8 +55,7 @@
       border-bottom: 1px solid #eee;
     }
 
-    /* Experience entries */
-    .entry { margin-bottom: 1.6em; }
+    .entry { margin-bottom: 1.8em; }
     .entry-header {
       display: flex;
       justify-content: space-between;
@@ -81,19 +77,18 @@
       margin-top: 0.1em;
     }
     .entry-desc {
-      margin-top: 0.4em;
+      margin-top: 0.5em;
       color: #444;
       font-size: 0.92rem;
     }
 
-    /* Work / Media entries */
     .media-entry {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       flex-wrap: wrap;
       gap: 0.3em;
-      margin-bottom: 0.9em;
+      margin-bottom: 0.8em;
       font-size: 0.92rem;
     }
     .media-entry .media-title { color: #222; }
@@ -103,6 +98,18 @@
       font-size: 0.85rem;
       white-space: nowrap;
     }
+
+    .pub-entry {
+      margin-bottom: 0.8em;
+      font-size: 0.88rem;
+      color: #444;
+      padding-left: 1.8em;
+      text-indent: -1.8em;
+    }
+    .pub-venue {
+      font-style: italic;
+      color: #666;
+    }
   </style>
 </head>
 <body>
@@ -110,16 +117,14 @@
 
   <h1>Nanshu Wang</h1>
   <p class="meta">
-    <span><!-- Title / Affiliation --></span>
     <span><a href="mailto:nanshu.wang@gmail.com">nanshu.wang@gmail.com</a></span>
+    <span>+1 650-505-9132</span>
   </p>
 
-  <!-- ── Intro ────────────────────────────────────────────── -->
   <p class="intro">
-    <!-- A short bio paragraph goes here. Describe your research interests,
-         current position, and what you work on. 2–3 sentences is ideal. -->
-    Placeholder introduction. Describe your background, research focus,
-    and what you are currently working on.
+    Staff Software Engineer at Meta focused on Generative AI. My work spans LLM post-training,
+    multimodal and vision-language models, agentic systems, RAG, and on-device AI.
+    I have led teams building Meta AI, Llama, and AI experiences on Ray-Ban Meta Glasses.
   </p>
 
   <!-- ── Experience ────────────────────────────────────────── -->
@@ -127,39 +132,139 @@
 
   <div class="entry">
     <div class="entry-header">
-      <span class="entry-title">Organization / Company</span>
-      <span class="entry-date">20XX – present</span>
+      <span class="entry-title">Meta — Staff Software Engineer</span>
+      <span class="entry-date">2022 – present</span>
     </div>
-    <div class="entry-sub">Role &nbsp;·&nbsp; Location</div>
-    <div class="entry-desc">Brief description of responsibilities and achievements.</div>
+    <div class="entry-sub">SuperIntelligence Lab · Wearable AI</div>
+    <div class="entry-desc">
+      Tech lead for LiveAI on Ray-Ban Meta Glasses: real-time multimodal AI over ego-centric
+      video and audio, with VLM post-training for tool calling, proactive interrupt, and visual
+      factuality. Previously, tech lead and founding member of the Meta AI platform team —
+      built the orchestration layer powering agents, plugins, and RAG; launched web search,
+      image generation, and reels search at Meta AI's 2023 debut and 2024 Llama 3 upgrade.
+    </div>
   </div>
 
   <div class="entry">
     <div class="entry-header">
-      <span class="entry-title">Organization / Company</span>
-      <span class="entry-date">20XX – 20XX</span>
+      <span class="entry-title">Meta — Senior Software Engineer</span>
+      <span class="entry-date">2021 – 2022</span>
     </div>
-    <div class="entry-sub">Role &nbsp;·&nbsp; Location</div>
-    <div class="entry-desc">Brief description of responsibilities and achievements.</div>
+    <div class="entry-sub">AI Assistant · Reality Labs</div>
+    <div class="entry-desc">
+      Tech lead for on-device text assist (Smart Compose, Quick Reply) on Quest/Oculus devices,
+      using generative LMs with distillation, quantization, federated learning, and differential
+      privacy. Also led Smart Compose on Facebook News Feed, scaling to billions of MAU with
+      30× coverage improvement.
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Meta — Software Engineer</span>
+      <span class="entry-date">2018 – 2021</span>
+    </div>
+    <div class="entry-sub">AI Assistant · Messenger</div>
+    <div class="entry-desc">
+      Built Meta's first LM product, Smart Compose, in FB Workplace from scratch — training
+      pipeline, GPU inference, and incremental decoding. Launched the first on-device compressed
+      model for Messenger, and improved M Suggestion via conversation understanding (+25% clicks).
+    </div>
+  </div>
+
+  <!-- ── Education ─────────────────────────────────────────── -->
+  <h2>Education</h2>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Carnegie Mellon University</span>
+      <span class="entry-date">2017 – 2018</span>
+    </div>
+    <div class="entry-sub">M.S. in Software Engineering</div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Chinese Academy of Sciences</span>
+      <span class="entry-date">2014 – 2017</span>
+    </div>
+    <div class="entry-sub">M.S. in Computer Science</div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Renmin University of China</span>
+      <span class="entry-date">2010 – 2014</span>
+    </div>
+    <div class="entry-sub">B.S. in Human Resources Management</div>
   </div>
 
   <!-- ── Work / Media ──────────────────────────────────────── -->
   <h2>Work / Media</h2>
 
   <div class="media-entry">
-    <span class="media-title"><a href="#">"Article or project title"</a></span>
-    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
+    <span class="media-title"><a href="#">Live AI Launch: Ray-Ban Meta Glasses Add Live AI, Live Translation &amp; Shazam</a></span>
+    <span class="media-outlet">Meta · 2024</span>
   </div>
 
   <div class="media-entry">
-    <span class="media-title"><a href="#">"Article or project title"</a></span>
-    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
+    <span class="media-title"><a href="#">The Llama 4 Herd: The Beginning of a New Era of Natively Multimodal AI</a></span>
+    <span class="media-outlet">Meta · 2025</span>
   </div>
 
   <div class="media-entry">
-    <span class="media-title"><a href="#">"Article or project title"</a></span>
-    <span class="media-outlet">Publication / Platform &nbsp;·&nbsp; 20XX</span>
+    <span class="media-title"><a href="#">Meet Your New Assistant: Meta AI, Built With Llama 3</a></span>
+    <span class="media-outlet">Meta · 2024</span>
   </div>
+
+  <div class="media-entry">
+    <span class="media-title"><a href="#">Introducing New AI Experiences Across Our Family of Apps and Devices</a></span>
+    <span class="media-outlet">Meta · 2023</span>
+  </div>
+
+  <div class="media-entry">
+    <span class="media-title"><a href="#">Here's How AI Learns to Finish Your Sentences</a></span>
+    <span class="media-outlet">Meta Tech Blog · 2019</span>
+  </div>
+
+  <!-- ── Publications & Patents ────────────────────────────── -->
+  <h2>Publications &amp; Patents</h2>
+
+  <p class="pub-entry">
+    He, Y., Li, W., Zhang, H., Li, S., …, <strong>Wang, N.</strong>, et al.
+    Rubric-Based Benchmarking and Reinforcement Learning for Advancing LLM Instruction Following.
+    <span class="pub-venue">ACL 2026.</span>
+  </p>
+
+  <p class="pub-entry">
+    Qin, C., Zhou, W., Sankararaman, K.A., <strong>Wang, N.</strong>, et al.
+    Learning Auxiliary Tasks Improves Reference-Free Hallucination Detection in Open-Domain Long-Form Generation.
+    <span class="pub-venue">ACL 2025.</span>
+  </p>
+
+  <p class="pub-entry">
+    Sun, Y., Yin, X., Jiang, J., Sekar, V., Lin, F., <strong>Wang, N.</strong>, et al.
+    CS2P: Improving Video Bitrate Selection and Adaptation with Data-Driven Throughput Prediction.
+    <span class="pub-venue">ACM SIGCOMM 2016.</span>
+  </p>
+
+  <p class="pub-entry">
+    Gill, P., Liu, H., Yang, W., Malik, K., <strong>Wang, N.</strong>, &amp; Reiss, D.
+    Methods, mediums, and systems for providing a model for an end-user device.
+    <span class="pub-venue">U.S. Patent 11,501,081. 2022.</span>
+  </p>
+
+  <p class="pub-entry">
+    Gill, P., Liu, H., Yang, W., Malik, K., <strong>Wang, N.</strong>, &amp; Reiss, D.
+    Methods, mediums, and systems for training a model.
+    <span class="pub-venue">U.S. Patent 11,455,555. 2022.</span>
+  </p>
+
+  <p class="pub-entry">
+    Botros, F., <strong>Wang, N.</strong>, Wang, F., et al.
+    Voice-based Auto-Completions and Auto-Responses for Assistant Systems.
+    <span class="pub-venue">U.S. Patent Application 17/120,013. 2022.</span>
+  </p>
 
 </body>
 </html>
