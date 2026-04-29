@@ -29,6 +29,12 @@
     }
 
     h1 { font-size: 2rem; font-weight: normal; margin-bottom: 0.3em; }
+    .meta {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.85rem;
+      margin-bottom: 0.2em;
+    }
+    .meta span { margin-right: 1.2em; }
 
     .intro {
       margin: 1.6em 0 0;
@@ -110,6 +116,12 @@
       font-style: italic;
       color: #666;
     }
+    .pub-tag {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      color: #aaa;
+      letter-spacing: 0.05em;
+    }
   </style>
 </head>
 <body>
@@ -122,11 +134,12 @@
   </p>
 
   <p class="intro">
-    Staff Software Engineer at Meta (SuperIntelligence Lab) with 7+ years shipping AI products
-    at scale. Deep expertise in LLM post-training — RLHF, curriculum reinforcement learning,
-    SFT, and DPO — multimodal perception and vision-language models, and agentic systems with
-    tool use and RAG. Led 50+ person teams across AI Glass (Ray-Ban Meta), Llama post-training,
-    and Meta AI, with products reaching hundreds of millions of users.
+    Built the AI systems behind Ray-Ban Meta Live AI, Meta AI, and Llama —
+    reaching hundreds of millions of users. I specialize in LLM post-training
+    (RLHF, curriculum reinforcement learning, SFT, DPO), multimodal perception
+    and vision-language models, and agentic systems with tool use and RAG.
+    Staff Software Engineer at Meta's SuperIntelligence Lab, with 7+ years
+    leading teams of 50+ across research and product.
   </p>
 
   <!-- ── Experience ────────────────────────────────────────── -->
@@ -197,6 +210,13 @@
     <div class="entry-sub">B.S. in Human Resources Management</div>
   </div>
 
+  <!-- ── Fun ───────────────────────────────────────────────── -->
+  <h2>Fun</h2>
+
+  <p style="color:#444; font-size:0.92rem;">
+    Been coding since high school — and won First Prize at the National Olympiad in Informatics (NOIP) twice.
+  </p>
+
   <!-- ── Work / Media ──────────────────────────────────────── -->
   <h2>Work / Media</h2>
 
@@ -250,6 +270,36 @@
     <span class="media-outlet">Meta · 2017</span>
   </div>
 
+  <!-- ── Open Source ────────────────────────────────────────── -->
+  <h2>Open Source</h2>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title"><a href="https://github.com/pytorch/glow">TorchGlow</a></span>
+      <span class="entry-date">Meta</span>
+    </div>
+    <div class="entry-sub">ML compiler and execution engine for hardware accelerators</div>
+    <div class="entry-desc">Multi-layer LSTM support.</div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title"><a href="https://github.com/facebookresearch/pytext">PyText</a></span>
+      <span class="entry-date">Meta</span>
+    </div>
+    <div class="entry-sub">Deep-learning NLP modeling framework built on PyTorch</div>
+    <div class="entry-desc">ONNX support and contextualized model implementation.</div>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title"><a href="https://github.com/mozilla/DeepSpeech">DeepSpeech</a></span>
+      <span class="entry-date">Mozilla</span>
+    </div>
+    <div class="entry-sub">End-to-end speech recognition</div>
+    <div class="entry-desc">Data refinement pipeline for loading speech corpus.</div>
+  </div>
+
   <!-- ── Publications & Patents ────────────────────────────── -->
   <h2>Publications &amp; Patents</h2>
 
@@ -280,32 +330,25 @@
   <p class="pub-entry">
     Gill, P., Liu, H., Yang, W., Malik, K., <strong>Wang, N.</strong>, &amp; Reiss, D.
     Methods, mediums, and systems for providing a model for an end-user device.
-    <span class="pub-venue">U.S. Patent 11,501,081. 2022.</span>
+    <span class="pub-venue">U.S. Patent 11,501,081. 2022.</span> <span class="pub-tag">Patent</span>
   </p>
 
   <p class="pub-entry">
     Gill, P., Liu, H., Yang, W., Malik, K., <strong>Wang, N.</strong>, &amp; Reiss, D.
     Methods, mediums, and systems for training a model.
-    <span class="pub-venue">U.S. Patent 11,455,555. 2022.</span>
+    <span class="pub-venue">U.S. Patent 11,455,555. 2022.</span> <span class="pub-tag">Patent</span>
   </p>
 
   <p class="pub-entry">
     Botros, F., <strong>Wang, N.</strong>, Wang, F., et al.
     Voice-based Auto-Completions and Auto-Responses for Assistant Systems.
-    <span class="pub-venue">U.S. Patent Application 17/120,013. 2022.</span>
+    <span class="pub-venue">U.S. Patent Application 17/120,013. 2022.</span> <span class="pub-tag">Patent</span>
   </p>
 
   <p class="pub-entry">
     Gill, P., Liu, H., Yang, W., Malik, K., <strong>Wang, N.</strong>, &amp; Reiss, D.
     Methods, mediums, and systems for representing a model in a memory of device.
-    <span class="pub-venue">U.S. Patent 11,227,122. 2022.</span>
-  </p>
-
-  <!-- ── Fun ───────────────────────────────────────────────── -->
-  <h2>Fun</h2>
-
-  <p style="color:#444; font-size:0.92rem;">
-    Been coding since high school — and won First Prize at the National Olympiad in Informatics (NOIP) twice.
+    <span class="pub-venue">U.S. Patent 11,227,122. 2022.</span> <span class="pub-tag">Patent</span>
   </p>
 
 </body>
