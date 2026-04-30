@@ -1,0 +1,4 @@
+---
+title: "Yuki"
+type: "yuki"
+---
