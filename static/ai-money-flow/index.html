@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Money Flow</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f8f8f6;
+      --surface: #ffffff;
+      --border: #e8e8e4;
+      --text: #1a1a1a;
+      --muted: #666;
+      --accent: #1a3a5c;
+      --accent-light: #e8f0f8;
+      --green: #1a5c3a;
+      --green-light: #e8f5ee;
+      --amber: #7a4a00;
+      --amber-light: #fdf3e0;
+      --red: #5c1a1a;
+      --red-light: #fdeaea;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* Nav */
+    .nav {
+      background: var(--accent);
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .nav a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .nav a:hover { color: #fff; }
+    .nav-title {
+      color: #fff;
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-left: auto;
+      opacity: 0.5;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--accent);
+      color: #fff;
+      padding: 4rem 2rem 3.5rem;
+      text-align: center;
+    }
+    .hero-label {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* Section */
+    section {
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-family: Arial, sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: normal;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      line-height: 1.3;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 2rem 0 0.6rem;
+    }
+    p { margin-bottom: 1rem; color: #333; }
+    p:last-child { margin-bottom: 0; }
+
+    /* Flow diagram */
+    .flow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .flow-title {
+      font-family: Arial, sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .flow-layer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.3rem;
+    }
+    .flow-arrow {
+      display: flex;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0.2rem 0 0.2rem 1.6rem;
+    }
+    .flow-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .flow-text {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+    .flow-text em {
+      color: var(--muted);
+      font-style: normal;
+      font-size: 0.82rem;
+    }
+
+    .layer-1 .flow-dot { background: #2563eb; }
+    .layer-2 .flow-dot { background: #7c3aed; }
+    .layer-3 .flow-dot { background: #db2777; }
+    .layer-4 .flow-dot { background: #ea580c; }
+    .layer-5 .flow-dot { background: #d97706; }
+    .layer-6 .flow-dot { background: #16a34a; }
+    .layer-7 .flow-dot { background: #0891b2; }
+    .layer-8 .flow-dot { background: #475569; }
+
+    /* Stats grid */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent);
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+    }
+    .stat-label {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Company loop cards */
+    .loops {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 2rem 0;
+    }
+    @media (max-width: 600px) { .loops { grid-template-columns: 1fr; } }
+
+    .loop-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.4rem;
+    }
+    .loop-card-title {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .loop-step {
+      font-size: 0.85rem;
+      color: #333;
+      padding: 0.25rem 0;
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+    .loop-step-arrow { color: var(--muted); flex-shrink: 0; }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid var(--accent);
+      background: var(--accent-light);
+      padding: 1rem 1.4rem;
+      margin: 1.5rem 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95rem;
+    }
+    .callout.green {
+      border-color: #16a34a;
+      background: var(--green-light);
+    }
+    .callout.amber {
+      border-color: #d97706;
+      background: var(--amber-light);
+    }
+
+    /* Profit ladder */
+    .ladder { margin: 1.5rem 0; }
+    .ladder-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      border-radius: 4px;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+    }
+    .ladder-item.proven { background: var(--green-light); }
+    .ladder-item.growing { background: var(--accent-light); }
+    .ladder-item.early { background: var(--amber-light); }
+    .ladder-item.hungry { background: var(--red-light); }
+    .ladder-tag {
+      font-family: Arial, sans-serif;
+      font-size: 0.65rem;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+    .proven .ladder-tag { background: #16a34a; color: #fff; }
+    .growing .ladder-tag { background: var(--accent); color: #fff; }
+    .early .ladder-tag { background: #d97706; color: #fff; }
+    .hungry .ladder-tag { background: #dc2626; color: #fff; }
+
+    /* Public / hidden table */
+    .disclosure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 600px) { .disclosure-grid { grid-template-columns: 1fr; } }
+    .disclosure-col {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+    }
+    .disclosure-col-title {
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .disclosure-col.public .disclosure-col-title { color: #16a34a; }
+    .disclosure-col.hidden .disclosure-col-title { color: #dc2626; }
+    .disclosure-item {
+      font-size: 0.85rem;
+      color: #444;
+      padding: 0.2rem 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .disclosure-item::before {
+      flex-shrink: 0;
+    }
+    .public .disclosure-item::before { content: "✓"; color: #16a34a; }
+    .hidden .disclosure-item::before { content: "✗"; color: #dc2626; }
+
+    /* Equation */
+    .equation {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 6px;
+      padding: 2rem;
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .equation-title {
+      font-family: Arial, sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 1rem;
+    }
+    .equation-line {
+      font-size: 0.95rem;
+      line-height: 2;
+      opacity: 0.9;
+    }
+    .equation-line.minus { opacity: 0.7; }
+    .equation-line.result {
+      opacity: 1;
+      font-weight: bold;
+      border-top: 1px solid rgba(255,255,255,0.3);
+      margin-top: 0.5rem;
+      padding-top: 0.8rem;
+    }
+    .equation-divider {
+      color: rgba(255,255,255,0.3);
+      margin: 0.2rem 0;
+    }
+
+    /* Summary box */
+    .summary {
+      background: var(--accent);
+      color: #fff;
+      padding: 3rem 2rem;
+      margin-top: 2rem;
+    }
+    .summary h2 { color: #fff; font-size: 1.4rem; margin-bottom: 1.5rem; }
+    .summary-point {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+    .summary-num {
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+      padding-top: 0.2rem;
+    }
+
+    /* Source note */
+    .source-note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="nav">
+  <a href="/">← Nanshu Wang</a>
+  <span class="nav-title">AI Money Flow</span>
+</div>
+
+<div class="hero">
+  <div class="hero-label">Industry Analysis</div>
+  <h1>The AI Money Flow</h1>
+  <p>How capital moves through the AI economy — from advertisers and enterprises to chips, data centers, and power grids.</p>
+</div>
+
+<div class="container">
+
+  <!-- Overview -->
+  <section>
+    <div class="section-label">Overview</div>
+    <h2>Two Overlapping Money Flows</h2>
+    <p>A useful way to read the AI industry is as two overlapping capital flows. The first is <strong>operating cash flow</strong>: end users, enterprises, developers, and advertisers pay for products. The second is the <strong>capital-expenditure flow</strong>: hyperscalers, AI labs, neoclouds, and investors commit huge sums to GPUs, custom chips, data centers, networking, cooling, land, and power — before the final AI service is necessarily profitable.</p>
+
+    <div class="flow">
+      <div class="flow-title">The Full Stack — Money flows downward through each layer</div>
+      <div class="flow-layer layer-1">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Consumers · Enterprises · Developers · Advertisers</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-2">
+        <div class="flow-dot"></div>
+        <div class="flow-text">AI Applications · Copilots · Search · Social Feeds · Enterprise SaaS · APIs</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-3">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Foundation Model Companies · Model-Serving Platforms</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-4">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Clouds &amp; Neoclouds <em>— Azure, AWS, Google Cloud, Oracle, CoreWeave, Nebius</em></div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-5">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Data Centers · Networking · Storage · Cooling · Power Contracts</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-6">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Nvidia · AMD · Broadcom · Marvell · Networking Vendors</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-7">
+        <div class="flow-dot"></div>
+        <div class="flow-text">TSMC · Samsung · SK Hynix · Micron · ASML · Packaging Suppliers</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-8">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Utilities · Power Producers · Real Estate · Construction · Debt &amp; Equity Capital</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Key insight:</strong> Many firms sit in multiple layers at once. Google is an ad company, a cloud provider, a model company, a custom-chip buyer, and a data-center operator. Meta is an ad company, a model company, a GPU buyer, and a power buyer.
+    </div>
+  </section>
+
+  <!-- Where money enters -->
+  <section>
+    <div class="section-label">Cash Sources</div>
+    <h2>Where Real Money Enters the System</h2>
+    <p>The biggest proven cash source is still <strong>advertising</strong>, not standalone AI subscriptions. Digital advertising from Google, Meta, and Amazon funds enormous AI infrastructure buildouts.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">$56.3B</div>
+        <div class="stat-label">Meta Q1 2026 revenue<br>$22.9B operating income</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$125–145B</div>
+        <div class="stat-label">Meta 2026 capex guidance<br>largely AI infrastructure</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$20B+</div>
+        <div class="stat-label">Google Cloud Q1 2026<br>revenue, up 63% YoY</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$460B+</div>
+        <div class="stat-label">Google Cloud<br>contract backlog</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$37.6B</div>
+        <div class="stat-label">AWS Q1 2026 revenue<br>up 28% YoY</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$70B+</div>
+        <div class="stat-label">Amazon advertising<br>trailing-12-month run rate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$25B+</div>
+        <div class="stat-label">OpenAI annualized revenue<br>as of Feb 2026 (reported)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$100M+</div>
+        <div class="stat-label">OpenAI ad pilot<br>annualized run rate, 6 weeks</div>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:2rem">Profit Ladder</div>
+    <div class="ladder">
+      <div class="ladder-item proven">
+        <span class="ladder-tag">Proven</span>
+        Digital advertising · Cloud infrastructure · Enterprise software
+      </div>
+      <div class="ladder-item growing">
+        <span class="ladder-tag">Growing</span>
+        AI APIs · Model subscriptions · AI copilots
+      </div>
+      <div class="ladder-item early">
+        <span class="ladder-tag">Early</span>
+        Consumer AI subscriptions · Ads inside AI assistants
+      </div>
+      <div class="ladder-item hungry">
+        <span class="ladder-tag">Capital-hungry</span>
+        Frontier model training · Dedicated AI data centers
+      </div>
+    </div>
+  </section>
+
+  <!-- Company loops -->
+  <section>
+    <div class="section-label">Capital Loops</div>
+    <h2>How Each Company's Loop Works</h2>
+    <p>The most important structural feature of today's AI economy is circular capital flows: companies invest in each other, then commit to buying each other's services. These loops are not automatically bad — they can coordinate long-term supply — but they blur the line between independent end-user demand and strategic financing.</p>
+
+    <div class="loops">
+      <div class="loop-card">
+        <div class="loop-card-title">Meta</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Advertisers pay Meta</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Ad profits fund capex budget</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> GPUs, Broadcom chips, CoreWeave capacity, data centers, nuclear power</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> AI improves feeds, ads, assistants, content tools</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Better monetization → more capex</div>
+      </div>
+      <div class="loop-card">
+        <div class="loop-card-title">Microsoft / OpenAI</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Microsoft invests in OpenAI</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Microsoft supplies Azure infrastructure</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> OpenAI sells ChatGPT, API, enterprise, ads</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> OpenAI commits to $250B+ of Azure services</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Microsoft books cloud revenue + equity upside</div>
+      </div>
+      <div class="loop-card">
+        <div class="loop-card-title">Amazon / Anthropic</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Amazon invests $8B+ in Anthropic</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Anthropic commits to $100B+ on AWS over 10 years</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> AWS builds Trainium capacity (up to 5 GW)</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> 100K+ AWS customers run Claude</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Amazon earns cloud revenue + equity upside</div>
+      </div>
+      <div class="loop-card">
+        <div class="loop-card-title">Google</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Search ads + Cloud revenue</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> TPUs, Nvidia GPUs, data centers, power</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> AI improves Search + powers Google Cloud AI</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Blackstone JV: $5B equity → 500MW data-center capacity</div>
+        <div class="loop-step"><span class="loop-step-arrow">→</span> Google TPU compute-as-a-service externally</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key deals -->
+  <section>
+    <div class="section-label">Infrastructure Deals</div>
+    <h2>Major Public Commitments</h2>
+    <p>While exact GPU prices and chip invoices are rarely public, major strategic deals reveal the shape of spending at each layer.</p>
+
+    <h3>Compute &amp; Cloud</h3>
+    <div class="callout">Meta + CoreWeave: $21B cloud capacity expansion through Dec 2032, on top of an earlier $14.2B deal — dedicated AI capacity including Nvidia Vera Rubin.</div>
+    <div class="callout">OpenAI + Oracle: ~$300B of compute over ~5 years.</div>
+    <div class="callout">OpenAI + Azure: $250B of services committed. Microsoft remains primary cloud partner through 2032.</div>
+    <div class="callout">Anthropic + AWS: $100B+ over 10 years; up to 5 GW of Trainium capacity.</div>
+
+    <h3>Custom Silicon</h3>
+    <div class="callout">Meta + Broadcom: custom AI chip deal through 2029, initial commitment of 1+ GW of computing capacity.</div>
+    <div class="callout">OpenAI + Broadcom: co-develop custom AI accelerators; 10 GW planned deployment, rollout starting H2 2026.</div>
+    <div class="callout">Google + Broadcom: custom AI chips and rack components through 2031. Broadcom also supplying Anthropic ~3.5 GW via Google AI processors from 2027.</div>
+
+    <h3>Power</h3>
+    <div class="callout">Microsoft + Constellation: 20-year PPA, ~835 MW from Three Mile Island Unit 1 restart.</div>
+    <div class="callout">Amazon + Talen: 1,920 MW nuclear through 2042 for AWS data centers.</div>
+    <div class="callout">Meta: nuclear agreements totaling up to 6.6 GW by 2035 (Vistra, TerraPower, Oklo). Meta pays full cost of data-center energy.</div>
+  </section>
+
+  <!-- Chip layer -->
+  <section>
+    <div class="section-label">The Chip Layer</div>
+    <h2>Nvidia, Broadcom, TSMC &amp; the Semiconductor Stack</h2>
+    <p>Chip and semiconductor companies get paid <em>before</em> AI applications turn profitable — because hyperscalers and AI labs buy capacity in advance. This is why Nvidia's revenue can surge while many AI app businesses are still unprofitable.</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">$81.6B</div>
+        <div class="stat-label">Nvidia Q1 FY2027 revenue<br>up 85% YoY</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$75.2B</div>
+        <div class="stat-label">Nvidia Data Center revenue<br>Q1 FY2027, up 92%</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$193.7B</div>
+        <div class="stat-label">Nvidia FY2026 Data Center<br>full-year revenue</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">$52–56B</div>
+        <div class="stat-label">TSMC 2026 capex guidance<br>expanding advanced nodes</div>
+      </div>
+    </div>
+
+    <div class="flow" style="margin-top:1.5rem">
+      <div class="flow-title">Chip Supply Chain</div>
+      <div class="flow-layer layer-4">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Cloud / Hyperscaler / Neocloud / Model Lab</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-6">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Nvidia GPU systems · AMD accelerators · Broadcom / Marvell custom silicon &amp; networking</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-7">
+        <div class="flow-dot"></div>
+        <div class="flow-text">TSMC or Samsung foundry</div>
+      </div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-layer layer-7" style="margin-bottom:0">
+        <div class="flow-dot"></div>
+        <div class="flow-text">SK Hynix · Micron · Samsung HBM memory · ASML equipment · Packaging &amp; optics</div>
+      </div>
+    </div>
+
+    <div class="callout amber">TSMC expects AI and high-performance computing to be ~55% of the semiconductor market by 2030. HBM memory demand is driving SK Hynix's growth. ASML reports semiconductor supply is likely to remain tight as AI demand outpaces capacity.</div>
+  </section>
+
+  <!-- Energy -->
+  <section>
+    <div class="section-label">Power &amp; Energy</div>
+    <h2>How Data Centers Pay Energy Companies</h2>
+    <p>Power is becoming a binding constraint. Data-center operators secure energy through utility service, power purchase agreements, direct energy contracts, colocation, renewable/nuclear matching, and sometimes behind-the-meter generation.</p>
+
+    <div class="callout amber">Reuters Breakingviews estimated a 100 MW AI data center can cost more than $4 billion — with ~70% going to servers and GPUs and the rest to buildings, electrical systems, networking, security, and cooling. Grid connections and gas-turbine supply can create multi-year bottlenecks.</div>
+
+    <div class="flow">
+      <div class="flow-title">Energy Flow</div>
+      <div class="flow-layer layer-4">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Cloud / Data-center operator</div>
+      </div>
+      <div class="flow-arrow">↓ pays</div>
+      <div class="flow-layer layer-5">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Utility · Independent power producer · Nuclear or renewable project owner</div>
+      </div>
+      <div class="flow-arrow">↓ finances</div>
+      <div class="flow-layer layer-8">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Generation · Grid upgrades · Fuel · Transmission · Storage · Interconnection</div>
+      </div>
+      <div class="flow-arrow">↓ delivers</div>
+      <div class="flow-layer layer-6" style="margin-bottom:0">
+        <div class="flow-dot"></div>
+        <div class="flow-text">Long-term power supply → AI compute runs at high utilization</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Disclosure -->
+  <section>
+    <div class="section-label">Transparency</div>
+    <h2>What's Public vs. Hidden</h2>
+    <p>Public companies disclose enough to map the industry, but not enough to calculate every margin or trace every dollar.</p>
+    <div class="disclosure-grid">
+      <div class="disclosure-col public">
+        <div class="disclosure-col-title">Usually Public</div>
+        <div class="disclosure-item">Capex guidance</div>
+        <div class="disclosure-item">Segment revenue</div>
+        <div class="disclosure-item">Large cloud commitments</div>
+        <div class="disclosure-item">Major power purchase agreements</div>
+        <div class="disclosure-item">Strategic investments</div>
+        <div class="disclosure-item">Some custom-chip partnerships</div>
+        <div class="disclosure-item">Data-center capacity (MW / GW)</div>
+        <div class="disclosure-item">Revenue growth by business unit</div>
+      </div>
+      <div class="disclosure-col hidden">
+        <div class="disclosure-col-title">Usually Hidden</div>
+        <div class="disclosure-item">Exact GPU purchase prices</div>
+        <div class="disclosure-item">Exact Meta-to-Nvidia payments</div>
+        <div class="disclosure-item">Cloud discounts and credits</div>
+        <div class="disclosure-item">Per-token inference cost</div>
+        <div class="disclosure-item">Energy price per MWh</div>
+        <div class="disclosure-item">GPU utilization rates</div>
+        <div class="disclosure-item">Product-level AI margins</div>
+        <div class="disclosure-item">Revenue-share details</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The equation -->
+  <section>
+    <div class="section-label">Core Question</div>
+    <h2>The Fundamental AI Profit Equation</h2>
+    <p>The most important economic question is not "who has the best model?" It is whether AI revenue per user, query, or workflow can exceed the full cost of delivering it.</p>
+
+    <div class="equation">
+      <div class="equation-title">AI Unit Economics</div>
+      <div class="equation-line">AI revenue per user / query / workflow</div>
+      <div class="equation-line minus">− inference cost</div>
+      <div class="equation-line minus">− training amortization</div>
+      <div class="equation-line minus">− cloud leases or depreciation</div>
+      <div class="equation-line minus">− energy</div>
+      <div class="equation-line minus">− sales, support &amp; customer acquisition</div>
+      <div class="equation-line minus">− R&amp;D</div>
+      <div class="equation-divider">────────────────</div>
+      <div class="equation-line result">= Durable AI Profit</div>
+    </div>
+
+    <p>For Google and Meta, AI can be profitable even if users never pay directly — because better AI increases ad relevance, engagement, conversion, and automation. For Microsoft and Amazon, AI is profitable if it increases cloud consumption, enterprise software pricing, and platform lock-in. For OpenAI and Anthropic, profitability depends on whether subscription, API, enterprise, and ad revenue can exceed enormous compute commitments.</p>
+  </section>
+
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="container">
+    <h2>How to Read the AI Economy</h2>
+    <div class="summary-point">
+      <span class="summary-num">01</span>
+      End-user and advertiser cash enters at the application layer. Enterprise cash enters at the cloud/API/software layer. Investor and balance-sheet capital enters at the infrastructure layer.
+    </div>
+    <div class="summary-point">
+      <span class="summary-num">02</span>
+      Most of that capital flows upstream to chips, data centers, power, and suppliers — before AI applications are necessarily profitable.
+    </div>
+    <div class="summary-point">
+      <span class="summary-num">03</span>
+      The winners are companies that already own profitable distribution, control scarce infrastructure, or turn models into products with durable pricing power.
+    </div>
+    <div class="summary-point">
+      <span class="summary-num">04</span>
+      The circularity is real. Microsoft funds and supplies OpenAI. Amazon invests in Anthropic. Google builds TPUs and defends Search. Meta uses ad profits to buy compute and build its own models. Nvidia sells into nearly everyone.
+    </div>
+    <div class="summary-point">
+      <span class="summary-num">05</span>
+      The open question: can AI-native applications grow into profits large enough to justify the infrastructure commitments now being made?
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
