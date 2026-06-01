@@ -501,7 +501,8 @@
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors',
-    maxZoom: 18
+    maxZoom: 18,
+    crossOrigin: true
   }).addTo(map);
 
   // Route coordinates
@@ -649,11 +650,16 @@
     loading.style.display = 'block';
     modal.classList.add('open');
 
+    const timeout = setTimeout(function() {
+      loading.textContent = '图片加载超时，请使用手机截图保存 📸';
+    }, 8000);
+
     leafletImage(map, function(err, canvas) {
+      clearTimeout(timeout);
       loading.style.display = 'none';
-      if (err) {
-        alert('生成图片失败，请使用截图功能保存');
-        modal.classList.remove('open');
+      if (err || !canvas) {
+        loading.textContent = '生成失败，请使用手机截图保存 📸';
+        loading.style.display = 'block';
         return;
       }
       const dataUrl = canvas.toDataURL('image/png');
