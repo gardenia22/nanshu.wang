@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-image@0.4.0/leaflet-image.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }
@@ -158,6 +159,71 @@
     .stat { flex: 1; text-align: center; }
     .stat-val { font-size: 0.95rem; font-weight: 700; color: #fff; }
     .stat-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; margin-top: 1px; }
+
+    /* Save button */
+    .save-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: calc(100% - 2.4rem);
+      margin: 0 1.2rem 1rem;
+      padding: 0.6rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: inherit;
+    }
+    .save-btn:hover { background: rgba(255,255,255,0.13); color: #fff; }
+    .save-btn:active { background: rgba(255,255,255,0.18); }
+    .save-btn svg { flex-shrink: 0; }
+
+    /* Image modal */
+    .img-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .img-modal.open { display: flex; }
+    .img-modal-hint {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.82rem;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+    .img-modal img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 6px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      display: block;
+    }
+    .img-modal-close {
+      margin-top: 1rem;
+      padding: 0.5rem 1.8rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .img-modal-close:hover { background: rgba(255,255,255,0.18); }
+    .img-modal-loading {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
 
     /* Mobile */
     @media (max-width: 640px) {
@@ -398,6 +464,13 @@
 
     </div>
 
+    <button class="save-btn" onclick="saveMap()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      保存地图为图片
+    </button>
+
     <div class="stats-bar">
       <div class="stat">
         <div class="stat-val">18</div>
@@ -566,6 +639,50 @@
   function flyTo(lat, lng, zoom) {
     map.flyTo([lat, lng], zoom, { duration: 1.2 });
   }
+
+  // Save map as PNG
+  function saveMap() {
+    const modal = document.getElementById('imgModal');
+    const loading = document.getElementById('imgLoading');
+    const imgEl = document.getElementById('imgResult');
+    imgEl.style.display = 'none';
+    loading.style.display = 'block';
+    modal.classList.add('open');
+
+    leafletImage(map, function(err, canvas) {
+      loading.style.display = 'none';
+      if (err) {
+        alert('生成图片失败，请使用截图功能保存');
+        modal.classList.remove('open');
+        return;
+      }
+      const dataUrl = canvas.toDataURL('image/png');
+      imgEl.src = dataUrl;
+      imgEl.style.display = 'block';
+
+      // On desktop: also trigger download
+      const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+      if (!isTouch) {
+        const link = document.createElement('a');
+        link.download = '西藏自驾路线图.png';
+        link.href = dataUrl;
+        link.click();
+      }
+    });
+  }
+
+  function closeModal() {
+    document.getElementById('imgModal').classList.remove('open');
+  }
 </script>
+
+<!-- Image modal -->
+<div class="img-modal" id="imgModal" onclick="closeModal()">
+  <div class="img-modal-hint" id="imgLoading" style="display:none">生成中，请稍候…</div>
+  <div class="img-modal-hint" id="imgHint" style="display:none">📱 长按图片保存到手机相册</div>
+  <img id="imgResult" src="" alt="路线图" style="display:none" onclick="event.stopPropagation()"
+       onload="document.getElementById('imgHint').style.display='block'">
+  <button class="img-modal-close" onclick="closeModal()">关闭</button>
+</div>
 </body>
 </html>
