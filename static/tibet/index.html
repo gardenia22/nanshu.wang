@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-image@0.4.0/leaflet-image.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }
@@ -159,6 +159,21 @@
     .stat { flex: 1; text-align: center; }
     .stat-val { font-size: 0.95rem; font-weight: 700; color: #fff; }
     .stat-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; margin-top: 1px; }
+
+    /* Permanent map labels */
+    .map-label {
+      background: rgba(20,20,40,0.82) !important;
+      border: 1px solid rgba(255,255,255,0.18) !important;
+      border-radius: 4px !important;
+      color: #f0f0f0 !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      padding: 2px 6px !important;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.35) !important;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .map-label.leaflet-tooltip-top::before { display: none !important; }
 
     /* Save button */
     .save-btn {
@@ -499,10 +514,10 @@
     zoomControl: true
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 18,
-    crossOrigin: true
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
+    maxZoom: 19,
+    crossOrigin: 'anonymous'
   }).addTo(map);
 
   // Route coordinates
@@ -610,7 +625,7 @@
     <div class="popup-days">起点 · 终点</div>
     <div class="popup-alt" style="color:#a5b4fc">500<span class="popup-alt-unit">m</span></div>
     <div style="margin-top:6px;font-size:0.75rem;color:rgba(255,255,255,0.5)">318国道出发 · 317国道返回</div>
-  `).addTo(map);
+  `).bindTooltip('成都', { permanent: true, direction: 'top', offset: [0, -20], className: 'map-label' }).addTo(map);
 
   // Stop markers
   stops.forEach((s, i) => {
@@ -633,6 +648,10 @@
       <div class="popup-route" style="margin-top:6px">${routeLabel}</div>
     `);
 
+    marker.bindTooltip(`${s.name}<br><span style="color:${color};font-weight:700">${s.alt}m</span>`, {
+      permanent: true, direction: 'top', offset: [0, -16], className: 'map-label'
+    });
+
     marker.addTo(map);
   });
 
@@ -648,25 +667,20 @@
     const imgEl = document.getElementById('imgResult');
     imgEl.style.display = 'none';
     loading.style.display = 'block';
+    loading.textContent = '生成中，请稍候…';
     modal.classList.add('open');
 
-    const timeout = setTimeout(function() {
-      loading.textContent = '图片加载超时，请使用手机截图保存 📸';
-    }, 8000);
-
-    leafletImage(map, function(err, canvas) {
-      clearTimeout(timeout);
+    html2canvas(document.getElementById('map'), {
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
+      scale: window.devicePixelRatio || 2
+    }).then(function(canvas) {
       loading.style.display = 'none';
-      if (err || !canvas) {
-        loading.textContent = '生成失败，请使用手机截图保存 📸';
-        loading.style.display = 'block';
-        return;
-      }
       const dataUrl = canvas.toDataURL('image/png');
       imgEl.src = dataUrl;
       imgEl.style.display = 'block';
 
-      // On desktop: also trigger download
       const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
       if (!isTouch) {
         const link = document.createElement('a');
@@ -674,6 +688,8 @@
         link.href = dataUrl;
         link.click();
       }
+    }).catch(function() {
+      loading.textContent = '生成失败，请使用手机截图保存 📸';
     });
   }
 
