@@ -511,7 +511,8 @@
   const map = L.map('map', {
     center: [30.8, 97.5],
     zoom: 6,
-    zoomControl: true
+    zoomControl: true,
+    preferCanvas: true
   });
 
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -672,6 +673,8 @@
 
     const mapEl = document.getElementById('map');
     const scale = 2;
+    // Force Leaflet to redraw all panes at current position before capture
+    map.invalidateSize();
     domtoimage.toPng(mapEl, {
       width: mapEl.clientWidth * scale,
       height: mapEl.clientHeight * scale,
