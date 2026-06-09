@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/leaflet-polylinedecorator@1.6.0/dist/leaflet.polylineDecorator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dom-to-image-more@3.4.5/dist/dom-to-image-more.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif; }
@@ -670,14 +670,19 @@
     loading.textContent = '生成中，请稍候…';
     modal.classList.add('open');
 
-    html2canvas(document.getElementById('map'), {
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-      scale: window.devicePixelRatio || 2
-    }).then(function(canvas) {
+    const mapEl = document.getElementById('map');
+    const scale = 2;
+    domtoimage.toPng(mapEl, {
+      width: mapEl.clientWidth * scale,
+      height: mapEl.clientHeight * scale,
+      style: {
+        transform: 'scale(' + scale + ')',
+        transformOrigin: 'top left',
+        width: mapEl.clientWidth + 'px',
+        height: mapEl.clientHeight + 'px'
+      }
+    }).then(function(dataUrl) {
       loading.style.display = 'none';
-      const dataUrl = canvas.toDataURL('image/png');
       imgEl.src = dataUrl;
       imgEl.style.display = 'block';
 
