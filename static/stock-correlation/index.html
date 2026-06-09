@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>META &amp; GOOGL vs VGT &amp; SOXX — Daily Return Correlation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --border: #1f2937;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #3b82f6;
+      --green: #10b981;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --purple: #8b5cf6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 2rem 1rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .back {
+      display: inline-block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .back:hover { color: var(--accent); }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      line-height: 1.6;
+    }
+
+    .date-range {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-family: monospace;
+      margin-bottom: 3rem;
+    }
+
+    #status {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.6rem;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section { margin-bottom: 3rem; }
+
+    .section-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Correlation cards */
+    .corr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .corr-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.4rem;
+    }
+
+    .corr-pair {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    .corr-value {
+      font-size: 1.9rem;
+      font-weight: 700;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      margin-bottom: 0.25rem;
+    }
+
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+    .neutral { color: var(--yellow); }
+
+    .corr-meta {
+      font-size: 0.73rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+
+    /* Matrix */
+    .chart-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .matrix-wrap { overflow-x: auto; }
+
+    table.matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    table.matrix th {
+      padding: 0.6rem 1.2rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-align: center;
+      background: var(--bg);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    table.matrix td {
+      padding: 0.65rem 1.2rem;
+      text-align: center;
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    .c-diag  { background: rgba(59,130,246,0.18); color: #3b82f6; }
+    .c-hp    { background: rgba(16,185,129,0.22); color: #10b981; }
+    .c-mp    { background: rgba(16,185,129,0.10); color: #34d399; }
+    .c-low   { background: rgba(148,163,184,0.06); color: #94a3b8; }
+    .c-mn    { background: rgba(239,68,68,0.10); color: #f87171; }
+    .c-hn    { background: rgba(239,68,68,0.22); color: #ef4444; }
+
+    /* Time series */
+    .chart-wrap { position: relative; height: 280px; }
+
+    /* Scatter grid */
+    .scatter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .scatter-wrap { position: relative; height: 260px; }
+
+    /* Summary */
+    .summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.5rem 1.75rem;
+    }
+
+    .summary h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .summary p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 0.75rem;
+    }
+
+    .summary p:last-child { margin-bottom: 0; }
+    .summary strong { color: var(--text); }
+
+    .verdict {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .verdict-neg { background: rgba(239,68,68,0.15); color: var(--red); }
+    .verdict-pos { background: rgba(16,185,129,0.15); color: var(--green); }
+    .verdict-weak { background: rgba(245,158,11,0.15); color: var(--yellow); }
+
+    #content { display: none; }
+  </style>
+</head>
+<body>
+
+<a class="back" href="/">← Nanshu Wang</a>
+
+<h1>META &amp; GOOGL vs VGT &amp; SOXX</h1>
+<p class="subtitle">Are big-tech stocks negatively correlated with sector ETFs on a day-change basis?</p>
+<p class="date-range" id="dateRange">Loading 90-day market data…</p>
+
+<div id="status">
+  <span class="spinner"></span>
+  Fetching price data for META, GOOGL, VGT, SOXX…
+</div>
+
+<div id="content">
+
+  <div class="section">
+    <div class="section-title">Pairwise Correlation — Daily % Change (90 Days)</div>
+    <div class="corr-grid" id="corrCards"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Full Correlation Matrix</div>
+    <div class="chart-container">
+      <div class="matrix-wrap">
+        <table class="matrix" id="matrixTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Daily Returns — All Four Securities</div>
+    <div class="chart-container">
+      <div class="chart-label">Daily % change · past 90 trading days</div>
+      <div class="chart-wrap">
+        <canvas id="tsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Scatter Analysis — Individual Pairs</div>
+    <div class="scatter-grid">
+      <div class="chart-container">
+        <div class="chart-label">META vs VGT</div>
+        <div class="scatter-wrap"><canvas id="sc-META-VGT"></canvas></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-label">META vs SOXX</div>
+        <div class="scatter-wrap"><canvas id="sc-META-SOXX"></canvas></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-label">GOOGL vs VGT</div>
+        <div class="scatter-wrap"><canvas id="sc-GOOGL-VGT"></canvas></div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-label">GOOGL vs SOXX</div>
+        <div class="scatter-wrap"><canvas id="sc-GOOGL-SOXX"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Interpretation</div>
+    <div class="summary" id="summaryBox"></div>
+  </div>
+
+</div>
+
+<script>
+// ── Constants ────────────────────────────────────────────────────────────────
+const SYMBOLS = ['META', 'GOOGL', 'VGT', 'SOXX'];
+const COLORS  = { META: '#3b82f6', GOOGL: '#f59e0b', VGT: '#10b981', SOXX: '#8b5cf6' };
+
+const CHART_OPTS = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 400 },
+  plugins: {
+    legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+  },
+  scales: {
+    x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1f2937' } },
+    y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#1f2937' } }
+  }
+};
+
+// ── Data fetching ────────────────────────────────────────────────────────────
+async function fetchSymbol(sym) {
+  const yahoo = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
+  const urls = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahoo)}`,
+    `https://corsproxy.io/?${encodeURIComponent(yahoo)}`,
+    yahoo
+  ];
+
+  for (const url of urls) {
+    try {
+      const ctl = new AbortController();
+      const tid = setTimeout(() => ctl.abort(), 10000);
+      const res = await fetch(url, { signal: ctl.signal });
+      clearTimeout(tid);
+      if (!res.ok) continue;
+      const json = await res.json();
+      const result = json?.chart?.result?.[0];
+      if (!result) continue;
+      const { timestamp: ts } = result;
+      const closes = result.indicators.quote[0].close;
+      const out = {};
+      ts.forEach((t, i) => {
+        if (closes[i] != null) {
+          out[new Date(t * 1000).toISOString().slice(0, 10)] = closes[i];
+        }
+      });
+      return out;
+    } catch (_) { /* try next */ }
+  }
+  return null;
+}
+
+// ── Statistics ────────────────────────────────────────────────────────────────
+function returns(priceMap) {
+  const dates = Object.keys(priceMap).sort();
+  const ret = {};
+  for (let i = 1; i < dates.length; i++) {
+    const p = priceMap[dates[i - 1]], c = priceMap[dates[i]];
+    if (p && c) ret[dates[i]] = (c - p) / p * 100;
+  }
+  return ret;
+}
+
+function align(rA, rB) {
+  const dates = Object.keys(rA).filter(d => d in rB).sort();
+  return { dates, a: dates.map(d => rA[d]), b: dates.map(d => rB[d]) };
+}
+
+function normalSF(z) {
+  const t = 1 / (1 + 0.2316419 * z);
+  const poly = t * (0.319381530 + t * (-0.356563782 + t * (1.781477937 + t * (-1.821255978 + t * 1.330274429))));
+  return (Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI)) * poly;
+}
+
+function pearson(x, y) {
+  const n = x.length;
+  if (n < 3) return { r: 0, p: 1, n };
+  const xm = x.reduce((a, b) => a + b, 0) / n;
+  const ym = y.reduce((a, b) => a + b, 0) / n;
+  let num = 0, xsq = 0, ysq = 0;
+  for (let i = 0; i < n; i++) {
+    const dx = x[i] - xm, dy = y[i] - ym;
+    num += dx * dy; xsq += dx * dx; ysq += dy * dy;
+  }
+  const denom = Math.sqrt(xsq * ysq);
+  if (denom === 0) return { r: 0, p: 1, n };
+  const r = num / denom;
+  const t = r * Math.sqrt(n - 2) / Math.sqrt(Math.max(1e-12, 1 - r * r));
+  const p = 2 * normalSF(Math.abs(t));
+  return { r: +r.toFixed(4), p: +p.toFixed(4), n };
+}
+
+// ── Rendering ────────────────────────────────────────────────────────────────
+function renderCards(pairs) {
+  const el = document.getElementById('corrCards');
+  const focused = [['META','VGT'], ['META','SOXX'], ['GOOGL','VGT'], ['GOOGL','SOXX'], ['META','GOOGL'], ['VGT','SOXX']];
+  focused.forEach(([s1, s2]) => {
+    const { r, p, n } = pairs[`${s1}/${s2}`];
+    const cls  = p < 0.05 ? (r < 0 ? 'neg' : 'pos') : 'neutral';
+    const sign = r > 0 ? '+' : '';
+    const sig  = p < 0.001 ? 'p < 0.001 ✦✦✦' : p < 0.01 ? `p = ${p.toFixed(3)} ✦✦` : p < 0.05 ? `p = ${p.toFixed(3)} ✦` : `p = ${p.toFixed(3)} (n.s.)`;
+    el.innerHTML += `
+      <div class="corr-card">
+        <div class="corr-pair">${s1} vs ${s2}</div>
+        <div class="corr-value ${cls}">r = ${sign}${r.toFixed(3)}</div>
+        <div class="corr-meta">${sig}&nbsp;·&nbsp;n = ${n} days</div>
+      </div>`;
+  });
+}
+
+function cellClass(r, diag) {
+  if (diag) return 'c-diag';
+  if (r > 0.5)  return 'c-hp';
+  if (r > 0.2)  return 'c-mp';
+  if (r >= -0.2) return 'c-low';
+  if (r >= -0.5) return 'c-mn';
+  return 'c-hn';
+}
+
+function renderMatrix(allRet) {
+  const tbl = document.getElementById('matrixTable');
+  let html = `<tr><th></th>${SYMBOLS.map(s => `<th>${s}</th>`).join('')}</tr>`;
+  SYMBOLS.forEach(s1 => {
+    html += `<tr><th>${s1}</th>`;
+    SYMBOLS.forEach(s2 => {
+      if (s1 === s2) {
+        html += `<td class="c-diag">1.000</td>`;
+      } else {
+        const { a, b } = align(allRet[s1], allRet[s2]);
+        const { r } = pearson(a, b);
+        const sign = r > 0 ? '+' : '';
+        html += `<td class="${cellClass(r, false)}">${sign}${r.toFixed(3)}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  tbl.innerHTML = html;
+}
+
+function renderTimeSeries(allRet) {
+  const dates = Object.keys(allRet.META)
+    .filter(d => SYMBOLS.every(s => d in allRet[s]))
+    .sort();
+
+  new Chart(document.getElementById('tsChart'), {
+    type: 'line',
+    data: {
+      labels: dates.map(d => d.slice(5)),
+      datasets: SYMBOLS.map(s => ({
+        label: s,
+        data: dates.map(d => allRet[s][d]),
+        borderColor: COLORS[s],
+        backgroundColor: 'transparent',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        tension: 0.3
+      }))
+    },
+    options: {
+      ...CHART_OPTS,
+      plugins: {
+        ...CHART_OPTS.plugins,
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw?.toFixed(2)}%` } }
+      },
+      scales: {
+        ...CHART_OPTS.scales,
+        y: {
+          ...CHART_OPTS.scales.y,
+          ticks: { ...CHART_OPTS.scales.y.ticks, callback: v => v.toFixed(1) + '%' }
+        }
+      }
+    }
+  });
+}
+
+function trendPoints(x, y) {
+  const n = x.length, xm = x.reduce((a,b)=>a+b,0)/n, ym = y.reduce((a,b)=>a+b,0)/n;
+  let num = 0, den = 0;
+  for (let i = 0; i < n; i++) { num += (x[i]-xm)*(y[i]-ym); den += (x[i]-xm)**2; }
+  const m = den ? num/den : 0, b = ym - m*xm;
+  const [lo, hi] = [Math.min(...x), Math.max(...x)];
+  return [{ x: lo, y: m*lo+b }, { x: hi, y: m*hi+b }];
+}
+
+function renderScatter(id, x, y, xLabel, yLabel) {
+  new Chart(document.getElementById(id), {
+    type: 'scatter',
+    data: {
+      datasets: [
+        {
+          label: `${xLabel} vs ${yLabel}`,
+          data: x.map((xi, i) => ({ x: xi, y: y[i] })),
+          backgroundColor: COLORS[xLabel] + '70',
+          pointRadius: 3.5,
+          pointHoverRadius: 5
+        },
+        {
+          type: 'line',
+          label: 'Trend',
+          data: trendPoints(x, y),
+          borderColor: '#ffffff25',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          pointRadius: 0
+        }
+      ]
+    },
+    options: {
+      ...CHART_OPTS,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => `${xLabel}: ${c.raw.x?.toFixed(2)}%, ${yLabel}: ${c.raw.y?.toFixed(2)}%` } }
+      },
+      scales: {
+        x: {
+          ...CHART_OPTS.scales.x,
+          title: { display: true, text: `${xLabel} daily %`, color: '#64748b', font: { size: 10 } },
+          ticks: { ...CHART_OPTS.scales.x.ticks, callback: v => v.toFixed(1) + '%' }
+        },
+        y: {
+          ...CHART_OPTS.scales.y,
+          title: { display: true, text: `${yLabel} daily %`, color: '#64748b', font: { size: 10 } },
+          ticks: { ...CHART_OPTS.scales.y.ticks, callback: v => v.toFixed(1) + '%' }
+        }
+      }
+    }
+  });
+}
+
+function renderSummary(pairs) {
+  const box = document.getElementById('summaryBox');
+  const key = [['META','VGT'], ['META','SOXX'], ['GOOGL','VGT'], ['GOOGL','SOXX']];
+  const results = key.map(([a,b]) => pairs[`${a}/${b}`]);
+  const negCount = results.filter(r => r.r < 0).length;
+  const sigNeg   = results.filter(r => r.r < 0 && r.p < 0.05).length;
+  const sigPos   = results.filter(r => r.r > 0 && r.p < 0.05).length;
+
+  let verdictHtml, text1;
+  if (sigNeg >= 3) {
+    verdictHtml = `<span class="verdict verdict-neg">Hypothesis Supported</span>`;
+    text1 = `The data <strong>supports</strong> the negative correlation hypothesis.
+      ${sigNeg} of 4 key pairs show statistically significant inverse day-change relationships
+      (p &lt; 0.05), meaning on days when META/GOOGL rallied, VGT/SOXX tended to fall, and vice versa.`;
+  } else if (sigPos >= 3) {
+    verdictHtml = `<span class="verdict verdict-pos">Hypothesis Rejected — Positive Correlation</span>`;
+    text1 = `The data <strong>rejects</strong> the hypothesis. META/GOOGL move <em>with</em> VGT/SOXX
+      on a daily basis, not against them. This is consistent with META being a top-5 holding in VGT
+      and both names driving broad tech sentiment tracked by these ETFs.`;
+  } else if (negCount >= 3) {
+    verdictHtml = `<span class="verdict verdict-weak">Weak Tendency — Not Significant</span>`;
+    text1 = `Most pairs show slightly negative day-change correlations, hinting at your hypothesis,
+      but the signal is weak and not statistically significant at p &lt; 0.05.
+      More data or a different time window may be needed to confirm the pattern.`;
+  } else {
+    verdictHtml = `<span class="verdict verdict-weak">Mixed / Inconclusive</span>`;
+    text1 = `The results are mixed. Some pairs show positive correlation, others slightly negative.
+      No strong consistent relationship—positive or negative—is evident over this 90-day window.`;
+  }
+
+  const sorted = [...results].sort((a, b) => a.r - b.r);
+  const extreme = sorted[0];
+  const mildest = sorted[sorted.length - 1];
+  const extremeKey = key[results.indexOf(extreme)];
+  const mildestKey = key[results.indexOf(mildest)];
+
+  box.innerHTML = `
+    <h3>Verdict</h3>
+    ${verdictHtml}
+    <p>${text1}</p>
+    <p>
+      <strong>Most negative pair:</strong> ${extremeKey[0]} vs ${extremeKey[1]}
+        — r = ${extreme.r > 0 ? '+' : ''}${extreme.r.toFixed(3)}, p = ${extreme.p.toFixed(3)}.
+      &nbsp;<strong>Most positive:</strong> ${mildestKey[0]} vs ${mildestKey[1]}
+        — r = ${mildest.r > 0 ? '+' : ''}${mildest.r.toFixed(3)}, p = ${mildest.p.toFixed(3)}.
+    </p>
+    <p>
+      <strong>Why it matters:</strong> META and GOOGL are among the largest holdings in VGT
+      (~8% combined weight). Pure ETF mechanics predict <em>positive</em> correlation near r ≈ +0.6–0.8.
+      A significantly negative day-change correlation would be rare and would suggest active
+      sector-rotation flows or mean-reversion dynamics overpowering the passive-weight effect.
+    </p>
+    <p style="color: #475569; font-size: 0.74rem; margin-top: 0.5rem;">
+      Data: Yahoo Finance · Pearson r on daily % changes ·
+      p-values two-tailed, normal approx. to t-distribution ·
+      ✦ p&lt;0.05 &nbsp; ✦✦ p&lt;0.01 &nbsp; ✦✦✦ p&lt;0.001
+    </p>`;
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+async function main() {
+  const statusEl = document.getElementById('status');
+
+  // Fetch in parallel
+  const priceData = Object.fromEntries(
+    await Promise.all(SYMBOLS.map(async s => [s, await fetchSymbol(s)]))
+  );
+
+  const failed = SYMBOLS.filter(s => !priceData[s]);
+  if (failed.length) {
+    statusEl.innerHTML = `
+      <div style="color:#ef4444;font-size:0.9rem">
+        Failed to load: <strong>${failed.join(', ')}</strong><br>
+        <span style="color:#94a3b8;font-size:0.8rem">
+          Yahoo Finance may be rate-limiting this request. Try refreshing in a few seconds.
+        </span>
+      </div>`;
+    return;
+  }
+
+  // Daily returns
+  const allRet = Object.fromEntries(SYMBOLS.map(s => [s, returns(priceData[s])]));
+
+  // Shared date range
+  const dates = Object.keys(allRet.META)
+    .filter(d => SYMBOLS.every(s => d in allRet[s])).sort();
+
+  if (dates.length < 10) {
+    statusEl.innerHTML = `<div style="color:#ef4444">Insufficient aligned data (${dates.length} days). Try again.</div>`;
+    return;
+  }
+
+  document.getElementById('dateRange').textContent =
+    `${dates[0]} → ${dates[dates.length - 1]} · ${dates.length} trading days`;
+
+  // All pairs
+  const PAIRS = [
+    ['META','VGT'], ['META','SOXX'], ['GOOGL','VGT'], ['GOOGL','SOXX'],
+    ['META','GOOGL'], ['VGT','SOXX']
+  ];
+  const pairs = {};
+  PAIRS.forEach(([s1, s2]) => {
+    const { a, b } = align(allRet[s1], allRet[s2]);
+    const stat = pearson(a, b);
+    pairs[`${s1}/${s2}`] = { ...stat, a, b };
+  });
+
+  // Show page
+  statusEl.style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  renderCards(pairs);
+  renderMatrix(allRet);
+  renderTimeSeries(allRet);
+
+  [['META','VGT'], ['META','SOXX'], ['GOOGL','VGT'], ['GOOGL','SOXX']].forEach(([s1, s2]) => {
+    const { a, b } = pairs[`${s1}/${s2}`];
+    renderScatter(`sc-${s1}-${s2}`, a, b, s1, s2);
+  });
+
+  renderSummary(pairs);
+}
+
+main();
+</script>
+</body>
+</html>
