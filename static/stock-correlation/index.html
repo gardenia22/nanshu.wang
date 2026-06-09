@@ -320,35 +320,87 @@ const CHART_OPTS = {
 };
 
 // ── Data fetching ────────────────────────────────────────────────────────────
+async function timedFetch(url, ms = 9000) {
+  const ctl = new AbortController();
+  const tid = setTimeout(() => ctl.abort(), ms);
+  try {
+    const r = await fetch(url, { signal: ctl.signal });
+    clearTimeout(tid);
+    return r;
+  } catch(e) { clearTimeout(tid); throw e; }
+}
+
+function parseYahoo(json) {
+  // allorigins /get wraps content in {contents: "..."}
+  const raw = json?.contents ? JSON.parse(json.contents) : json;
+  const result = raw?.chart?.result?.[0];
+  if (!result) return null;
+  const { timestamp: ts } = result;
+  const closes = result.indicators.quote[0].close;
+  const out = {};
+  ts.forEach((t, i) => {
+    if (closes[i] != null) out[new Date(t * 1000).toISOString().slice(0,10)] = closes[i];
+  });
+  return Object.keys(out).length >= 20 ? out : null;
+}
+
+function parseStooq(text) {
+  if (!text || !text.includes(',') || text.includes('<html')) return null;
+  const cutoff = Date.now() - 100 * 86400 * 1000;
+  const out = {};
+  text.trim().split('\n').slice(1).forEach(line => {
+    const cols = line.split(',');
+    const [date, close] = [cols[0], parseFloat(cols[4])];
+    if (date && !isNaN(close) && new Date(date).getTime() >= cutoff) out[date] = close;
+  });
+  return Object.keys(out).length >= 20 ? out : null;
+}
+
 async function fetchSymbol(sym) {
-  const yahoo = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
-  const urls = [
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahoo)}`,
-    `https://corsproxy.io/?${encodeURIComponent(yahoo)}`,
-    yahoo
+  const enc = encodeURIComponent;
+  const y1 = `https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
+  const y2 = `https://query2.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=3mo`;
+
+  // Date range for Stooq (last 110 days to be safe)
+  const d2 = new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const d1 = new Date(Date.now() - 110*86400*1000).toISOString().slice(0,10).replace(/-/g,'');
+  const stooqSym = { GOOGL: 'GOOGL.US', META: 'META.US', VGT: 'VGT.US', SOXX: 'SOXX.US' }[sym] || sym;
+  const stooq = `https://stooq.com/q/d/l/?s=${stooqSym}&d1=${d1}&d2=${d2}&i=d`;
+
+  const yahooAttempts = [
+    { url: `https://api.allorigins.win/get?url=${enc(y1)}`,  parse: 'json' },
+    { url: `https://api.allorigins.win/raw?url=${enc(y1)}`,  parse: 'json' },
+    { url: `https://corsproxy.io/?${enc(y1)}`,               parse: 'json' },
+    { url: `https://api.allorigins.win/get?url=${enc(y2)}`,  parse: 'json' },
+    { url: `https://corsproxy.io/?${enc(y2)}`,               parse: 'json' },
   ];
 
-  for (const url of urls) {
+  for (const { url, parse } of yahooAttempts) {
     try {
-      const ctl = new AbortController();
-      const tid = setTimeout(() => ctl.abort(), 10000);
-      const res = await fetch(url, { signal: ctl.signal });
-      clearTimeout(tid);
+      const res = await timedFetch(url);
       if (!res.ok) continue;
-      const json = await res.json();
-      const result = json?.chart?.result?.[0];
-      if (!result) continue;
-      const { timestamp: ts } = result;
-      const closes = result.indicators.quote[0].close;
-      const out = {};
-      ts.forEach((t, i) => {
-        if (closes[i] != null) {
-          out[new Date(t * 1000).toISOString().slice(0, 10)] = closes[i];
-        }
-      });
-      return out;
-    } catch (_) { /* try next */ }
+      const data = parse === 'json' ? await res.json() : await res.text();
+      const result = parseYahoo(data);
+      if (result) return result;
+    } catch(_) {}
   }
+
+  // Fallback: Stooq CSV
+  const stooqAttempts = [
+    `https://api.allorigins.win/raw?url=${enc(stooq)}`,
+    `https://corsproxy.io/?${enc(stooq)}`,
+    stooq,
+  ];
+  for (const url of stooqAttempts) {
+    try {
+      const res = await timedFetch(url);
+      if (!res.ok) continue;
+      const text = await res.text();
+      const result = parseStooq(text);
+      if (result) return result;
+    } catch(_) {}
+  }
+
   return null;
 }
 
@@ -592,20 +644,30 @@ function renderSummary(pairs) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 async function main() {
   const statusEl = document.getElementById('status');
+  statusEl.style.display = 'block';
+  document.getElementById('content').style.display = 'none';
 
-  // Fetch in parallel
-  const priceData = Object.fromEntries(
-    await Promise.all(SYMBOLS.map(async s => [s, await fetchSymbol(s)]))
-  );
+  statusEl.innerHTML = `<span class="spinner"></span> Fetching price data (trying Yahoo Finance → Stooq fallback)…`;
+
+  // Fetch sequentially so the status message is useful, parallel is fine too but harder to show progress
+  const priceData = {};
+  for (const sym of SYMBOLS) {
+    statusEl.innerHTML = `<span class="spinner"></span> Loading <strong style="color:#e2e8f0">${sym}</strong>… (${SYMBOLS.indexOf(sym)+1}/${SYMBOLS.length})`;
+    priceData[sym] = await fetchSymbol(sym);
+  }
 
   const failed = SYMBOLS.filter(s => !priceData[s]);
   if (failed.length) {
     statusEl.innerHTML = `
-      <div style="color:#ef4444;font-size:0.9rem">
-        Failed to load: <strong>${failed.join(', ')}</strong><br>
+      <div style="color:#ef4444;font-size:0.9rem;line-height:1.8">
+        Could not load data for: <strong>${failed.join(', ')}</strong><br>
         <span style="color:#94a3b8;font-size:0.8rem">
-          Yahoo Finance may be rate-limiting this request. Try refreshing in a few seconds.
-        </span>
+          Both Yahoo Finance and Stooq CORS proxies failed. This usually resolves on retry.
+        </span><br><br>
+        <button onclick="main()" style="
+          background:#1f2937;border:1px solid #374151;color:#e2e8f0;
+          padding:0.5rem 1.5rem;border-radius:6px;cursor:pointer;font-size:0.85rem;
+        ">↻ Retry</button>
       </div>`;
     return;
   }
