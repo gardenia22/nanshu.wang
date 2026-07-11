@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Bias of the Optimizer — SGD from the ground up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F6F1;
+  --grid:#DDE5ED;
+  --grid-strong:#C7D3E0;
+  --ink:#1C2B45;
+  --ink-soft:#4A5A76;
+  --pen:#D64520;     /* red pen: gradient descent, trajectories */
+  --plot:#2F6FA7;    /* blue: data, targets */
+  --gold:#B8860B;    /* highlights, third series */
+  --green:#3E7C4F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Source Serif 4", Georgia, serif;
+  font-size:17.5px;
+  line-height:1.62;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+/* ---------- hero ---------- */
+header{padding:64px 0 20px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.14em;color:var(--pen);text-transform:uppercase;margin-bottom:14px}
+h1{font-family:Archivo,sans-serif;font-weight:900;font-size:clamp(38px,7vw,72px);line-height:.98;letter-spacing:-.02em;text-transform:uppercase}
+h1 .thin{font-weight:500;color:var(--ink-soft)}
+.lede{margin-top:22px;max-width:640px;font-size:19px}
+.lede em{font-style:italic}
+#hero-demo{margin-top:34px}
+/* ---------- chapters ---------- */
+section{margin:84px 0}
+.ch-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase;border-top:2px solid var(--ink);padding-top:10px;display:flex;justify-content:space-between}
+.ch-eyebrow b{color:var(--pen);font-weight:500}
+h2{font-family:Archivo,sans-serif;font-weight:700;font-size:clamp(26px,4vw,38px);letter-spacing:-.01em;margin:14px 0 18px;line-height:1.1}
+p{margin:0 0 16px;max-width:680px}
+p code, li code{font-family:"IBM Plex Mono",monospace;font-size:.86em;background:#fff;border:1px solid var(--grid-strong);padding:1px 5px;border-radius:3px}
+.math{font-style:italic}
+/* ---------- demo panels ---------- */
+.panel{
+  background:#FFFFFF;
+  border:1.5px solid var(--ink);
+  box-shadow:6px 6px 0 rgba(28,43,69,.12);
+  padding:16px;
+  margin:26px 0 10px;
+}
+.panel canvas{display:block;width:100%;touch-action:none;cursor:crosshair}
+.controls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:13px}
+.controls label{display:flex;align-items:center;gap:8px;color:var(--ink-soft)}
+input[type=range]{-webkit-appearance:none;width:170px;height:2px;background:var(--ink);outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;background:var(--pen);border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1.5px var(--ink);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:13px;height:13px;background:var(--pen);border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1.5px var(--ink);cursor:pointer}
+button{
+  font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.05em;
+  background:var(--paper);color:var(--ink);border:1.5px solid var(--ink);
+  padding:7px 14px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);
+}
+button:hover{background:var(--ink);color:var(--paper)}
+button:active{transform:translate(2px,2px);box-shadow:none}
+button:focus-visible,input:focus-visible{outline:2.5px solid var(--pen);outline-offset:2px}
+.readout{color:var(--ink);background:var(--paper);border:1px solid var(--grid-strong);padding:5px 9px;white-space:nowrap}
+.readout b{color:var(--pen);font-weight:500}
+.caption{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-soft);line-height:1.6;margin-top:8px;max-width:680px}
+.caption b{color:var(--pen);font-weight:500}
+.notice{border-left:3px solid var(--gold);padding:8px 0 8px 16px;margin:20px 0;font-size:16.5px;max-width:640px}
+.notice .tag{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:4px}
+/* ---------- index ---------- */
+.toc{margin:56px 0 0;border:1.5px solid var(--ink);background:#fff;box-shadow:6px 6px 0 rgba(28,43,69,.12);padding:20px 22px}
+.toc .t{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+.toc ol{list-style:none;counter-reset:c}
+.toc li{counter-increment:c;padding:6px 0;border-bottom:1px dashed var(--grid-strong)}
+.toc li:last-child{border-bottom:none}
+.toc a{color:var(--ink);text-decoration:none;font-family:Archivo,sans-serif;font-weight:700;font-size:16px}
+.toc a:hover{color:var(--pen)}
+.toc li::before{content:counter(c,decimal-leading-zero);font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--pen);margin-right:12px}
+/* ---------- refs & footer ---------- */
+.refs{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.9;color:var(--ink-soft);max-width:680px}
+.refs span{color:var(--ink)}
+footer{padding:40px 0 70px;border-top:2px solid var(--ink);margin-top:70px}
+@media (max-width:640px){
+  body{font-size:16px}
+  .panel{padding:10px}
+  input[type=range]{width:130px}
+}
+@media (prefers-reduced-motion:reduce){ .motion-note{display:block} }
+.motion-note{display:none;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">An interactive field manual · six experiments, run live in your browser</div>
+  <h1>The bias of<br>the optimizer<br><span class="thin">why SGD refuses to memorize</span></h1>
+  <p class="lede">An overparameterized network has <em>infinitely many</em> ways to fit its training data — including a pure lookup table. Gradient descent almost never finds that one. This manual builds the reason from the ground up: the loss defines <em>where</em> the solutions are; the optimizer decides <em>which one</em> you get.</p>
+
+  <div class="panel" id="hero-demo">
+    <canvas id="heroCanvas" aria-label="Interactive loss landscape: click to drop a ball and watch gradient descent roll"></canvas>
+    <div class="controls">
+      <span class="readout">CLICK / TAP the map — drop a ball, watch gradient descent roll downhill</span>
+      <span class="readout" id="heroInfo">loss <b>—</b></span>
+    </div>
+    <div class="caption">A topographic map of a loss surface over two parameters. Every point on a valley floor is a "solution." Which floor you land on — and where on it — depends entirely on where you start and how you roll. That dependence <b>is</b> the inductive bias.</div>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <div class="t">Contents — read in order, each chapter builds on the last</div>
+    <ol>
+      <li><a href="#ch1">The puzzle: zero loss is not one model, it's a family</a></li>
+      <li><a href="#ch2">The first theorem: gradient descent picks the minimum-norm solution</a></li>
+      <li><a href="#ch3">Spectral bias: watch a live network learn low frequencies first</a></li>
+      <li><a href="#ch4">After the loss hits zero: the slow drift to maximum margin</a></li>
+      <li><a href="#ch5">Double descent: more parameters than data, better test error</a></li>
+      <li><a href="#ch6">Grokking: memorize first, generalize later</a></li>
+    </ol>
+  </nav>
+</header>
+
+<!-- ═══════════════ CHAPTER 1 ═══════════════ -->
+
+<section id="ch1">
+  <div class="ch-eyebrow"><span><b>CH 01</b> — THE PUZZLE</span><span>UNDERDETERMINATION</span></div>
+  <h2>Zero training loss is not one model. It's an infinite family.</h2>
+  <p>Take 7 data points and a degree-14 polynomial: 15 coefficients, 7 constraints. The system is underdetermined, so an <em>8-dimensional space</em> of coefficient vectors fits the data exactly. Every member of that family has identical training loss: zero. Training loss alone cannot tell them apart.</p>
+  <p>Yet they behave completely differently between the points. Below, the slider moves you through this family. Every curve you see passes through all 7 points perfectly — the training loss never changes. Only the <span class="math">null-space component</span> changes: the part of the parameters the data cannot see.</p>
+
+  <div class="panel">
+    <canvas id="polyCanvas" aria-label="Polynomial interpolation family"></canvas>
+    <div class="controls">
+      <label>null-space wildness <input type="range" id="polySlider" min="0" max="4" step="0.02" value="0"></label>
+      <span class="readout">train MSE <b id="polyMSE">0.000000</b></span>
+      <span class="readout">‖θ‖ <b id="polyNorm">—</b></span>
+    </div>
+    <div class="caption">Red curve: current member of the zero-loss family. Faint blue: the minimum-norm member (slider = 0), which is what gradient descent from zero initialization converges to. Note the readouts: MSE stays pinned at zero while ‖θ‖ grows.</div>
+  </div>
+
+  <div class="notice"><span class="tag">The question this raises</span>
+  If the data can't distinguish these models, something else must. In deep learning that "something else" is not an explicit regularizer you wrote down — it's the optimizer. Chapters 2–6 identify exactly what it prefers.</div>
+</section>
+
+<!-- ═══════════════ CHAPTER 2 ═══════════════ -->
+
+<section id="ch2">
+  <div class="ch-eyebrow"><span><b>CH 02</b> — THE FIRST THEOREM</span><span>MINIMUM NORM</span></div>
+  <h2>Gradient descent lands at the smallest solution it can reach.</h2>
+  <p>Here is the entire mechanism, visible in two dimensions. One equation, <span class="math">w₁ + 2w₂ = 4</span>, two unknowns: the solution set is a line. Run gradient descent on the squared error and a basic fact of linear algebra takes over — <strong>the gradient always points along the data direction</strong> <span class="math">a = (1, 2)</span>. GD can only ever move parallel to <span class="math">a</span>. The component of your initialization perpendicular to the data is frozen forever.</p>
+  <p>Consequence: from the origin, GD converges to the point on the solution line closest to zero — the <em>minimum-ℓ₂-norm interpolator</em>. No regularizer was written down; the geometry of the update rule is the regularizer. Drag the start point and watch which solution you get.</p>
+
+  <div class="panel">
+    <canvas id="normCanvas" aria-label="Gradient descent trajectory to minimum norm solution"></canvas>
+    <div class="controls">
+      <button id="normOrigin">start from origin</button>
+      <button id="normRandom">random start</button>
+      <span class="readout">solution norm ‖w‖ <b id="normReadout">—</b></span>
+      <span class="readout">min possible <b id="normMin">—</b></span>
+    </div>
+    <div class="caption">Blue line: all zero-loss solutions. Red path: GD trajectory (drag anywhere to set a start). Dashed circle: the smallest norm any solution can have — from the origin, GD lands exactly on the tangent point. From elsewhere, it lands at your start's projection: <b>initialization is part of the prior</b>.</div>
+  </div>
+
+  <p>For linear regression this is a theorem. For deep networks the same phenomenon appears in disguise: with appropriate parameterizations, gradient descent implicitly minimizes norms, ranks, or margins that were never in the loss (Gunasekar et al., 2017). Small-norm functions are smooth, simple functions — GD's first vote against memorization.</p>
+</section>
+
+<!-- ═══════════════ CHAPTER 3 ═══════════════ -->
+
+<section id="ch3">
+  <div class="ch-eyebrow"><span><b>CH 03</b> — SPECTRAL BIAS</span><span>LIVE TRAINING RUN</span></div>
+  <h2>Networks learn low frequencies first. Watch one do it, live.</h2>
+  <p>This is not a recording. The panel below contains a real MLP — <code>1 → 64 → 64 → 1</code>, tanh activations, Adam — implemented in this page, training in your browser right now when you press start. The target is a sum of a slow wave and a fast wave: <span class="math">y = sin(2πx) + 0.3·sin(10πx)</span>.</p>
+  <p>Watch the order of events. The network fits the slow component almost immediately, then spends thousands of steps grinding out the fast ripple. This is <em>spectral bias</em> (Rahaman et al., 2019): the function a network represents changes fastest in its low-frequency directions. "Simple structure first, fine detail later" — memorizing noise is the highest-frequency thing you can do, so it is what SGD does last and least.</p>
+
+  <div class="panel">
+    <canvas id="mlpCanvas" aria-label="Live neural network training on mixed-frequency signal"></canvas>
+    <canvas id="mlpBars" aria-label="Residual error by frequency band" style="margin-top:10px"></canvas>
+    <div class="controls">
+      <button id="mlpToggle">▶ start training</button>
+      <button id="mlpReset">reset weights</button>
+      <span class="readout">step <b id="mlpStep">0</b></span>
+      <span class="readout">MSE <b id="mlpLoss">—</b></span>
+      <span class="motion-note">reduced motion detected — training runs only while you hold the start button's focus; press again to pause anytime.</span>
+    </div>
+    <div class="caption">Top: blue = target, dots = 64 training samples, red = the network's current function. Bottom bars: residual error projected onto the slow (2π) and fast (10π) components. The slow bar collapses first, <b>every time</b>, regardless of the random seed.</div>
+  </div>
+
+  <div class="notice"><span class="tag">Why this kills the lookup table</span>
+  A lookup table is spectrally flat — it needs all frequencies at once, everywhere. SGD builds functions coarse-to-fine, so at any finite training time the network is the <em>smoothest function so far consistent with the data</em>. Early stopping isn't a hack; it's harvesting the optimizer's prior mid-descent.</div>
+</section>
+
+<!-- ═══════════════ CHAPTER 4 ═══════════════ -->
+
+<section id="ch4">
+  <div class="ch-eyebrow"><span><b>CH 04</b> — AFTER ZERO LOSS</span><span>MARGIN MAXIMIZATION</span></div>
+  <h2>Training accuracy hits 100% — and GD keeps working.</h2>
+  <p>Logistic loss on separable data never actually reaches zero; it only decays as the weights grow. So after the classifier is already perfect on the training set, gradient descent keeps moving — and it moves in a very particular direction. Soudry et al. (2018) proved that the weight <em>direction</em> converges to the maximum-margin separator: the exact SVM solution, with no margin term anywhere in the loss.</p>
+  <p>Below, twenty points, two classes, plain gradient descent on logistic loss. The dashed line is the max-margin boundary (computed ahead of time by running the same dynamics to convergence). Watch the red boundary reach 100% accuracy early, then slowly rotate onto the dashed line.</p>
+
+  <div class="panel">
+    <canvas id="marginCanvas" aria-label="Logistic regression drifting to maximum margin"></canvas>
+    <div class="controls">
+      <button id="marginToggle">▶ start</button>
+      <button id="marginReset">reset</button>
+      <span class="readout">step <b id="marginStep">0</b></span>
+      <span class="readout">train acc <b id="marginAcc">—</b></span>
+      <span class="readout">‖w‖ <b id="marginNorm">—</b></span>
+      <span class="readout">∠ to max-margin <b id="marginAngle">—</b></span>
+    </div>
+    <div class="caption">Red solid: current decision boundary. Ink dashed: max-margin (SVM) direction. ‖w‖ grows without bound — the loss pushes outward — but the <b>direction</b> locks onto the widest-margin separator. Margin is a complexity measure: among all perfect classifiers, GD selects the most robust one.</div>
+  </div>
+</section>
+
+<!-- ═══════════════ CHAPTER 5 ═══════════════ -->
+
+<section id="ch5">
+  <div class="ch-eyebrow"><span><b>CH 05</b> — DOUBLE DESCENT</span><span>LIVE LEAST-SQUARES</span></div>
+  <h2>Past the interpolation threshold, more parameters help.</h2>
+  <p>Classical statistics says test error is U-shaped in model size: too few parameters underfit, too many overfit. Modern practice says the U is only the first half of the curve. This panel computes the rest, live: random-feature regression (<span class="math">ReLU(wₓ·x + b)</span> features, min-norm least squares) on 20 noisy samples, with the feature count P swept from 1 to 45.</p>
+  <p>At <span class="math">P = n = 20</span> — exactly enough parameters to interpolate — the fit is forced through every noise wiggle with no freedom left, and test error explodes. Push past it and something classical intuition forbids happens: among the now-many interpolating solutions, min-norm least squares (Chapter 2's hero) picks ever-smoother ones. Test error comes back down. Overparameterization plus the optimizer's small-norm bias <em>is</em> the regularizer (Belkin et al., 2019; Nakkiran et al., 2019).</p>
+
+  <div class="panel">
+    <canvas id="ddFit" aria-label="Random features fit at chosen parameter count"></canvas>
+    <canvas id="ddCurve" aria-label="Test error versus parameter count showing double descent" style="margin-top:10px"></canvas>
+    <div class="controls">
+      <label>parameters P <input type="range" id="ddSlider" min="1" max="45" step="1" value="6"></label>
+      <span class="readout">P <b id="ddP">6</b> / n = 20</span>
+      <span class="readout">test MSE <b id="ddErr">—</b></span>
+    </div>
+    <div class="caption">Top: blue = true function, dots = 20 noisy training points, red = min-norm fit with P random features. Bottom: test error vs P, log scale — the <b>full curve, computed in your browser</b>: classical U, catastrophe at P = n (gold line), second descent beyond. Slide through the spike and watch the fit go wild, then calm down.</div>
+  </div>
+</section>
+
+<!-- ═══════════════ CHAPTER 6 ═══════════════ -->
+
+<section id="ch6">
+  <div class="ch-eyebrow"><span><b>CH 06</b> — GROKKING</span><span>MEMORIZE → GENERALIZE</span></div>
+  <h2>Sometimes the network memorizes first — then switches.</h2>
+  <p>Train a small transformer on modular arithmetic with only part of the table shown, and something strange happens (Power et al., 2022). Training accuracy hits 100% quickly: pure memorization, test accuracy at chance. Then, thousands of steps later — with training loss already near zero — test accuracy suddenly jumps to 100%. The network abandons its lookup table for the general algorithm.</p>
+  <p>Why? The memorizing circuit and the generalizing circuit both fit the training data — Chapter 1's family again — but the general one has <em>smaller weight norm</em>. Weight decay and SGD's drift keep grinding norm down after the loss is flat, and eventually the cheap solution wins. Scrub the timeline:</p>
+
+  <div class="panel">
+    <canvas id="grokCanvas" aria-label="Schematic grokking curves: train accuracy, test accuracy, weight norm"></canvas>
+    <div class="controls">
+      <label>training time (log scale) <input type="range" id="grokSlider" min="0" max="5" step="0.01" value="0.4"></label>
+      <span class="readout">step <b id="grokStep">—</b></span>
+      <span class="readout" id="grokPhase">phase: <b>—</b></span>
+    </div>
+    <div class="caption">Schematic after Power et al. (2022). Blue: train accuracy. Red: test accuracy. Gold: weight norm. The gap between the two accuracy jumps is the memorization plateau — zero loss, no understanding. The norm's slow decline is the optimizer's preference doing its work invisibly, until the phase change.</div>
+  </div>
+
+  <div class="notice"><span class="tag">Synthesis — back to compression</span>
+  Six views of one fact: gradient descent minimizes loss <em>subject to an unwritten preference for small, smooth, low-frequency, wide-margin solutions</em>. Small-description-length solutions. Even given infinite parameters — enough capacity to memorize everything — the optimizer's dynamics still route through compression, because compressed solutions are the ones its geometry can cheaply reach and prefers to keep. Memorization isn't forbidden; it's just expensive in the currency SGD spends.</div>
+</section>
+
+<footer>
+  <div class="ch-eyebrow" style="border-top:none"><span><b>REFERENCES</b></span><span>PRIMARY SOURCES</span></div>
+  <div class="refs" style="margin-top:14px">
+    <span>Zhang et al. 2017</span> — Understanding deep learning requires rethinking generalization · ICLR<br>
+    <span>Gunasekar et al. 2017</span> — Implicit regularization in matrix factorization · NeurIPS<br>
+    <span>Soudry et al. 2018</span> — The implicit bias of gradient descent on separable data · JMLR<br>
+    <span>Rahaman et al. 2019</span> — On the spectral bias of neural networks · ICML<br>
+    <span>Belkin et al. 2019</span> — Reconciling modern ML practice and the bias–variance trade-off · PNAS<br>
+    <span>Nakkiran et al. 2019</span> — Deep double descent · ICLR<br>
+    <span>Power et al. 2022</span> — Grokking: generalization beyond overfitting on small algorithmic datasets
+  </div>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+/* ============ shared utilities ============ */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function solveLin(A,b){ // Gaussian elimination w/ partial pivot; A: n×n (mutated copies), b: n
+  const n=b.length, M=A.map((r,i)=>r.slice().concat([b[i]]));
+  for(let c=0;c<n;c++){
+    let p=c;for(let r=c+1;r<n;r++)if(Math.abs(M[r][c])>Math.abs(M[p][c]))p=r;
+    [M[c],M[p]]=[M[p],M[c]];
+    const piv=M[c][c]||1e-12;
+    for(let r=c+1;r<n;r++){const f=M[r][c]/piv;for(let k=c;k<=n;k++)M[r][k]-=f*M[c][k];}
+  }
+  const x=new Array(n).fill(0);
+  for(let r=n-1;r>=0;r--){let s=M[r][n];for(let k=r+1;k<n;k++)s-=M[r][k]*x[k];x[r]=s/(M[r][r]||1e-12);}
+  return x;
+}
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Plot helper: graph-paper canvas with world coords */
+function makePlot(canvasId, aspect, xr, yr){
+  const cv=document.getElementById(canvasId), ctx=cv.getContext("2d");
+  const P={cv,ctx,xr,yr,w:0,h:0,pad:{l:44,r:14,t:12,b:28}};
+  function resize(){
+    const cssW=cv.parentElement.clientWidth-((cv.parentElement.tagName==='DIV')?32:0);
+    const W=Math.max(280,cv.clientWidth||cssW), H=Math.round(W*aspect);
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    cv.style.height=H+"px"; cv.width=W*dpr; cv.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0); P.w=W; P.h=H;
+  }
+  P.resize=resize;
+  P.X=x=>P.pad.l+(x-P.xr[0])/(P.xr[1]-P.xr[0])*(P.w-P.pad.l-P.pad.r);
+  P.Y=y=>P.h-P.pad.b-(y-P.yr[0])/(P.yr[1]-P.yr[0])*(P.h-P.pad.t-P.pad.b);
+  P.invX=px=>P.xr[0]+(px-P.pad.l)/(P.w-P.pad.l-P.pad.r)*(P.xr[1]-P.xr[0]);
+  P.invY=py=>P.yr[0]+(P.h-P.pad.b-py)/(P.h-P.pad.t-P.pad.b)*(P.yr[1]-P.yr[0]);
+  P.clear=()=>{ctx.clearRect(0,0,P.w,P.h);
+    // fine grid
+    ctx.strokeStyle="#E7EDF4";ctx.lineWidth=1;ctx.beginPath();
+    const step=(P.w-P.pad.l-P.pad.r)/16;
+    for(let i=0;i<=16;i++){const x=P.pad.l+i*step;ctx.moveTo(x,P.pad.t);ctx.lineTo(x,P.h-P.pad.b);}
+    const rows=Math.round((P.h-P.pad.t-P.pad.b)/step);
+    for(let j=0;j<=rows;j++){const y=P.pad.t+j*step;ctx.moveTo(P.pad.l,y);ctx.lineTo(P.w-P.pad.r,y);}
+    ctx.stroke();
+    ctx.strokeStyle="#1C2B45";ctx.lineWidth=1.5;
+    ctx.strokeRect(P.pad.l,P.pad.t,P.w-P.pad.l-P.pad.r,P.h-P.pad.t-P.pad.b);
+  };
+  P.axisLabels=(xl,yl)=>{ctx.fillStyle="#4A5A76";ctx.font="11px 'IBM Plex Mono',monospace";
+    ctx.textAlign="center";ctx.fillText(xl,(P.pad.l+P.w-P.pad.r)/2,P.h-8);
+    ctx.save();ctx.translate(13,(P.pad.t+P.h-P.pad.b)/2);ctx.rotate(-Math.PI/2);ctx.fillText(yl,0,0);ctx.restore();};
+  P.line=(pts,color,width,dash)=>{ctx.save();ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=width||2;
+    if(dash)ctx.setLineDash(dash);
+    let started=false;
+    for(const[x,y]of pts){const px=P.X(x),py=P.Y(y);
+      if(py<P.pad.t-40||py>P.h-P.pad.b+40){started=false;continue}
+      if(!started){ctx.moveTo(px,py);started=true}else ctx.lineTo(px,py);}
+    ctx.stroke();ctx.restore();};
+  P.fn=(f,color,width,dash,n=240)=>{const pts=[];for(let i=0;i<=n;i++){const x=P.xr[0]+i/n*(P.xr[1]-P.xr[0]);pts.push([x,f(x)])}P.line(pts,color,width,dash);};
+  P.dot=(x,y,color,r=4,fill=true)=>{ctx.beginPath();ctx.arc(P.X(x),P.Y(y),r,0,7);
+    if(fill){ctx.fillStyle=color;ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=1.5;ctx.stroke();}
+    else{ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();}};
+  P.label=(x,y,txt,color,align="left")=>{ctx.fillStyle=color;ctx.font="11.5px 'IBM Plex Mono',monospace";ctx.textAlign=align;ctx.fillText(txt,P.X(x),P.Y(y));};
+  resize();window.addEventListener("resize",()=>{resize();if(P.onredraw)P.onredraw();});
+  return P;
+}
+
+/* ============ HERO: topographic loss map ============ */
+(function(){
+  const cv=document.getElementById("heroCanvas"),ctx=cv.getContext("2d");
+  const xr=[-6.2,6.2],yr=[-3.8,3.8];let W=0,H=0;
+  const f=(x,y)=>0.06*(x*x+y*y)+Math.sin(x)*Math.cos(y)+1.2;
+  const gf=(x,y)=>[0.12*x+Math.cos(x)*Math.cos(y),0.12*y-Math.sin(x)*Math.sin(y)];
+  let trails=[],balls=[];
+  function resize(){
+    const Wc=cv.parentElement.clientWidth-32;W=Math.max(280,Wc);H=Math.round(W*0.46);
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    cv.style.height=H+"px";cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    paintBase();draw();
+  }
+  const X=x=>(x-xr[0])/(xr[1]-xr[0])*W, Y=y=>H-(y-yr[0])/(yr[1]-yr[0])*H;
+  const iX=px=>xr[0]+px/W*(xr[1]-xr[0]), iY=py=>yr[0]+(H-py)/H*(yr[1]-yr[0]);
+  let base=null;
+  function paintBase(){
+    const off=document.createElement("canvas");off.width=W;off.height=H;
+    const octx=off.getContext("2d"),img=octx.createImageData(W,H);
+    for(let py=0;py<H;py++)for(let px=0;px<W;px++){
+      const v=f(iX(px),iY(py));
+      const band=Math.floor(v*6);
+      const edge=Math.abs(v*6-Math.round(v*6))<0.05;
+      let r,g,b;
+      if(edge){r=0x8f;g=0xa5;b=0xbd;}                    // contour line
+      else{const t=Math.min(1,v/4.6);                    // paper→blue shade by height
+        r=Math.round(0xF7-(0xF7-0xCF)*t);g=Math.round(0xF6-(0xF6-0xDD)*t);b=Math.round(0xF1-(0xF1-0xEA)*(t*0.4));
+        if(band%2===0){r-=5;g-=4;b-=2;}}
+      const i=(py*W+px)*4;img.data[i]=r;img.data[i+1]=g;img.data[i+2]=b;img.data[i+3]=255;
+    }
+    octx.putImageData(img,0,0);base=off;
+  }
+  function draw(){
+    ctx.drawImage(base,0,0,W,H);
+    ctx.strokeStyle="#1C2B45";ctx.lineWidth=1.5;ctx.strokeRect(0.75,0.75,W-1.5,H-1.5);
+    for(const tr of trails){
+      ctx.beginPath();ctx.strokeStyle="#D64520";ctx.lineWidth=2;
+      tr.forEach((p,i)=>{const px=X(p[0]),py=Y(p[1]);i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();
+      const s=tr[0];ctx.beginPath();ctx.arc(X(s[0]),Y(s[1]),3.5,0,7);ctx.strokeStyle="#D64520";ctx.lineWidth=2;ctx.stroke();
+    }
+    for(const b of balls){ctx.beginPath();ctx.arc(X(b.x),Y(b.y),5.5,0,7);ctx.fillStyle="#D64520";ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=2;ctx.stroke();}
+  }
+  let raf=null;
+  function step(){
+    let alive=false;
+    for(const b of balls){
+      if(b.done)continue;alive=true;
+      for(let k=0;k<3;k++){
+        const g=gf(b.x,b.y);b.vx=0.82*b.vx-0.05*g[0];b.vy=0.82*b.vy-0.05*g[1];
+        b.x+=b.vx;b.y+=b.vy;b.trail.push([b.x,b.y]);
+        if(Math.hypot(b.vx,b.vy)<3e-4&&Math.hypot(g[0],g[1])<0.02)b.done=true;
+      }
+    }
+    draw();
+    if(balls.length){const b=balls[balls.length-1];
+      document.getElementById("heroInfo").innerHTML="loss <b>"+f(b.x,b.y).toFixed(3)+"</b>";}
+    if(alive)raf=requestAnimationFrame(step);else raf=null;
+  }
+  cv.addEventListener("pointerdown",e=>{
+    const r=cv.getBoundingClientRect();
+    const x=iX((e.clientX-r.left)),y=iY((e.clientY-r.top));
+    const b={x,y,vx:0,vy:0,trail:[[x,y]],done:false};
+    balls.push(b);trails.push(b.trail);
+    if(balls.length>3){balls.shift();trails.shift();}
+    if(!raf)raf=requestAnimationFrame(step);
+  });
+  resize();window.addEventListener("resize",resize);
+})();
+
+/* ============ CH1: polynomial family ============ */
+(function(){
+  const xs=[-0.9,-0.6,-0.25,0.05,0.4,0.7,0.95];
+  const ys=[-0.35,-0.55,0.05,0.32,0.28,-0.05,0.42];
+  const D=15; // features x^0..x^14
+  const feat=x=>{const v=new Array(D);v[0]=1;for(let k=1;k<D;k++)v[k]=v[k-1]*x;return v};
+  const A=xs.map(feat); // 7×15
+  // G = A Aᵀ (+ridge)
+  const n=xs.length;
+  const G=[];for(let i=0;i<n;i++){G.push(new Array(n).fill(0));for(let j=0;j<n;j++){let s=0;for(let k=0;k<D;k++)s+=A[i][k]*A[j][k];G[i][j]=s+(i===j?1e-10:0);}}
+  const c=solveLin(G,ys);
+  const thetaMin=new Array(D).fill(0);
+  for(let k=0;k<D;k++)for(let i=0;i<n;i++)thetaMin[k]+=A[i][k]*c[i];
+  // null-space direction
+  const rng=mulberry32(7);
+  let v=new Array(D).fill(0).map(()=>gauss(rng));
+  const Av=A.map(row=>row.reduce((s,a,k)=>s+a*v[k],0));
+  const c2=solveLin(G.map(r=>r.slice()),Av);
+  for(let k=0;k<D;k++){let proj=0;for(let i=0;i<n;i++)proj+=A[i][k]*c2[i];v[k]-=proj;}
+  const vn=Math.hypot(...v);v=v.map(x=>x/vn);
+  const evalPoly=(th,x)=>{const fv=feat(x);let s=0;for(let k=0;k<D;k++)s+=th[k]*fv[k];return s};
+
+  const P=makePlot("polyCanvas",0.52,[-1.05,1.05],[-2.2,2.2]);
+  const slider=document.getElementById("polySlider");
+  function draw(){
+    const s=parseFloat(slider.value)*3;
+    const th=thetaMin.map((t,k)=>t+s*v[k]);
+    P.clear();P.axisLabels("x","f(x)");
+    P.fn(x=>evalPoly(thetaMin,x),"rgba(47,111,167,.45)",2);
+    P.fn(x=>evalPoly(th,x),"#D64520",2.5);
+    xs.forEach((x,i)=>P.dot(x,ys[i],"#1C2B45",4.5));
+    P.label(-1.0,2.0,"every curve: exact fit, MSE = 0","#4A5A76");
+    let mse=0;xs.forEach((x,i)=>{const d=evalPoly(th,x)-ys[i];mse+=d*d});mse/=n;
+    document.getElementById("polyMSE").textContent=mse.toExponential(1);
+    const nn=Math.hypot(...th);
+    document.getElementById("polyNorm").textContent=nn.toFixed(2)+(s===0?"  (minimum)":"");
+  }
+  slider.addEventListener("input",draw);P.onredraw=draw;draw();
+})();
+
+/* ============ CH2: min-norm geometry ============ */
+(function(){
+  const a=[1,2],y=4,na2=a[0]*a[0]+a[1]*a[1];
+  const minW=[a[0]*y/na2,a[1]*y/na2],minNorm=Math.hypot(...minW);
+  const P=makePlot("normCanvas",0.62,[-1.2,5.2],[-1.2,3.6]);
+  let start=[3.8,0.4],path=[],anim=null;
+  function lossLine(){return [[-1.2,(y-(-1.2))/2],[5.2,(y-5.2)/2]]}
+  function draw(){
+    P.clear();P.axisLabels("w₁","w₂");
+    // axes through 0
+    P.line([[-1.2,0],[5.2,0]],"#C7D3E0",1);P.line([[0,-1.2],[0,3.6]],"#C7D3E0",1);
+    // norm circle
+    const circ=[];for(let i=0;i<=100;i++){const t=i/100*2*Math.PI;circ.push([minNorm*Math.cos(t),minNorm*Math.sin(t)])}
+    P.line(circ,"#4A5A76",1.5,[5,4]);
+    P.line(lossLine(),"#2F6FA7",2.5);
+    P.label(4.0,0.25,"solution line  w₁+2w₂=4","#2F6FA7");
+    P.label(-1.05,3.35,"dashed circle = smallest reachable norm","#4A5A76");
+    if(path.length>1)P.line(path,"#D64520",2.2);
+    P.dot(minW[0],minW[1],"#B8860B",5);
+    P.label(minW[0]+0.15,minW[1]-0.25,"min-norm solution","#B8860B");
+    P.dot(start[0],start[1],"#D64520",5,false);
+    if(path.length){const e=path[path.length-1];P.dot(e[0],e[1],"#D64520",5);}
+  }
+  function run(){
+    if(anim)cancelAnimationFrame(anim);
+    let w=start.slice();path=[w.slice()];
+    function tick(){
+      for(let k=0;k<2;k++){
+        const err=a[0]*w[0]+a[1]*w[1]-y;
+        w[0]-=0.06*err*a[0];w[1]-=0.06*err*a[1];
+      }
+      path.push(w.slice());draw();
+      const err=Math.abs(a[0]*w[0]+a[1]*w[1]-y);
+      document.getElementById("normReadout").textContent=Math.hypot(w[0],w[1]).toFixed(3);
+      if(err>1e-4&&path.length<400)anim=requestAnimationFrame(tick);
+    }
+    if(reducedMotion){ // jump to solution, draw straight path
+      const t=(y-(a[0]*start[0]+a[1]*start[1]))/na2;
+      const end=[start[0]+t*a[0],start[1]+t*a[1]];
+      path=[start.slice(),end];draw();
+      document.getElementById("normReadout").textContent=Math.hypot(end[0],end[1]).toFixed(3);
+    } else tick();
+  }
+  document.getElementById("normMin").textContent=minNorm.toFixed(3);
+  document.getElementById("normOrigin").addEventListener("click",()=>{start=[0,0];run()});
+  document.getElementById("normRandom").addEventListener("click",()=>{start=[Math.random()*5-0.8,Math.random()*3.4-0.9];run()});
+  let dragging=false;
+  const cv=P.cv;
+  cv.addEventListener("pointerdown",e=>{dragging=true;move(e)});
+  window.addEventListener("pointerup",()=>{if(dragging){dragging=false;run()}});
+  cv.addEventListener("pointermove",e=>{if(dragging)move(e)});
+  function move(e){const r=cv.getBoundingClientRect();
+    start=[P.invX(e.clientX-r.left),P.invY(e.clientY-r.top)];path=[];draw();}
+  P.onredraw=draw;draw();run();
+})();
+
+/* ============ CH3: live MLP with spectral bias ============ */
+(function(){
+  const H1=64,H2=64,LR=0.008,B1=0.9,B2=0.999,EPS=1e-8;
+  const target=x=>Math.sin(2*Math.PI*x)+0.3*Math.sin(10*Math.PI*x);
+  const N=64;const rngD=mulberry32(11);
+  const TX=[],TY=[];for(let i=0;i<N;i++){const x=i/(N-1);TX.push(x);TY.push(target(x));}
+  let net,adam,step=0;
+  function zeros(n){return new Float64Array(n)}
+  function init(){
+    const rng=mulberry32(1234+Math.floor(Math.random()*1e6));
+    const mk=(n,sc)=>{const a=new Float64Array(n);for(let i=0;i<n;i++)a[i]=gauss(rng)*sc;return a};
+    net={W1:mk(H1,1.6),b1:zeros(H1),W2:mk(H1*H2,1/Math.sqrt(H1)),b2:zeros(H2),W3:mk(H2,1/Math.sqrt(H2)),b3:zeros(1)};
+    adam={};for(const k in net)adam[k]={m:zeros(net[k].length),v:zeros(net[k].length)};
+    step=0;
+  }
+  function forward(x,cache){
+    const a1=new Float64Array(H1),a2=new Float64Array(H2);
+    for(let i=0;i<H1;i++)a1[i]=Math.tanh(net.W1[i]*x+net.b1[i]);
+    for(let j=0;j<H2;j++){let s=net.b2[j];for(let i=0;i<H1;i++)s+=net.W2[j*H1+i]*a1[i];a2[j]=Math.tanh(s);}
+    let out=net.b3[0];for(let j=0;j<H2;j++)out+=net.W3[j]*a2[j];
+    if(cache){cache.a1=a1;cache.a2=a2;}
+    return out;
+  }
+  function trainSteps(k){
+    for(let s=0;s<k;s++){
+      const g={};for(const key in net)g[key]=zeros(net[key].length);
+      let loss=0;
+      for(let n=0;n<N;n++){
+        const x=TX[n],c={};const out=forward(x,c);
+        const d=out-TY[n];loss+=d*d;
+        const dout=2*d/N;
+        const da2=new Float64Array(H2);
+        g.b3[0]+=dout;
+        for(let j=0;j<H2;j++){g.W3[j]+=dout*c.a2[j];da2[j]=dout*net.W3[j]*(1-c.a2[j]*c.a2[j]);}
+        const da1=new Float64Array(H1);
+        for(let j=0;j<H2;j++){g.b2[j]+=da2[j];
+          for(let i=0;i<H1;i++){g.W2[j*H1+i]+=da2[j]*c.a1[i];da1[i]+=da2[j]*net.W2[j*H1+i];}}
+        for(let i=0;i<H1;i++){const dz=da1[i]*(1-c.a1[i]*c.a1[i]);g.W1[i]+=dz*x;g.b1[i]+=dz;}
+      }
+      step++;
+      const bc1=1-Math.pow(B1,step),bc2=1-Math.pow(B2,step);
+      for(const key in net){const w=net[key],gr=g[key],st=adam[key];
+        for(let i=0;i<w.length;i++){
+          st.m[i]=B1*st.m[i]+(1-B1)*gr[i];st.v[i]=B2*st.v[i]+(1-B2)*gr[i]*gr[i];
+          w[i]-=LR*(st.m[i]/bc1)/(Math.sqrt(st.v[i]/bc2)+EPS);
+        }}
+      if(s===k-1)lastLoss=loss/N;
+    }
+  }
+  let lastLoss=null;
+  const P=makePlot("mlpCanvas",0.5,[0,1],[-1.7,1.7]);
+  const BP=makePlot("mlpBars",0.18,[0,1],[0,1]);
+  function freqErrors(){
+    // project residual on sin(2πx), sin(10πx) over dense grid
+    let cLo=0,cHi=0;const M=200;
+    for(let i=0;i<M;i++){const x=(i+0.5)/M;const r=forward(x)-target(x);
+      cLo+=r*Math.sin(2*Math.PI*x);cHi+=r*Math.sin(10*Math.PI*x);}
+    return [Math.abs(cLo)*2/M,Math.abs(cHi)*2/M];
+  }
+  function draw(){
+    P.clear();P.axisLabels("x","y");
+    P.fn(target,"#2F6FA7",2);
+    for(let i=0;i<N;i+=2)P.dot(TX[i],TY[i],"#2F6FA7",2.5);
+    P.fn(x=>forward(x),"#D64520",2.5);
+    P.label(0.02,1.5,"blue: target   red: network (live)","#4A5A76");
+    // bars
+    const[lo,hi]=freqErrors();const mx=0.65;
+    BP.clear();
+    const bctx=BP.ctx;
+    const bw=(BP.w-BP.pad.l-BP.pad.r);
+    const draw1=(frac,row,color,name)=>{
+      const y0=BP.pad.t+8+row*26,hgt=16;
+      bctx.fillStyle=color;bctx.fillRect(BP.pad.l+2,y0,Math.max(2,Math.min(1,frac)* (bw-4)),hgt);
+      bctx.fillStyle="#1C2B45";bctx.font="11px 'IBM Plex Mono',monospace";bctx.textAlign="left";
+      bctx.fillText(name,BP.pad.l+6,y0-3+0);
+    };
+    draw1(lo/mx,0,"rgba(47,111,167,.85)","slow component error  sin(2πx)");
+    draw1(hi/mx,1,"rgba(214,69,32,.85)","fast component error  sin(10πx)");
+    document.getElementById("mlpStep").textContent=step;
+    document.getElementById("mlpLoss").textContent=lastLoss==null?"—":lastLoss.toExponential(2);
+  }
+  let running=false,raf=null;
+  const btn=document.getElementById("mlpToggle");
+  function loop(){trainSteps(8);draw();if(running)raf=requestAnimationFrame(loop)}
+  btn.addEventListener("click",()=>{
+    running=!running;btn.textContent=running?"❚❚ pause":"▶ start training";
+    if(running)raf=requestAnimationFrame(loop);else if(raf)cancelAnimationFrame(raf);
+  });
+  document.getElementById("mlpReset").addEventListener("click",()=>{init();lastLoss=null;draw()});
+  P.onredraw=draw;BP.onredraw=draw;
+  init();draw();
+})();
+
+/* ============ CH4: max margin drift ============ */
+(function(){
+  const rng=mulberry32(21);
+  const pts=[];
+  for(let i=0;i<10;i++)pts.push({x:1.5+gauss(rng)*0.55,y:1.1+gauss(rng)*0.55,c:1});
+  for(let i=0;i<10;i++)pts.push({x:-1.2+gauss(rng)*0.55,y:-0.8+gauss(rng)*0.55,c:-1});
+  const sig=z=>1/(1+Math.exp(-z));
+  function gdStep(w,lr){
+    let g0=0,g1=0,g2=0;
+    for(const p of pts){const z=p.c*(w[0]*p.x+w[1]*p.y+w[2]);const s=sig(-z);
+      g0+=-s*p.c*p.x;g1+=-s*p.c*p.y;g2+=-s*p.c;}
+    const n=pts.length;
+    w[0]-=lr*g0/n;w[1]-=lr*g1/n;w[2]-=lr*g2/n;
+  }
+  // reference max-margin direction: run long
+  const wref=[0.1,-0.2,0];for(let i=0;i<60000;i++)gdStep(wref,2.0);
+  const refAngle=Math.atan2(wref[1],wref[0]);
+  let w,step;
+  function init(){w=[0.6,-0.9,0.15];step=0;}
+  const P=makePlot("marginCanvas",0.58,[-3.2,3.6],[-2.8,3.0]);
+  function boundary(wv,color,width,dash){
+    // line w0 x + w1 y + w2 = 0
+    if(Math.abs(wv[1])>Math.abs(wv[0])){
+      P.line([[P.xr[0],(-wv[2]-wv[0]*P.xr[0])/wv[1]],[P.xr[1],(-wv[2]-wv[0]*P.xr[1])/wv[1]]],color,width,dash);
+    }else{
+      P.line([[(-wv[2]-wv[1]*P.yr[0])/wv[0],P.yr[0]],[(-wv[2]-wv[1]*P.yr[1])/wv[0],P.yr[1]]],color,width,dash);
+    }
+  }
+  function acc(){let a=0;for(const p of pts)if(p.c*(w[0]*p.x+w[1]*p.y+w[2])>0)a++;return a/pts.length}
+  function draw(){
+    P.clear();P.axisLabels("x₁","x₂");
+    boundary(wref,"#1C2B45",2,[6,5]);
+    boundary(w,"#D64520",2.5);
+    for(const p of pts){
+      if(p.c>0)P.dot(p.x,p.y,"#2F6FA7",4.5);
+      else{const c=P.ctx,px=P.X(p.x),py=P.Y(p.y);c.strokeStyle="#B8860B";c.lineWidth=2.2;
+        c.beginPath();c.moveTo(px-4,py-4);c.lineTo(px+4,py+4);c.moveTo(px-4,py+4);c.lineTo(px+4,py-4);c.stroke();}
+    }
+    P.label(-3.05,2.75,"dashed: max-margin (SVM) direction","#4A5A76");
+    document.getElementById("marginStep").textContent=step;
+    document.getElementById("marginAcc").textContent=(acc()*100).toFixed(0)+"%";
+    document.getElementById("marginNorm").textContent=Math.hypot(w[0],w[1]).toFixed(2);
+    let dA=Math.abs(Math.atan2(w[1],w[0])-refAngle)*180/Math.PI;if(dA>180)dA=360-dA;
+    document.getElementById("marginAngle").textContent=dA.toFixed(2)+"°";
+  }
+  let running=false,raf=null;
+  const btn=document.getElementById("marginToggle");
+  function loop(){for(let i=0;i<40;i++)gdStep(w,2.0);step+=40;draw();if(running)raf=requestAnimationFrame(loop)}
+  btn.addEventListener("click",()=>{running=!running;btn.textContent=running?"❚❚ pause":"▶ start";
+    if(running)raf=requestAnimationFrame(loop);else if(raf)cancelAnimationFrame(raf);});
+  document.getElementById("marginReset").addEventListener("click",()=>{init();draw()});
+  P.onredraw=draw;init();draw();
+})();
+
+/* ============ CH5: double descent, computed live ============ */
+(function(){
+  const rng=mulberry32(91);
+  const f=x=>Math.sin(2.5*x);
+  const n=20,Pmax=45,noise=0.25;
+  const TX=[],TY=[];
+  for(let i=0;i<n;i++){const x=-2+4*rng();TX.push(x);TY.push(f(x)+noise*gauss(rng));}
+  // random features (nested)
+  const FW=[],FB=[];for(let j=0;j<Pmax;j++){FW.push(gauss(rng)*1.0);FB.push(-2+4*rng());}
+  const phi=(x,j)=>Math.max(0,FW[j]*x+FB[j]);
+  function fitP(P){
+    // design n×P
+    const A=TX.map(x=>{const r=new Array(P);for(let j=0;j<P;j++)r[j]=phi(x,j);return r});
+    let theta;
+    if(P<=n){ // least squares via normal equations P×P
+      const M=[];for(let i=0;i<P;i++){M.push(new Array(P).fill(0));for(let j=0;j<P;j++){let s=0;for(let k=0;k<n;k++)s+=A[k][i]*A[k][j];M[i][j]=s+(i===j?1e-8:0);}}
+      const b=new Array(P).fill(0);for(let i=0;i<P;i++)for(let k=0;k<n;k++)b[i]+=A[k][i]*TY[k];
+      theta=solveLin(M,b);
+    }else{ // min-norm via n×n kernel
+      const K=[];for(let i=0;i<n;i++){K.push(new Array(n).fill(0));for(let j=0;j<n;j++){let s=0;for(let k=0;k<P;k++)s+=A[i][k]*A[j][k];K[i][j]=s+(i===j?1e-8:0);}}
+      const al=solveLin(K,TY);
+      theta=new Array(P).fill(0);
+      for(let k=0;k<P;k++)for(let i=0;i<n;i++)theta[k]+=A[i][k]*al[i];
+    }
+    return theta;
+  }
+  function predict(theta,x){let s=0;for(let j=0;j<theta.length;j++)s+=theta[j]*phi(x,j);return s}
+  // precompute all
+  const fits=[null],errs=[null];
+  for(let P=1;P<=Pmax;P++){
+    const th=fitP(P);fits.push(th);
+    let e=0;const M=200;
+    for(let i=0;i<M;i++){const x=-2+4*(i+0.5)/M;const d=predict(th,x)-f(x);e+=d*d;}
+    errs.push(e/M);
+  }
+  const FP=makePlot("ddFit",0.44,[-2.05,2.05],[-2.4,2.4]);
+  const EP=makePlot("ddCurve",0.4,[1,Pmax],[Math.log10(0.003),Math.log10(Math.max(...errs.slice(1))*1.4)]);
+  const slider=document.getElementById("ddSlider");
+  function draw(){
+    const P=parseInt(slider.value);
+    FP.clear();FP.axisLabels("x","y");
+    FP.fn(f,"#2F6FA7",2);
+    TX.forEach((x,i)=>FP.dot(x,TY[i],"#1C2B45",3.5));
+    FP.fn(x=>predict(fits[P],x),"#D64520",2.5);
+    FP.label(-2.0,2.15,"fit with P = "+P+" random features","#D64520");
+    EP.clear();EP.axisLabels("parameters P","test MSE (log)");
+    // interpolation threshold
+    EP.line([[n,EP.yr[0]],[n,EP.yr[1]]],"#B8860B",2,[4,4]);
+    EP.label(n+0.6,EP.yr[1]-0.15,"P = n (interpolation threshold)","#B8860B");
+    const pts=[];for(let p=1;p<=Pmax;p++)pts.push([p,Math.log10(errs[p])]);
+    EP.line(pts,"#1C2B45",2.2);
+    EP.dot(P,Math.log10(errs[P]),"#D64520",5.5);
+    document.getElementById("ddP").textContent=P;
+    document.getElementById("ddErr").textContent=errs[P].toFixed(4);
+  }
+  slider.addEventListener("input",draw);
+  FP.onredraw=draw;EP.onredraw=draw;draw();
+})();
+
+/* ============ CH6: grokking schematic ============ */
+(function(){
+  const sig=z=>1/(1+Math.exp(-z));
+  const train=t=>sig((t-1.5)*5.5);
+  const test=t=>0.01+0.99*sig((t-3.8)*8);
+  const wnorm=t=>0.35+0.5*sig((t-1.1)*4)-0.42*sig((t-3.4)*3.5);
+  const P=makePlot("grokCanvas",0.5,[0,5],[0,1.08]);
+  const slider=document.getElementById("grokSlider");
+  function draw(){
+    const T=parseFloat(slider.value);
+    P.clear();P.axisLabels("training steps (log₁₀)","accuracy / norm (scaled)");
+    const seg=(fn,color,w,dash)=>{const pts=[];for(let i=0;i<=200;i++){const t=i/200*5;if(t>T)break;pts.push([t,fn(t)])}if(pts.length>1)P.line(pts,color,w,dash);};
+    // faint full curves for orientation
+    P.fn(train,"rgba(47,111,167,.15)",1.5);P.fn(test,"rgba(214,69,32,.15)",1.5);P.fn(wnorm,"rgba(184,134,11,.15)",1.5);
+    seg(train,"#2F6FA7",2.5);seg(test,"#D64520",2.5);seg(wnorm,"#B8860B",2.5,[6,4]);
+    P.line([[T,0],[T,1.08]],"#4A5A76",1,[3,3]);
+    P.label(0.08,1.03,"blue: train acc   red: test acc   gold: ‖w‖ (dashed)","#4A5A76");
+    document.getElementById("grokStep").textContent="10^"+T.toFixed(1);
+    let phase="random init";
+    if(T>0.8&&T<=2.2)phase="memorizing — train acc rising, test at chance";
+    else if(T>2.2&&T<=3.4)phase="the plateau — zero loss, no generalization, norm draining";
+    else if(T>3.4&&T<=4.2)phase="phase change — the general circuit takes over";
+    else if(T>4.2)phase="grokked — 100% test accuracy";
+    document.getElementById("grokPhase").innerHTML="phase: <b>"+phase+"</b>";
+  }
+  slider.addEventListener("input",draw);
+  P.onredraw=draw;draw();
+})();
+</script>
+
+</body>
+</html>
